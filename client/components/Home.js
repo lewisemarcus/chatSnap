@@ -2,7 +2,6 @@ import { StatusBar } from "expo-status-bar"
 import { StyleSheet, Text, View, FlatList } from "react-native"
 import { Card } from "react-native-paper"
 import { useEffect, useState } from "react"
-import { message } from "antd"
 
 export default function Home() {
     const [users, setUsers] = useState([])
@@ -22,7 +21,7 @@ export default function Home() {
                 console.log(userList.members)
                 setUsers(userList.members)
             } catch (err) {
-                message.error(err, "Error getting users.")
+                console.error(err, "Error getting users.")
             }
         }
         getUsers()
