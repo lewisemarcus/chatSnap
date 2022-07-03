@@ -4,7 +4,7 @@
     "description": "beginning of python(flask) backend and react native mobile application.",
     "main": "index.js",
     "scripts": {
-        "server": "cd server && python start server.py",
+        "server": "cd server && python server.py",
         "production": "run-p production:** server",
         "production:build": "cd client && npm run build",
         "prod": "pm2 startOrReload prod-ecosystem.json --env production",
