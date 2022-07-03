@@ -1,3 +1,4 @@
 Flask
 python-dotenv
 flask-mongoengine
+flask-cors

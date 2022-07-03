@@ -10,7 +10,7 @@
         "prod": "pm2 startOrReload prod-ecosystem.json --env production",
         "client": "npm start --prefix client",
         "install": "cd server && pip install -r requirements.txt && cd ../client && npm i",
-        "dev": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
+        "dev": "concurrently \"cd server && npm run watch\" \"cd client && npm run web\"",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
