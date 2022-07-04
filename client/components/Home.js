@@ -3,22 +3,20 @@ import { StyleSheet, Text, View, FlatList } from "react-native"
 import { Card } from "react-native-paper"
 import { useEffect, useState } from "react"
 import axios from "axios"
-import Constants from "expo-constants"
+
 import { Logs } from "expo"
 
 Logs.enableExpoCliLogging()
 
-const { manifest } = Constants
-
-const uri = `http://${manifest.debuggerHost.split(":").shift()}:5000`
+const config = { timeout: 1500, baseURL: "http://143.198.237.213:5000" }
+const instance = axios.create(config)
 export default function Home() {
     const [users, setUsers] = useState([])
 
     useEffect(() => {
         const getUsers = async () => {
             try {
-                console.log("hi", uri)
-                const userData = await axios.get(`${uri}/users`, {
+                const userData = await instance("users", {
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
