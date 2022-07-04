@@ -4,13 +4,13 @@
     "description": "beginning of python(flask) backend and react native mobile application.",
     "main": "index.js",
     "scripts": {
-        "server": "cd server && python server.py",
+        "server": "cd server && pm2 start server.py",
         "production": "run-p production:** server",
-        "production:build": "cd client && npm run build",
         "prod": "pm2 startOrReload prod-ecosystem.json --env production",
         "client": "npm start --prefix client",
         "install": "cd server && pip install -r requirements.txt && cd ../client && npm i",
         "dev": "concurrently \"cd server && npm run watch\" \"cd client && npm run web\"",
+        "dev:and": "concurrently \"cd server && npm run watch\" \"cd client && npm run android\"",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {

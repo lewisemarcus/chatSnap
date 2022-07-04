@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "watch": "nodemon server.py",
+        "watch": "nodemon server.py && lt --port 5000 --subdomain chatSnap-mock-server",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "devDependencies": {

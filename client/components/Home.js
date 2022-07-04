@@ -2,24 +2,31 @@ import { StatusBar } from "expo-status-bar"
 import { StyleSheet, Text, View, FlatList } from "react-native"
 import { Card } from "react-native-paper"
 import { useEffect, useState } from "react"
+import axios from "axios"
+import Constants from "expo-constants"
+import { Logs } from "expo"
 
+Logs.enableExpoCliLogging()
+
+const { manifest } = Constants
+
+const uri = `http://${manifest.debuggerHost.split(":").shift()}:5000`
 export default function Home() {
     const [users, setUsers] = useState([])
 
     useEffect(() => {
         const getUsers = async () => {
             try {
-                const userData = await fetch("http://127.0.0.1:5000/members", {
-                    method: "GET",
+                console.log("hi", uri)
+                const userData = await axios.get(`${uri}/users`, {
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
                     },
                 })
-                console.log(userData)
-                const userList = await userData.json()
-                console.log(userList.members)
-                setUsers(userList.members)
+                const userList = userData.data
+                console.log(userList)
+                setUsers(userList)
             } catch (err) {
                 console.error(err, "Error getting users.")
             }
@@ -30,7 +37,7 @@ export default function Home() {
     const renderUsers = (user) => {
         return (
             <Card>
-                <Text>{user}</Text>
+                <Text>{user.username}</Text>
             </Card>
         )
     }
