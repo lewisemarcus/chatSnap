@@ -7,7 +7,7 @@ from flask_cors import CORS
 
 from routes.userRoutes.getUsers import getUsers
 from routes.userRoutes.newUser import register
-from models.User import User
+from models.index import initModels
 load_dotenv()
 
 DEBUG = os.getenv('DEBUG')
@@ -20,12 +20,14 @@ CORS(app)
 app.config["MONGODB_SETTINGS"] = { 'host': MONGO_URL }
 mongoDB = MongoEngine(app)
 
+# model init example
+initModels(mongoDB)
+
 # routing example
 getUsers(app)
 register(app)
 
-# model init example
-User(mongoDB)
+
 
 @app.route("/members")
 def members():
