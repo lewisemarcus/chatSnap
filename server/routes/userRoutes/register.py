@@ -8,4 +8,4 @@ def register(app):
         body = request.get_json()
         user = User(**body).save()
     
-        return jsonify(User), 201
+        return jsonify(user), 201
