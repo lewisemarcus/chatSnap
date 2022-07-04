@@ -1,6 +1,8 @@
+import mongoengine as mongoDB
 class Message(mongoDB.EmbeddedDocument):
-    message = StringField()
+    message = mongoDB.StringField()
 
 class Chatroom(mongoDB.Document):
-    users = mongoDB.ListField(ReferenceField(User))
-    messages = mongoDB.ListField(EmbeddedDocumentField(Message))
+    users = mongoDB.ListField(mongoDB.ReferenceField('User'))
+    messages = mongoDB.ListField(mongoDB.EmbeddedDocumentField(Message))
+       
