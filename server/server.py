@@ -2,12 +2,10 @@ import os
 from flask import Flask, jsonify
 from dotenv import load_dotenv
 from flask_mongoengine import MongoEngine
+# attrgetter for future object destructuring if needed
 from operator import attrgetter
 from flask_cors import CORS
 
-from routes.userRoutes.getUsers import getUsers
-from routes.userRoutes.newUser import register
-from models.User import User
 load_dotenv()
 
 DEBUG = os.getenv('DEBUG')
@@ -15,17 +13,19 @@ MONGO_URL = os.getenv('MONGO_URL')
 PORT = os.getenv('PORT')
 HOST = os.getenv('HOST')
 app = Flask(__name__)
-CORS(app)
 
-app.config["MONGODB_SETTINGS"] = { 'host': MONGO_URL }
+CORS(app)
+app.config['MONGODB_SETTINGS'] = {'db': 'chatSnap', 'host': MONGO_URL }
+
+# initialize DB
 mongoDB = MongoEngine(app)
+
+from routes.userRoutes.getUsers import getUsers
+from routes.userRoutes.register import register
 
 # routing example
 getUsers(app)
 register(app)
-
-# model init example
-User(mongoDB)
 
 @app.route("/members")
 def members():

@@ -9,7 +9,7 @@ export default function Home() {
     useEffect(() => {
         const getUsers = async () => {
             try {
-                const userData = await fetch("http://127.0.0.1:5000//members", {
+                const userData = await fetch("http://127.0.0.1:5000/members", {
                     method: "GET",
                     headers: {
                         Accept: "application/json",
@@ -38,6 +38,8 @@ export default function Home() {
         <View style={styles.container}>
             <Text>User List</Text>
             <FlatList
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
                 data={users}
                 // item is a property of renderItem
                 renderItem={({ item }) => {
