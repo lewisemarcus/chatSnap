@@ -5,9 +5,10 @@
     "main": "index.js",
     "scripts": {
         "server": "cd server && pm2 start server.py",
-        "production": "run-p production:** server",
+        "production": "run-p server",
         "prod": "pm2 startOrReload prod-ecosystem.json --env production",
-        "client": "npm start --prefix client",
+        "client": "cd client && npm run web",
+        "client:and": "cd client && npm run android",
         "install": "cd server && pip install -r requirements.txt && cd ../client && npm i",
         "dev": "concurrently \"cd server && npm run watch\" \"cd client && npm run web\"",
         "dev:and": "concurrently \"cd server && npm run watch\" \"cd client && npm run android\"",
