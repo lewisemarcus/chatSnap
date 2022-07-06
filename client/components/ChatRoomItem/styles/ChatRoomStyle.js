@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native"
 
 const styles = StyleSheet.create({
     text: {
-        color: "white",
+        color: "grey",
     },
     container: {
         flexDirection: "row",
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
         borderColor: "white",
     },
     name: {
-        color: "white",
+        color: "black",
         fontWeight: "bold",
         fontSize: 17,
     },

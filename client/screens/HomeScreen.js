@@ -1,9 +1,8 @@
-import { StatusBar } from "expo-status-bar"
 import { StyleSheet, Text, View, FlatList } from "react-native"
-import { Card } from "react-native-paper"
 import { useEffect, useState } from "react"
 import axios from "axios"
-
+import ChatRoomItem from "../components/ChatRoomItem/ChatRoomItem"
+import chatRoomsData from "../assets/dummy-data/ChatRooms"
 import { Logs } from "expo"
 
 Logs.enableExpoCliLogging()
@@ -32,25 +31,18 @@ export default function Home() {
         getUsers()
     }, [])
 
-    const renderUsers = (user) => {
-        return (
-            <Card>
-                <Text>{user.username}</Text>
-            </Card>
-        )
-    }
     return (
         <View style={styles.container}>
-            <Text>User List</Text>
+            {/* FlatList enables scrollability */}
             <FlatList
+                // TODO: replace chatRoomsData with real data once completed.
+                data={chatRoomsData}
+                // rename's the item from props to eachChatRoom
+                renderItem={({ item: eachChatRoom }) => (
+                    <ChatRoomItem chatRoom={eachChatRoom} />
+                )}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
-                data={users}
-                // item is a property of renderItem
-                renderItem={({ item }) => {
-                    return renderUsers(item)
-                }}
-                keyExtractor={(user) => `${user}`}
             />
         </View>
     )
@@ -59,6 +51,6 @@ export default function Home() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#eddfdf",
+        backgroundColor: "#fefefe",
     },
 })
