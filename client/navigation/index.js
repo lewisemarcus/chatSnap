@@ -25,7 +25,7 @@ export default function Navigation({ colorScheme }) {
     return (
         <NavigationContainer
             linking={LinkingConfiguration}
-            // for prod
+            // TODO: for prod
             // theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
             // white for dev
             theme={colorScheme === "dark" ? DefaultTheme : DefaultTheme}
