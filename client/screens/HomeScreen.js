@@ -6,9 +6,14 @@ import chatRoomsData from "../assets/dummy-data/ChatRooms"
 import { Logs } from "expo"
 
 Logs.enableExpoCliLogging()
+// for prod/dev:and
+// const config = { timeout: 1500, baseURL: "http://143.198.237.213:5000" }
+// const instance = axios.create(config)
 
-const config = { timeout: 1500, baseURL: "http://143.198.237.213:5000" }
+//for dev
+const config = { timeout: 1500, baseURL: "http://127.0.0.1:5000" }
 const instance = axios.create(config)
+
 export default function Home() {
     const [users, setUsers] = useState([])
 

@@ -8,23 +8,29 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import * as React from "react"
 import { Text, Image, View, useWindowDimensions } from "react-native"
-
-import Colors from "../constants/Colors"
-import useColorScheme from "../hooks/useColorScheme"
-import ModalScreen from "../screens/ModalScreen"
-import NotFoundScreen from "../screens/NotFoundScreen"
-import HomeScreen from "../screens/HomeScreen"
-import ChatRoomScreen from "../screens/ChatRoomScreen"
-
+import {
+    ChatRoomScreen,
+    ModalScreen,
+    NotFoundScreen,
+    StartScreen,
+    HomeScreen,
+    LoginScreen,
+    RegisterScreen,
+} from "../screens/index"
 import LinkingConfiguration from "./LinkingConfiguration"
 
 export default function Navigation({ colorScheme }) {
+    const user = null
+
     return (
         <NavigationContainer
             linking={LinkingConfiguration}
-            theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+            // for prod
+            // theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+            // white for dev
+            theme={colorScheme === "dark" ? DefaultTheme : DefaultTheme}
         >
-            <RootNavigator />
+            {user ? <RootNavigator /> : <AuthNavigator />}
         </NavigationContainer>
     )
 }
@@ -35,7 +41,17 @@ export default function Navigation({ colorScheme }) {
  */
 const Stack = createNativeStackNavigator()
 
-function RootNavigator() {
+const AuthNavigator = () => {
+    return (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Start" component={StartScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
+        </Stack.Navigator>
+    )
+}
+
+const RootNavigator = () => {
     return (
         <Stack.Navigator>
             <Stack.Screen
@@ -43,6 +59,7 @@ function RootNavigator() {
                 component={HomeScreen}
                 options={{ headerTitle: HomeHeader }}
             />
+
             <Stack.Screen
                 name="ChatRoom"
                 component={ChatRoomScreen}
@@ -65,6 +82,7 @@ const HomeHeader = (props) => {
     return (
         <View
             style={{
+                backgroundColor: "white",
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-between",
@@ -116,6 +134,7 @@ const ChatRoomHeader = (props) => {
     return (
         <View
             style={{
+                backgroundColor: "white",
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-evenly",
