@@ -1,13 +1,16 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import React, { createContext, useState, useEffect } from "react"
+import { Alert } from "react-native"
 import axios from "axios"
-// for prod/dev:and
-// const config = { timeout: 5000, baseURL: "http://143.198.237.213:5000" }
-// const instance = axios.create(config)
-import navigation from "../../../messageApp/android/app/build/intermediates/navigation_json/debug/navigation.json"
+import Constants from "expo-constants"
+const { manifest } = Constants
+let uri
+// Checks if on web or on android/ios dev
+if (manifest.debuggerHost !== undefined)
+    uri = `http://${manifest.debuggerHost.split(":").shift()}:5000`
+else uri = "http://127.0.0.1:5000"
 
-//for dev
-const config = { timeout: 5000, baseURL: "http://127.0.0.1:5000" }
+const config = { timeout: 5000, baseURL: uri }
 const instance = axios.create(config)
 
 export const AuthContext = createContext()
@@ -20,6 +23,13 @@ export const AuthProvider = ({ children }) => {
     const [password, setPassword] = useState("")
     const [passwordConfirm, setPasswordConfirm] = useState("")
     const [user, setUser] = useState({})
+
+    const noHandler = () => {
+        setName("")
+        setEmail("")
+        setPassword("")
+        setPasswordConfirm("")
+    }
     const register = async () => {
         try {
             setIsLoading(true)
@@ -46,10 +56,17 @@ export const AuthProvider = ({ children }) => {
                     AsyncStorage.setItem("token", token)
                     setIsLoading(false)
                 } else setIsLoading(false)
+            } else {
+                Alert.alert(
+                    "Missing Credentials",
+                    "Please enter all required credentials.",
+                    [{ text: "OK", onPress: () => noHandler() }],
+                )
+                throw "Please enter all credentials."
             }
         } catch (err) {
             setIsLoading(false)
-            console.warn("Error adding user:", err)
+            console.warn("Error adding user: ", err)
         }
     }
 
@@ -74,6 +91,13 @@ export const AuthProvider = ({ children }) => {
                     AsyncStorage.setItem("token", token)
                     setIsLoading(false)
                 } else setIsLoading(false)
+            } else {
+                Alert.alert(
+                    "Missing/Incorrect Credentials",
+                    "Please enter the correct email and password.",
+                    [{ text: "OK", onPress: () => noHandler() }],
+                )
+                throw "Please enter an email and password."
             }
         } catch (err) {
             setIsLoading(false)
