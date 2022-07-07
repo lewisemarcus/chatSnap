@@ -6,8 +6,7 @@ import Constants from "expo-constants"
 const { manifest } = Constants
 let uri
 // Checks if on web or on android/ios dev
-if (manifest.debuggerHost !== undefined)
-    uri = `http://${manifest.debuggerHost.split(":").shift()}:5000`
+if (manifest.debuggerHost !== undefined) uri = "http://143.198.237.213:5000"
 else uri = "http://127.0.0.1:5000"
 
 const config = { timeout: 5000, baseURL: uri }
