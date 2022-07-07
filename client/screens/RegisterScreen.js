@@ -197,7 +197,7 @@ const RegisterScreen = ({ navigation }) => {
                         </Text>
                     </TouchableOpacity>
                 </View>
-
+                {/* TODO: make working date picker if we want DOB. */}
                 {/* <DatePicker
                     modal
                     open={open}

@@ -15,7 +15,7 @@ HOST = os.getenv('HOST')
 SECRET = os.getenv('SECRET')
 app = Flask(__name__)
 
-CORS(app)
+CORS(app, support_credentials=True)
 app.config['MONGODB_SETTINGS'] = {'db': 'chatSnap', 'host': MONGO_URL }
 app.config["JWT_SECRET_KEY"]=SECRET
 jwt = JWTManager(app)
