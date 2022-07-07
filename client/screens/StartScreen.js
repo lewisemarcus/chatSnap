@@ -42,6 +42,7 @@ const StartScreen = ({ navigation }) => {
             </View>
             <TouchableOpacity
                 style={{
+                    zIndex: 1,
                     backgroundColor: "#3777f0",
                     padding: 20,
                     width: "90%",
@@ -52,7 +53,14 @@ const StartScreen = ({ navigation }) => {
                 }}
                 onPress={() => navigation.navigate("Login")}
             >
-                <View>
+                <View
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        width: "100%",
+                        justifyContent: "space-between",
+                    }}
+                >
                     <Text
                         style={{
                             color: "white",
@@ -64,15 +72,16 @@ const StartScreen = ({ navigation }) => {
                     >
                         Login
                     </Text>
+                    <MaterialIcons
+                        name="arrow-forward-ios"
+                        size={22}
+                        color="#fff"
+                    />
                 </View>
-                <MaterialIcons
-                    name="arrow-forward-ios"
-                    size={22}
-                    color="#fff"
-                />
             </TouchableOpacity>
             <TouchableOpacity
                 style={{
+                    zIndex: 1,
                     backgroundColor: "#3777f0",
                     padding: 20,
                     width: "90%",
@@ -83,7 +92,14 @@ const StartScreen = ({ navigation }) => {
                 }}
                 onPress={() => navigation.navigate("Register")}
             >
-                <View>
+                <View
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        width: "100%",
+                        justifyContent: "space-between",
+                    }}
+                >
                     <Text
                         style={{
                             color: "white",
@@ -95,12 +111,13 @@ const StartScreen = ({ navigation }) => {
                     >
                         Register
                     </Text>
+
+                    <MaterialIcons
+                        name="arrow-forward-ios"
+                        size={22}
+                        color="#fff"
+                    />
                 </View>
-                <MaterialIcons
-                    name="arrow-forward-ios"
-                    size={22}
-                    color="#fff"
-                />
             </TouchableOpacity>
         </SafeAreaView>
     )

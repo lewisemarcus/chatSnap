@@ -110,10 +110,30 @@ const LoginScreen = ({ navigation }) => {
                             paddingVertical: 10,
                         }}
                     >
-                        <Image
-                            source={GoogleSVG}
-                            style={{ width: 24, height: 24 }}
-                        />
+                        <View>
+                            <Image
+                                source={GoogleSVG}
+                                style={{ width: 24, height: 24 }}
+                            />
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        onPress={() => {}}
+                        style={{
+                            borderColor: "#ddd",
+                            borderWidth: 2,
+                            borderRadius: 10,
+                            paddingHorizontal: 30,
+                            paddingVertical: 10,
+                        }}
+                    >
+                        <View>
+                            <Image
+                                source={FacebookSVG}
+                                style={{ width: 24, height: 24 }}
+                            />
+                        </View>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => {}}
@@ -125,25 +145,12 @@ const LoginScreen = ({ navigation }) => {
                             paddingVertical: 10,
                         }}
                     >
-                        <Image
-                            source={FacebookSVG}
-                            style={{ width: 24, height: 24 }}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => {}}
-                        style={{
-                            borderColor: "#ddd",
-                            borderWidth: 2,
-                            borderRadius: 10,
-                            paddingHorizontal: 30,
-                            paddingVertical: 10,
-                        }}
-                    >
-                        <Image
-                            source={TwitterSVG}
-                            style={{ width: 24, height: 24 }}
-                        />
+                        <View>
+                            <Image
+                                source={TwitterSVG}
+                                style={{ width: 24, height: 24 }}
+                            />
+                        </View>
                     </TouchableOpacity>
                 </View>
 
@@ -158,9 +165,13 @@ const LoginScreen = ({ navigation }) => {
                     <TouchableOpacity
                         onPress={() => navigation.navigate("Register")}
                     >
-                        <Text style={{ color: "#3777f0", fontWeight: "700" }}>
-                            Register
-                        </Text>
+                        <View>
+                            <Text
+                                style={{ color: "#3777f0", fontWeight: "700" }}
+                            >
+                                Register
+                            </Text>
+                        </View>
                     </TouchableOpacity>
                 </View>
             </View>
