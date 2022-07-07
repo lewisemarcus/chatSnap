@@ -4,6 +4,7 @@ import axios from "axios"
 // for prod/dev:and
 // const config = { timeout: 5000, baseURL: "http://143.198.237.213:5000" }
 // const instance = axios.create(config)
+import navigation from "../../../messageApp/android/app/build/intermediates/navigation_json/debug/navigation.json"
 
 //for dev
 const config = { timeout: 5000, baseURL: "http://127.0.0.1:5000" }
@@ -27,7 +28,7 @@ export const AuthProvider = ({ children }) => {
                 password.length > 0 &&
                 password === passwordConfirm
             ) {
-                const registerUser = await instance.post("register", {
+                const registerUser = await instance.post("Register", {
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
@@ -36,11 +37,12 @@ export const AuthProvider = ({ children }) => {
                     },
                     body: { name, email, password },
                 })
-                const token = await registerUser.data
-                setToken(token)
-                AsyncStorage.setItem("token", token)
-
-                setIsLoading(false)
+                if (registerUser.data) {
+                    const token = await registerUser.data
+                    setToken(token)
+                    AsyncStorage.setItem("token", token)
+                    setIsLoading(false)
+                } else setIsLoading(false)
             }
         } catch (err) {
             setIsLoading(false)
@@ -67,9 +69,10 @@ export const AuthProvider = ({ children }) => {
 
     const isLoggedIn = async () => {
         try {
+            console.log("hi")
             setIsLoading(true)
             let userToken = AsyncStorage.getItem("token")
-            setToken(userToken)
+            if (typeof userToken == "string") setToken(userToken)
             setIsLoading(false)
         } catch (err) {
             console.warn(`IsLoggedIn error: ${err}`)
