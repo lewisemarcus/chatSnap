@@ -67,7 +67,6 @@ export const AuthProvider = ({ children }) => {
                     body: { email, password },
                 })
                 if (loginUser.data) {
-                    console.log("hi", loginUser.data)
                     const token = loginUser.data[0]
                     const userInfo = loginUser.data[1]
                     setUser(userInfo)
