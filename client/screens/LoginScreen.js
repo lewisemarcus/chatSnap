@@ -15,7 +15,6 @@ import LoginSVG from "../assets/images/login.svg"
 import GoogleSVG from "../assets/images/google.svg"
 import FacebookSVG from "../assets/images/facebook.svg"
 import TwitterSVG from "../assets/images/twitter.svg"
-
 import CustomButton from "../components/CustomButton"
 import InputField from "../components/InputField"
 import { AuthContext } from "../context/AuthContext"

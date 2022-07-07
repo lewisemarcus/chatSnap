@@ -6,7 +6,7 @@ import {
     DarkTheme,
 } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import React, { useContext } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import {
     Text,
     Image,
@@ -30,16 +30,6 @@ import LinkingConfiguration from "./LinkingConfiguration"
  * https://reactnavigation.org/docs/modal
  */
 const Stack = createNativeStackNavigator()
-
-const AuthNavigator = () => {
-    return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Start" component={StartScreen} />
-            <Stack.Screen name="Register" component={RegisterScreen} />
-            <Stack.Screen name="Login" component={LoginScreen} />
-        </Stack.Navigator>
-    )
-}
 
 const RootNavigator = () => {
     return (
@@ -167,6 +157,16 @@ const ChatRoomHeader = (props) => {
     )
 }
 
+const AuthNavigator = () => {
+    return (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Start" component={StartScreen} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+        </Stack.Navigator>
+    )
+}
+
 export default function Navigation({ colorScheme }) {
     const { isLoading, token } = useContext(AuthContext)
 
@@ -186,13 +186,13 @@ export default function Navigation({ colorScheme }) {
     }
     return (
         <NavigationContainer
-            linking={LinkingConfiguration}
             // TODO: for prod
             // theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
             // white for dev
             theme={colorScheme === "dark" ? DefaultTheme : DefaultTheme}
         >
-            {token !== null ? <RootNavigator /> : <AuthNavigator />}
+            {console.log(token)}
+            {!token ? <AuthNavigator /> : <RootNavigator />}
         </NavigationContainer>
     )
 }
