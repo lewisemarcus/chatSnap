@@ -1,9 +1,104 @@
-import React, { createContext, useState } from "react"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import React, { createContext, useState, useEffect } from "react"
+import axios from "axios"
+// for prod/dev:and
+// const config = { timeout: 5000, baseURL: "http://143.198.237.213:5000" }
+// const instance = axios.create(config)
+
+//for dev
+const config = { timeout: 5000, baseURL: "http://127.0.0.1:5000" }
+const instance = axios.create(config)
 
 export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
-    const [test, setTest] = useState("Test value")
+    const [isLoading, setIsLoading] = useState(false)
+    const [token, setToken] = useState(null)
+    const [name, setName] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [passwordConfirm, setPasswordConfirm] = useState("")
+    const register = async () => {
+        try {
+            setIsLoading(true)
+            if (
+                name.length > 0 &&
+                email.length > 0 &&
+                password.length > 0 &&
+                password === passwordConfirm
+            ) {
+                const registerUser = await instance.post("register", {
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        "Access-Control-Allow-Origin": true,
+                        "Access-Control-Allow-Credentials": true,
+                    },
+                    body: { name, email, password },
+                })
+                const token = await registerUser.data
+                setToken(token)
+                AsyncStorage.setItem("token", token)
 
-    return <AuthContext.Provider value={test}>{children}</AuthContext.Provider>
+                setIsLoading(false)
+            }
+        } catch (err) {
+            setIsLoading(false)
+            console.warn("Error adding user:", err)
+        }
+    }
+
+    const login = async () => {
+        try {
+            setIsLoading(true)
+            setToken("some token")
+            AsyncStorage.setItem("token", "some token")
+            setIsLoading(false)
+        } catch (err) {
+            console.warn("Error logging in:", err)
+        }
+    }
+    const logout = async () => {
+        setIsLoading(true)
+        setToken(null)
+        AsyncStorage.removeItem("token")
+        setIsLoading(false)
+    }
+
+    const isLoggedIn = async () => {
+        try {
+            setIsLoading(true)
+            let userToken = AsyncStorage.getItem("token")
+            setToken(userToken)
+            setIsLoading(false)
+        } catch (err) {
+            console.warn(`IsLoggedIn error: ${err}`)
+        }
+    }
+
+    useEffect(() => {
+        isLoggedIn()
+    }, [])
+
+    return (
+        <AuthContext.Provider
+            value={{
+                login,
+                logout,
+                register,
+                isLoading,
+                token,
+                setName,
+                setEmail,
+                setPassword,
+                name,
+                email,
+                password,
+                passwordConfirm,
+                setPasswordConfirm,
+            }}
+        >
+            {children}
+        </AuthContext.Provider>
+    )
 }

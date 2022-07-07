@@ -1,13 +1,19 @@
 import { FontAwesome, Feather } from "@expo/vector-icons"
-
+import { AuthContext } from "../context/AuthContext"
 import {
     NavigationContainer,
     DefaultTheme,
     DarkTheme,
 } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import * as React from "react"
-import { Text, Image, View, useWindowDimensions } from "react-native"
+import React, { useContext } from "react"
+import {
+    Text,
+    Image,
+    View,
+    useWindowDimensions,
+    ActivityIndicator,
+} from "react-native"
 import {
     ChatRoomScreen,
     ModalScreen,
@@ -19,22 +25,6 @@ import {
 } from "../screens/index"
 import LinkingConfiguration from "./LinkingConfiguration"
 
-export default function Navigation({ colorScheme }) {
-    const user = null
-
-    return (
-        <NavigationContainer
-            linking={LinkingConfiguration}
-            // for prod
-            // theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-            // white for dev
-            theme={colorScheme === "dark" ? DefaultTheme : DefaultTheme}
-        >
-            {user ? <RootNavigator /> : <AuthNavigator />}
-        </NavigationContainer>
-    )
-}
-
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
@@ -45,8 +35,8 @@ const AuthNavigator = () => {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Start" component={StartScreen} />
-            <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
         </Stack.Navigator>
     )
 }
@@ -78,6 +68,7 @@ const RootNavigator = () => {
 }
 
 const HomeHeader = (props) => {
+    const { logout } = useContext(AuthContext)
     const { width } = useWindowDimensions()
     return (
         <View
@@ -101,6 +92,8 @@ const HomeHeader = (props) => {
                     borderRadius: 30,
                     marginLeft: -20,
                 }}
+                //TODO: improve logout function
+                onClick={logout}
             />
             <Text
                 style={{
@@ -171,5 +164,35 @@ const ChatRoomHeader = (props) => {
                 style={{ marginRight: 50 }}
             />
         </View>
+    )
+}
+
+export default function Navigation({ colorScheme }) {
+    const { isLoading, token } = useContext(AuthContext)
+
+    //TODO: set loading feature
+    if (isLoading) {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
+            >
+                <ActivityIndicator size={"large"} />
+            </View>
+        )
+    }
+    return (
+        <NavigationContainer
+            linking={LinkingConfiguration}
+            // TODO: for prod
+            // theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+            // white for dev
+            theme={colorScheme === "dark" ? DefaultTheme : DefaultTheme}
+        >
+            {token !== null ? <RootNavigator /> : <AuthNavigator />}
+        </NavigationContainer>
     )
 }

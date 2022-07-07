@@ -7,11 +7,11 @@ import { Logs } from "expo"
 
 Logs.enableExpoCliLogging()
 // for prod/dev:and
-// const config = { timeout: 1500, baseURL: "http://143.198.237.213:5000" }
+// const config = { timeout: 10000, baseURL: "http://143.198.237.213:5000" }
 // const instance = axios.create(config)
 
 //for dev
-const config = { timeout: 1500, baseURL: "http://127.0.0.1:5000" }
+const config = { timeout: 10000, baseURL: "http://127.0.0.1:5000" }
 const instance = axios.create(config)
 
 export default function Home() {

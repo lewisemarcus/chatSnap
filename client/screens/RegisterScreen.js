@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import {
     SafeAreaView,
     ScrollView,
@@ -12,21 +12,20 @@ import {
 //import DatePicker from "react-native-date-picker"
 
 import InputField from "../components/InputField"
-
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import Ionicons from "react-native-vector-icons/Ionicons"
-
 import RegistrationSVG from "../assets/images/login.svg"
 import GoogleSVG from "../assets/images/google.svg"
 import FacebookSVG from "../assets/images/facebook.svg"
 import TwitterSVG from "../assets/images/twitter.svg"
 import CustomButton from "../components/CustomButton"
+import { AuthContext } from "../context/AuthContext"
 
 const RegisterScreen = ({ navigation }) => {
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
     const [dobLabel, setDobLabel] = useState("Date of Birth")
-
+    const { register } = useContext(AuthContext)
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
             <ScrollView
@@ -133,7 +132,7 @@ const RegisterScreen = ({ navigation }) => {
                 />
 
                 <InputField
-                    label={"Email ID"}
+                    label={"Email"}
                     icon={
                         <MaterialIcons
                             name="alternate-email"
@@ -168,7 +167,7 @@ const RegisterScreen = ({ navigation }) => {
                             style={{ marginRight: 5 }}
                         />
                     }
-                    inputType="password"
+                    inputType="passwordConfirm"
                 />
 
                 <View
@@ -216,7 +215,7 @@ const RegisterScreen = ({ navigation }) => {
                     }}
                 /> */}
 
-                <CustomButton label={"Register"} onPress={() => {}} />
+                <CustomButton label={"Register"} onPress={() => register()} />
 
                 <View
                     style={{
@@ -226,7 +225,9 @@ const RegisterScreen = ({ navigation }) => {
                     }}
                 >
                     <Text>Already registered?</Text>
-                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("Login")}
+                    >
                         <Text style={{ color: "#3777f0", fontWeight: "700" }}>
                             Login
                         </Text>

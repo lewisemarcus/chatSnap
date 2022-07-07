@@ -14,12 +14,12 @@ export default function App() {
         return null
     } else {
         return (
-            <AuthProvider>
-                <SafeAreaProvider>
+            <SafeAreaProvider>
+                <AuthProvider>
                     <Navigation colorScheme={colorScheme} />
                     <StatusBar />
-                </SafeAreaProvider>
-            </AuthProvider>
+                </AuthProvider>
+            </SafeAreaProvider>
         )
     }
 }

@@ -52,17 +52,19 @@ const StartScreen = ({ navigation }) => {
                 }}
                 onPress={() => navigation.navigate("Login")}
             >
-                <Text
-                    style={{
-                        color: "white",
-                        fontSize: 18,
-                        textAlign: "center",
-                        fontWeight: "bold",
-                        fontFamily: "Roboto-MediumItalic",
-                    }}
-                >
-                    Login
-                </Text>
+                <View>
+                    <Text
+                        style={{
+                            color: "white",
+                            fontSize: 18,
+                            textAlign: "center",
+                            fontWeight: "bold",
+                            fontFamily: "Roboto-MediumItalic",
+                        }}
+                    >
+                        Login
+                    </Text>
+                </View>
                 <MaterialIcons
                     name="arrow-forward-ios"
                     size={22}
@@ -81,17 +83,19 @@ const StartScreen = ({ navigation }) => {
                 }}
                 onPress={() => navigation.navigate("Register")}
             >
-                <Text
-                    style={{
-                        color: "white",
-                        fontSize: 18,
-                        textAlign: "center",
-                        fontWeight: "bold",
-                        fontFamily: "Roboto-MediumItalic",
-                    }}
-                >
-                    Register
-                </Text>
+                <View>
+                    <Text
+                        style={{
+                            color: "white",
+                            fontSize: 18,
+                            textAlign: "center",
+                            fontWeight: "bold",
+                            fontFamily: "Roboto-MediumItalic",
+                        }}
+                    >
+                        Register
+                    </Text>
+                </View>
                 <MaterialIcons
                     name="arrow-forward-ios"
                     size={22}
