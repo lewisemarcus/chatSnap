@@ -186,15 +186,17 @@ const RegisterScreen = ({ navigation }) => {
                         style={{ marginRight: 5 }}
                     />
                     <TouchableOpacity onPress={() => setOpen(true)}>
-                        <Text
-                            style={{
-                                color: "#666",
-                                marginLeft: 5,
-                                marginTop: 5,
-                            }}
-                        >
-                            {dobLabel}
-                        </Text>
+                        <View>
+                            <Text
+                                style={{
+                                    color: "#666",
+                                    marginLeft: 5,
+                                    marginTop: 5,
+                                }}
+                            >
+                                {dobLabel}
+                            </Text>
+                        </View>
                     </TouchableOpacity>
                 </View>
                 {/* TODO: make working date picker if we want DOB. */}
@@ -228,9 +230,13 @@ const RegisterScreen = ({ navigation }) => {
                     <TouchableOpacity
                         onPress={() => navigation.navigate("Login")}
                     >
-                        <Text style={{ color: "#3777f0", fontWeight: "700" }}>
-                            Login
-                        </Text>
+                        <View>
+                            <Text
+                                style={{ color: "#3777f0", fontWeight: "700" }}
+                            >
+                                Login
+                            </Text>
+                        </View>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

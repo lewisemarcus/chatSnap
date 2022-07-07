@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity } from "react-native"
+import { Text, TouchableOpacity, View } from "react-native"
 import React from "react"
 
 export default function CustomButton({ label, onPress }) {
@@ -12,16 +12,18 @@ export default function CustomButton({ label, onPress }) {
                 marginBottom: 30,
             }}
         >
-            <Text
-                style={{
-                    textAlign: "center",
-                    fontWeight: "700",
-                    fontSize: 16,
-                    color: "#fff",
-                }}
-            >
-                {label}
-            </Text>
+            <View>
+                <Text
+                    style={{
+                        textAlign: "center",
+                        fontWeight: "700",
+                        fontSize: 16,
+                        color: "#fff",
+                    }}
+                >
+                    {label}
+                </Text>
+            </View>
         </TouchableOpacity>
     )
 }

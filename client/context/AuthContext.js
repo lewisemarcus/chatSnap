@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [passwordConfirm, setPasswordConfirm] = useState("")
+    const [user, setUser] = useState({})
     const register = async () => {
         try {
             setIsLoading(true)
@@ -38,7 +39,9 @@ export const AuthProvider = ({ children }) => {
                     body: { name, email, password },
                 })
                 if (registerUser.data) {
-                    const token = await registerUser.data
+                    const token = registerUser.data[0]
+                    const userInfo = registerUser.data[1]
+                    setUser(userInfo)
                     setToken(token)
                     AsyncStorage.setItem("token", token)
                     setIsLoading(false)
@@ -53,10 +56,28 @@ export const AuthProvider = ({ children }) => {
     const login = async () => {
         try {
             setIsLoading(true)
-            setToken("some token")
-            AsyncStorage.setItem("token", "some token")
-            setIsLoading(false)
+            if (email.length > 0 && password.length > 0) {
+                const loginUser = await instance.post("Login", {
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        "Access-Control-Allow-Origin": true,
+                        "Access-Control-Allow-Credentials": true,
+                    },
+                    body: { email, password },
+                })
+                if (loginUser.data) {
+                    console.log(loginUser.data)
+                    const token = loginUser.data[0]
+                    const userInfo = loginUser.data[1]
+                    setUser(userInfo)
+                    setToken(token)
+                    AsyncStorage.setItem("token", token)
+                    setIsLoading(false)
+                } else setIsLoading(false)
+            }
         } catch (err) {
+            setIsLoading(false)
             console.warn("Error logging in:", err)
         }
     }

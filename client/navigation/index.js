@@ -191,7 +191,6 @@ export default function Navigation({ colorScheme }) {
             // white for dev
             theme={colorScheme === "dark" ? DefaultTheme : DefaultTheme}
         >
-            {console.log(token)}
             {!token ? <AuthNavigator /> : <RootNavigator />}
         </NavigationContainer>
     )

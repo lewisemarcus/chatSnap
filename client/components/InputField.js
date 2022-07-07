@@ -68,9 +68,11 @@ export default function InputField({
                 />
             )}
             <TouchableOpacity onPress={fieldButtonFunction}>
-                <Text style={{ color: "#3777f0", fontWeight: "700" }}>
-                    {fieldButtonLabel}
-                </Text>
+                <View>
+                    <Text style={{ color: "#3777f0", fontWeight: "700" }}>
+                        {fieldButtonLabel}
+                    </Text>
+                </View>
             </TouchableOpacity>
         </View>
     )
