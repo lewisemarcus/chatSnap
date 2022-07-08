@@ -1,6 +1,6 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { View, Text, TouchableOpacity, TextInput } from "react-native"
-import { AuthContext } from "../context/AuthContext"
+import { AuthContext } from "../../context/AuthContext"
 
 export default function InputField({
     label,

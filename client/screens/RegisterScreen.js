@@ -8,16 +8,15 @@ import {
     TouchableOpacity,
     Image,
 } from "react-native"
-
 //import DatePicker from "react-native-date-picker"
 
-import InputField from "../components/InputField"
+import InputField from "../components/Onboarding/InputField"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import Ionicons from "react-native-vector-icons/Ionicons"
-import RegistrationSVG from "../assets/images/login.svg"
-import GoogleSVG from "../assets/images/google.svg"
-import FacebookSVG from "../assets/images/facebook.svg"
-import TwitterSVG from "../assets/images/twitter.svg"
+import RegistrationSVG from "../assets/images/user.png"
+import GoogleSVG from "../assets/images/google.png"
+import FacebookSVG from "../assets/images/facebook.png"
+import TwitterSVG from "../assets/images/twitter.png"
 import CustomButton from "../components/CustomButton"
 import { AuthContext } from "../context/AuthContext"
 
@@ -36,9 +35,9 @@ const RegisterScreen = ({ navigation }) => {
                     <Image
                         source={RegistrationSVG}
                         style={{
-                            width: 300,
-                            height: 300,
-                            transform: [{ rotate: "-5deg" }],
+                            marginTop: 50,
+                            width: 200,
+                            height: 200,
                         }}
                     />
                 </View>
@@ -226,7 +225,7 @@ const RegisterScreen = ({ navigation }) => {
                         marginBottom: 30,
                     }}
                 >
-                    <Text>Already registered?</Text>
+                    <Text>Already registered? </Text>
                     <TouchableOpacity
                         onPress={() => navigation.navigate("Login")}
                     >
