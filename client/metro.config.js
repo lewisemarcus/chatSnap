@@ -1,3 +1,5 @@
+// Allows use of SVG as components
+
 const { getDefaultConfig } = require("metro-config")
 
 module.exports = (async () => {
