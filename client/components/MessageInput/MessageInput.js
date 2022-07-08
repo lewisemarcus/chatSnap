@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 import {
     View,
     Text,
@@ -8,6 +8,7 @@ import {
     KeyboardAvoidingView,
     Platform,
 } from "react-native"
+import { SocketContext } from "../../socket/SocketContext"
 import {
     SimpleLineIcons,
     Feather,
@@ -16,10 +17,7 @@ import {
 
 export default function MessageInput() {
     const [message, setMessage] = useState("")
-
-    const sendMessage = () => {
-        console.warn("sending:", message)
-    }
+    const { sendMessage } = useContext(SocketContext)
 
     const onPress = () => {
         if (message) {

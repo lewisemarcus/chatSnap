@@ -3,11 +3,13 @@ import React, { createContext, useState, useEffect } from "react"
 import { Alert } from "react-native"
 import axios from "axios"
 import Constants from "expo-constants"
+import { Platform } from "react-native"
 import { WEB_URL, AND_URL } from "@env"
 const { manifest } = Constants
-let uri
+export let uri
 // Checks if on web or on android/ios dev
-if (manifest.debuggerHost !== undefined) uri = AND_URL
+// if (manifest.debuggerHost !== undefined) uri = AND_URL
+if (Platform.OS === "ios" || Platform.OS === "android") uri = AND_URL
 else uri = WEB_URL
 
 const config = { timeout: 5000, baseURL: uri }

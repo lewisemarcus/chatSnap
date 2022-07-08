@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { AuthProvider } from "./context/AuthContext"
-
+import { SocketProvider } from "./socket/SocketContext"
 import useCachedResources from "./hooks/useCachedResources"
 import useColorScheme from "./hooks/useColorScheme"
 import Navigation from "./navigation"
@@ -16,8 +16,10 @@ export default function App() {
         return (
             <SafeAreaProvider>
                 <AuthProvider>
-                    <Navigation colorScheme={colorScheme} />
-                    <StatusBar />
+                    <SocketProvider>
+                        <Navigation colorScheme={colorScheme} />
+                        <StatusBar />
+                    </SocketProvider>
                 </AuthProvider>
             </SafeAreaProvider>
         )
