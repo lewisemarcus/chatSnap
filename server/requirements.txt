@@ -1,5 +1,6 @@
 flask==2.0.0
-pymongo
+flask-socketio
+gevent-websocket
 Flask-JWT-Extended
 python-dotenv
 flask-mongoengine
