@@ -19,17 +19,23 @@ HOST = os.getenv('HOST')
 SECRET = os.getenv('SECRET')
 app = Flask(__name__)
 
-CORS(app, support_credentials=True)
 app.config['MONGODB_SETTINGS'] = {'db': 'chatSnap', 'host': MONGO_URL }
 app.config["JWT_SECRET_KEY"]=SECRET
 app.config['CORS_HEADERS'] = 'Content-Type'
+
+CORS(app, supports_credentials=True, resources={
+    r'/*/*': {
+        'origins': '*',
+        'allow_headers': ['Content-Type', 'Authorization']
+    }})
+
 jwt = JWTManager(app)
 
 # init DB
 mongoDB = MongoEngine(app)
 
 # init socket
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins="*", logger=True)
 
 # routing 
 getUsers(app)

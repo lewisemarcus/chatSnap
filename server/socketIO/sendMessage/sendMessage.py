@@ -1,6 +1,10 @@
 def socketMessage(socketio, send):
     @socketio.on('message')
     def message(msg):
-        print(f"\n\n{msg}\n\n")
+        try:
+            print(f"\n\n{msg}\n\n")
         
-        send(msg)
+            send(msg)
+        except Exception as e:
+            print(f"\n\n{e}\n\n")
+            return jsonify(e), 500
