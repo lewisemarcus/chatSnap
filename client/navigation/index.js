@@ -13,6 +13,7 @@ import {
     View,
     useWindowDimensions,
     ActivityIndicator,
+    TouchableWithoutFeedback,
 } from "react-native"
 import {
     ChatRoomScreen,
@@ -72,19 +73,20 @@ const HomeHeader = (props) => {
                 alignItems: "center",
             }}
         >
-            <Image
-                source={{
-                    uri: "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png",
-                }}
-                style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: 30,
-                    marginLeft: -20,
-                }}
-                //TODO: improve logout function
-                onClick={logout}
-            />
+            {/* TODO: improve logout function */}
+            <TouchableWithoutFeedback onPress={logout}>
+                <Image
+                    source={{
+                        uri: "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png",
+                    }}
+                    style={{
+                        width: 30,
+                        height: 30,
+                        borderRadius: 30,
+                        marginLeft: -20,
+                    }}
+                />
+            </TouchableWithoutFeedback>
             <Text
                 style={{
                     flex: 1,
@@ -95,7 +97,6 @@ const HomeHeader = (props) => {
             >
                 Chatsnap
             </Text>
-
             <Feather
                 name="user-plus"
                 size={30}
