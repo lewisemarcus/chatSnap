@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
                 Alert.alert(
                     "Missing Credentials",
                     "Please enter all required credentials.",
-                    [{ text: "OK", onPress: () => noHandler() }],
+                    [{ text: "OK", onPress: noHandler }],
                 )
                 throw "Please enter all credentials."
             }
@@ -94,7 +94,15 @@ export const AuthProvider = ({ children }) => {
                 Alert.alert(
                     "Missing/Incorrect Credentials",
                     "Please enter the correct email and password.",
-                    [{ text: "OK", onPress: () => noHandler() }],
+                    [
+                        {
+                            text: "OK",
+                            onPress: () => {
+                                setEmail("")
+                                noHandler()
+                            },
+                        },
+                    ],
                 )
                 throw "Please enter an email and password."
             }

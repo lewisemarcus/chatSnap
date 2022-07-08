@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import {
     SafeAreaView,
     View,
@@ -10,17 +10,16 @@ import {
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import Ionicons from "react-native-vector-icons/Ionicons"
-
-import LoginSVG from "../assets/images/login.svg"
-import GoogleSVG from "../assets/images/google.svg"
-import FacebookSVG from "../assets/images/facebook.svg"
-import TwitterSVG from "../assets/images/twitter.svg"
+import LoginSVG from "../assets/images/user.png"
+import GoogleSVG from "../assets/images/google.png"
+import FacebookSVG from "../assets/images/facebook.png"
+import TwitterSVG from "../assets/images/twitter.png"
 import CustomButton from "../components/CustomButton"
-import InputField from "../components/InputField"
+import InputField from "../components/Onboarding/InputField"
 import { AuthContext } from "../context/AuthContext"
 
 const LoginScreen = ({ navigation }) => {
-    const { login } = useContext(AuthContext)
+    const { login, email } = useContext(AuthContext)
 
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
@@ -29,9 +28,8 @@ const LoginScreen = ({ navigation }) => {
                     <Image
                         source={LoginSVG}
                         style={{
-                            width: 300,
-                            height: 300,
-                            transform: [{ rotate: "-5deg" }],
+                            width: 200,
+                            height: 200,
                         }}
                     />
                 </View>
@@ -148,7 +146,10 @@ const LoginScreen = ({ navigation }) => {
                         <View>
                             <Image
                                 source={TwitterSVG}
-                                style={{ width: 24, height: 24 }}
+                                style={{
+                                    width: 24,
+                                    height: 24,
+                                }}
                             />
                         </View>
                     </TouchableOpacity>
@@ -161,7 +162,7 @@ const LoginScreen = ({ navigation }) => {
                         marginBottom: 30,
                     }}
                 >
-                    <Text>New to the app?</Text>
+                    <Text>New to the app? </Text>
                     <TouchableOpacity
                         onPress={() => navigation.navigate("Register")}
                     >

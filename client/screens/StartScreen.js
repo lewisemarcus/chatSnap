@@ -1,8 +1,7 @@
 import React from "react"
 import { SafeAreaView, View, Text, TouchableOpacity, Image } from "react-native"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
-import Phone from "../assets/images/phone.svg"
-
+import Phone from "../assets/images/phone.png"
 const StartScreen = ({ navigation }) => {
     return (
         <SafeAreaView
@@ -33,11 +32,11 @@ const StartScreen = ({ navigation }) => {
                 }}
             >
                 <Image
-                    style={{
-                        width: 200,
-                        height: 200,
-                    }}
                     source={Phone}
+                    style={{
+                        width: 300,
+                        height: 300,
+                    }}
                 />
             </View>
             <TouchableOpacity
