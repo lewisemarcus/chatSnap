@@ -61,7 +61,8 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 1,
-        marginHorizontal: 5,
+        marginLeft: 5,
+        marginRight: 3,
         width: "90%",
     },
     icon: {
@@ -81,10 +82,10 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         color: "white",
-        width: 50,
+        width: 80,
         height: 50,
         backgroundColor: "#3777f0",
-        borderRadius: 25,
+        borderRadius: 10,
         justifyContent: "center",
         alignItems: "center",
     },

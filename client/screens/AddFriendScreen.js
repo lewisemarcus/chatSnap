@@ -5,7 +5,7 @@ import SearchInput from "../components/AddFriendMenu/SearchInput"
 import { AuthContext } from "../context/AuthContext"
 let regex = new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}")
 export default function AddFriendScreen() {
-    const { instance, find, setFind } = useContext(AuthContext)
+    const { instance, find, setFind, user } = useContext(AuthContext)
     const addFriend = async () => {
         try {
             await instance.post("addFriend", {
@@ -13,7 +13,7 @@ export default function AddFriendScreen() {
                     Accept: "application/json",
                     "Content-Type": "application/json",
                 },
-                body: { email: find },
+                body: { user: user, contact: find },
             })
         } catch (err) {
             console.error(err, "Error getting users.")
@@ -37,7 +37,7 @@ export default function AddFriendScreen() {
                         borderRadius: 10,
                         marginBottom: 50,
                         flexDirection: "row",
-                        justifyContent: "space-between",
+                        justifyContent: "center",
                     }}
                     onPress={() => {
                         Alert.alert(
@@ -55,7 +55,7 @@ export default function AddFriendScreen() {
                             display: "flex",
                             flexDirection: "row",
                             width: "100%",
-                            justifyContent: "space-between",
+                            justifyContent: "center",
                         }}
                     >
                         <Text
@@ -82,22 +82,26 @@ export default function AddFriendScreen() {
                         borderRadius: 10,
                         marginBottom: 50,
                         flexDirection: "row",
-                        justifyContent: "space-between",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        textAlign: "center",
                     }}
                 >
                     <View
                         style={{
+                            textAlign: "center",
+                            alignItems: "center",
                             display: "flex",
                             flexDirection: "row",
                             width: "100%",
-                            justifyContent: "space-between",
+                            justifyContent: "center",
                         }}
                     >
                         <Text
                             style={{
                                 color: "white",
                                 fontSize: 18,
-                                textAlign: "center",
+                                alignItems: "center",
                                 fontWeight: "bold",
                                 fontFamily: "Roboto-MediumItalic",
                             }}

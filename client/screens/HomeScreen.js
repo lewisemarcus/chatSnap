@@ -1,13 +1,13 @@
 import { StyleSheet, Text, View, FlatList } from "react-native"
 import { useContext, useEffect, useState } from "react"
-import axios from "axios"
+
 import ChatRoomItem from "../components/ChatRoomItem/ChatRoomItem"
 import chatRoomsData from "../assets/dummy-data/ChatRooms"
 import { AuthContext } from "../context/AuthContext"
 
 export default function Home() {
     const [users, setUsers] = useState([])
-
+    const { instance } = useContext(AuthContext)
     useEffect(() => {
         //TODO: replace below with getFriends query
         // const getUsers = async () => {
