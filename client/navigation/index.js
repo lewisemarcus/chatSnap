@@ -23,9 +23,11 @@ import {
     HomeScreen,
     LoginScreen,
     RegisterScreen,
+    AddFriendScreen,
 } from "../screens/index"
 import LinkingConfiguration from "./LinkingConfiguration"
-
+import { SocketContext } from "../socket/SocketContext"
+import { useNavigation } from "@react-navigation/core"
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
@@ -47,6 +49,11 @@ const RootNavigator = () => {
                 options={{ headerTitle: ChatRoomHeader }}
             />
             <Stack.Screen
+                name="Add A Friend"
+                component={AddFriendScreen}
+                options={{ headerShown: true }}
+            />
+            <Stack.Screen
                 name="NotFound"
                 component={NotFoundScreen}
                 options={{ title: "Oops!" }}
@@ -60,7 +67,12 @@ const RootNavigator = () => {
 
 const HomeHeader = (props) => {
     const { logout } = useContext(AuthContext)
+    const { addFriend } = useContext(SocketContext)
     const { width } = useWindowDimensions()
+    const navigation = useNavigation()
+    const addFriendHandler = () => {
+        navigation.navigate("Add A Friend")
+    }
     return (
         <View
             style={{
@@ -97,12 +109,14 @@ const HomeHeader = (props) => {
             >
                 Chatsnap
             </Text>
-            <Feather
-                name="user-plus"
-                size={30}
-                color="black"
-                style={{ marginHorizontal: 10 }}
-            />
+            <TouchableWithoutFeedback onPress={addFriendHandler}>
+                <Feather
+                    name="user-plus"
+                    size={30}
+                    color="black"
+                    style={{ marginHorizontal: 10 }}
+                />
+            </TouchableWithoutFeedback>
             <Feather
                 name="menu"
                 size={30}
@@ -145,11 +159,11 @@ const ChatRoomHeader = (props) => {
                     marginRight: 30,
                 }}
             >
-                Chatsnap
+                Chats
             </Text>
 
             <Feather
-                name="user-plus"
+                name="menu"
                 size={30}
                 color="black"
                 style={{ marginRight: 50 }}

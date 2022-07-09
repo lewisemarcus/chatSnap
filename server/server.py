@@ -4,12 +4,12 @@ from dotenv import load_dotenv
 from flask_mongoengine import MongoEngine
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-from flask_socketio import SocketIO, send
+from flask_socketio import SocketIO,  emit
 from socketIO.sendMessage.sendMessage import socketMessage
-from routes.userRoutes.getUsers import getUsers
+from routes.userRoutes.addFriend import addAFriend
 from routes.onboardingRoutes.register import register
 from routes.onboardingRoutes.login import login
-
+from routes.userRoutes.findUser import findUser
 load_dotenv()
 
 DEBUG = os.getenv('DEBUG')
@@ -38,12 +38,13 @@ mongoDB = MongoEngine(app)
 socketio = SocketIO(app, cors_allowed_origins="*", logger=True)
 
 # routing 
-getUsers(app)
+addAFriend(app)
 register(app)
 login(app)
+findUser(app)
 
 # socket routing
-socketMessage(socketio, send)
+socketMessage(socketio,  emit)
 
 if __name__ == "__main__":
     socketio.run(app, host=HOST, port=PORT, debug=DEBUG)
