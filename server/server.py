@@ -38,7 +38,7 @@ mongoDB = MongoEngine(app)
 socketio = SocketIO(app, cors_allowed_origins="*", logger=True)
 
 # routing 
-addAFriend(app)
+addAFriend(app, emit)
 register(app)
 login(app)
 findUser(app)

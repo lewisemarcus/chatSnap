@@ -7,6 +7,7 @@ import TabTwoScreen from "./TabTwoScreen"
 import LoginScreen from "./LoginScreen"
 import RegisterScreen from "./RegisterScreen"
 import AddFriendScreen from "./AddFriendScreen"
+import MenuScreen from "./MenuScreen"
 export {
     ChatRoomScreen,
     ModalScreen,
@@ -17,4 +18,5 @@ export {
     LoginScreen,
     RegisterScreen,
     AddFriendScreen,
+    MenuScreen,
 }

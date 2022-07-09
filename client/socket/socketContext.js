@@ -1,6 +1,6 @@
 import { io } from "socket.io-client"
-import { createContext, useEffect } from "react"
-import { uri } from "../context/AuthContext"
+import { createContext, useContext, useEffect } from "react"
+import { AuthContext, uri } from "../context/AuthContext"
 
 export const SocketContext = createContext()
 
@@ -10,12 +10,17 @@ const socket = io(uri, {
 })
 
 export const SocketProvider = ({ children }) => {
+    const { setUser } = useContext(AuthContext)
     socket.on("connect", () => {
         try {
             socket.send("connected")
         } catch (err) {
             console.log("CONNECTION ERROR: ", err)
         }
+    })
+
+    socket.on("request-received", (userData) => {
+        setUser(JSON.parse(userData))
     })
 
     socket.on("message-event", (data) => {

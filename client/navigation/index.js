@@ -24,6 +24,7 @@ import {
     LoginScreen,
     RegisterScreen,
     AddFriendScreen,
+    MenuScreen,
 } from "../screens/index"
 import LinkingConfiguration from "./LinkingConfiguration"
 import { SocketContext } from "../socket/SocketContext"
@@ -54,6 +55,21 @@ const RootNavigator = () => {
                 options={{ headerShown: true }}
             />
             <Stack.Screen
+                name="Menu"
+                component={MenuScreen}
+                options={{ headerShown: true }}
+            />
+            <Stack.Screen
+                name="Friend Requests"
+                component={MenuScreen}
+                options={{ headerShown: true }}
+            />
+            <Stack.Screen
+                name="Settings"
+                component={MenuScreen}
+                options={{ headerShown: true }}
+            />
+            <Stack.Screen
                 name="NotFound"
                 component={NotFoundScreen}
                 options={{ title: "Oops!" }}
@@ -72,6 +88,9 @@ const HomeHeader = (props) => {
     const navigation = useNavigation()
     const addFriendHandler = () => {
         navigation.navigate("Add A Friend")
+    }
+    const menuHandler = () => {
+        navigation.navigate("Menu")
     }
     return (
         <View
@@ -118,6 +137,7 @@ const HomeHeader = (props) => {
                 />
             </TouchableWithoutFeedback>
             <Feather
+                onPress={menuHandler}
                 name="menu"
                 size={30}
                 color="black"

@@ -143,7 +143,6 @@ export const AuthProvider = ({ children }) => {
             setToken(userToken)
             setName(username)
             setUser(JSON.parse(userInfo))
-
             setIsLoading(false)
         } catch (err) {
             console.warn(`IsLoggedIn error: ${err}`)
@@ -151,6 +150,12 @@ export const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
+        if (Object.keys(user).length !== 0)
+            AsyncStorage.setItem("user", JSON.stringify(user))
+    }, [user])
+
+    useEffect(() => {
+        console.log(user)
         isLoggedIn()
     }, [])
 
