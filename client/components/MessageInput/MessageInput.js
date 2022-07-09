@@ -14,15 +14,17 @@ import {
     Feather,
     MaterialCommunityIcons,
 } from "@expo/vector-icons"
+import { AuthContext } from "../../context/AuthContext"
 
-export default function MessageInput() {
+export default function MessageInput({ receiver }) {
     const [message, setMessage] = useState("")
     const { sendMessage } = useContext(SocketContext)
-
+    const { user } = useContext(AuthContext)
     const onPress = () => {
         if (message) {
-            sendMessage()
+            sendMessage({ user, receiver, message })
         }
+        setMessage("")
     }
 
     return (

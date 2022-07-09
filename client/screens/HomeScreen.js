@@ -1,39 +1,31 @@
 import { StyleSheet, Text, View, FlatList } from "react-native"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import axios from "axios"
 import ChatRoomItem from "../components/ChatRoomItem/ChatRoomItem"
 import chatRoomsData from "../assets/dummy-data/ChatRooms"
-import { Logs } from "expo"
-
-Logs.enableExpoCliLogging()
-// for prod/dev:and
-// const config = { timeout: 10000, baseURL: "http://143.198.237.213:5000" }
-// const instance = axios.create(config)
-
-//for dev
-const config = { timeout: 10000, baseURL: "http://127.0.0.1:5000" }
-const instance = axios.create(config)
+import { AuthContext } from "../context/AuthContext"
 
 export default function Home() {
     const [users, setUsers] = useState([])
 
     useEffect(() => {
-        const getUsers = async () => {
-            try {
-                const userData = await instance("users", {
-                    headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                    },
-                })
-                const userList = userData.data
-                console.log(userList)
-                setUsers(userList)
-            } catch (err) {
-                console.error(err, "Error getting users.")
-            }
-        }
-        getUsers()
+        //TODO: replace below with getFriends query
+        // const getUsers = async () => {
+        //     try {
+        //         const userData = await instance("users", {
+        //             headers: {
+        //                 Accept: "application/json",
+        //                 "Content-Type": "application/json",
+        //             },
+        //         })
+        //         const userList = userData.data
+        //         console.log(userList)
+        //         setUsers(userList)
+        //     } catch (err) {
+        //         console.error(err, "Error getting users.")
+        //     }
+        // }
+        // getUsers()
     }, [])
 
     return (

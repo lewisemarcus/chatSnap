@@ -6,6 +6,11 @@ import Constants from "expo-constants"
 import { Platform } from "react-native"
 import { WEB_URL, AND_URL } from "@env"
 const { manifest } = Constants
+
+import { Logs } from "expo"
+
+Logs.enableExpoCliLogging()
+
 export let uri
 // Checks if on web or on android/ios dev
 // if (manifest.debuggerHost !== undefined) uri = AND_URL
@@ -19,6 +24,8 @@ export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false)
+    const [find, setFind] = useState("Search for users.")
+    const [users, setUsers] = useState([])
     const [token, setToken] = useState(null)
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
@@ -56,6 +63,8 @@ export const AuthProvider = ({ children }) => {
                     setUser(userInfo)
                     setToken(token)
                     AsyncStorage.setItem("token", token)
+                    AsyncStorage.setItem("name", userInfo.name)
+                    AsyncStorage.setItem("user", JSON.stringify(userInfo))
                     setIsLoading(false)
                 } else setIsLoading(false)
             } else {
@@ -91,6 +100,8 @@ export const AuthProvider = ({ children }) => {
                     setUser(userInfo)
                     setToken(token)
                     AsyncStorage.setItem("token", token)
+                    AsyncStorage.setItem("name", userInfo.name)
+                    AsyncStorage.setItem("user", JSON.stringify(userInfo))
                     setIsLoading(false)
                 } else setIsLoading(false)
             } else {
@@ -118,15 +129,21 @@ export const AuthProvider = ({ children }) => {
         setIsLoading(true)
         setToken(null)
         AsyncStorage.removeItem("token")
+        AsyncStorage.removeItem("name")
+        AsyncStorage.removeItem("user")
         setIsLoading(false)
     }
 
     const isLoggedIn = async () => {
         try {
             setIsLoading(true)
-            let userToken = AsyncStorage.getItem("token")
-            if (typeof userToken == "object") setToken(await userToken)
-            if (typeof userToken == "string") setToken(userToken)
+            let userToken = await AsyncStorage.getItem("token")
+            let username = await AsyncStorage.getItem("name")
+            let userInfo = await AsyncStorage.getItem("user")
+            setToken(userToken)
+            setName(username)
+            setUser(JSON.parse(userInfo))
+
             setIsLoading(false)
         } catch (err) {
             console.warn(`IsLoggedIn error: ${err}`)
@@ -140,6 +157,10 @@ export const AuthProvider = ({ children }) => {
     return (
         <AuthContext.Provider
             value={{
+                users,
+                find,
+                setFind,
+                setUsers,
                 login,
                 logout,
                 register,
@@ -153,6 +174,8 @@ export const AuthProvider = ({ children }) => {
                 password,
                 passwordConfirm,
                 setPasswordConfirm,
+                user,
+                instance,
             }}
         >
             {children}

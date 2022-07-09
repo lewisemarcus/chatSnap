@@ -12,16 +12,27 @@ const socket = io(uri, {
 export const SocketProvider = ({ children }) => {
     socket.on("connect", () => {
         try {
-            console.log("connected")
+            socket.send("connected")
         } catch (err) {
-            console.log("ERROR: ", err)
+            console.log("CONNECTION ERROR: ", err)
         }
     })
 
-    const sendMessage = () => {
-        socket.on("message", (msg) => {
-            console.log("message  sent: ", msg)
-        })
+    socket.on("message-event", (data) => {
+        try {
+            console.log(data)
+        } catch (err) {
+            console.log("MESSAGE EVENT ERROR: ", err)
+        }
+    })
+
+    const sendMessage = (content) => {
+        try {
+            console.log("Content", content)
+        } catch (err) {
+            console.log("SEND MESSAGE ERROR: ", err)
+        }
+        socket.emit("message-event", JSON.stringify(content))
     }
     return (
         <SocketContext.Provider value={{ socket, sendMessage }}>
