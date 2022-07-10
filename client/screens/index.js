@@ -8,6 +8,7 @@ import LoginScreen from "./LoginScreen"
 import RegisterScreen from "./RegisterScreen"
 import AddFriendScreen from "./AddFriendScreen"
 import MenuScreen from "./MenuScreen"
+import FriendRequestScreen from "./FriendRequestScreen"
 export {
     ChatRoomScreen,
     ModalScreen,
@@ -19,4 +20,5 @@ export {
     RegisterScreen,
     AddFriendScreen,
     MenuScreen,
+    FriendRequestScreen,
 }

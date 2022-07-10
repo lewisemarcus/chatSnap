@@ -3,7 +3,7 @@ import { useState, useContext } from "react"
 
 import SearchInput from "../components/AddFriendMenu/SearchInput"
 import { AuthContext } from "../context/AuthContext"
-let regex = new RegExp("[a-zA-Z0-9]+@[a-z]+.[a-z]{2,3}")
+const regex = new RegExp("[a-zA-Z0-9]+@[a-z]+.[a-z]{2,3}")
 export default function AddFriendScreen() {
     const { instance, find, setFind, user } = useContext(AuthContext)
     const addFriend = async () => {
@@ -25,7 +25,7 @@ export default function AddFriendScreen() {
     const noHandler = () => {
         setFind("Search for users.")
     }
-    console.log(find)
+
     return (
         <View style={styles.container}>
             <SearchInput />
@@ -42,11 +42,16 @@ export default function AddFriendScreen() {
                         justifyContent: "center",
                     }}
                     onPress={() => {
-                        console.log(user)
                         if (user.sentRequests.includes(find.email)) {
                             Alert.alert(
                                 "Already Sent",
-                                `A friend request was already sent to ${find.email}?`,
+                                `A friend request was already sent to ${find.email}.`,
+                                [{ text: "OK", onPress: noHandler }],
+                            )
+                        } else if (user.requests.includes(find.email)) {
+                            Alert.alert(
+                                "Already Received",
+                                `You've already received a request from ${find.email}.`,
                                 [{ text: "OK", onPress: noHandler }],
                             )
                         } else {

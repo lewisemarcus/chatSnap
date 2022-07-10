@@ -1,4 +1,5 @@
 import os
+from routes.userRoutes.acceptFriend import acceptAFriend
 from flask import Flask, jsonify
 from dotenv import load_dotenv
 from flask_mongoengine import MongoEngine
@@ -39,6 +40,7 @@ socketio = SocketIO(app, cors_allowed_origins="*", logger=True)
 
 # routing 
 addAFriend(app, socketio)
+acceptAFriend(app, socketio)
 register(app)
 login(app)
 findUser(app)

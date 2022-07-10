@@ -25,6 +25,7 @@ import {
     RegisterScreen,
     AddFriendScreen,
     MenuScreen,
+    FriendRequestScreen,
 } from "../screens/index"
 import LinkingConfiguration from "./LinkingConfiguration"
 import { SocketContext } from "../socket/SocketContext"
@@ -61,7 +62,7 @@ const RootNavigator = () => {
             />
             <Stack.Screen
                 name="Friend Requests"
-                component={MenuScreen}
+                component={FriendRequestScreen}
                 options={{ headerShown: true }}
             />
             <Stack.Screen
