@@ -3,7 +3,7 @@ import { useState, useContext } from "react"
 
 import SearchInput from "../components/AddFriendMenu/SearchInput"
 import { AuthContext } from "../context/AuthContext"
-let regex = new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}")
+let regex = new RegExp("[a-zA-Z0-9]+@[a-z]+.[a-z]{2,3}")
 export default function AddFriendScreen() {
     const { instance, find, setFind, user } = useContext(AuthContext)
     const addFriend = async () => {
@@ -15,15 +15,17 @@ export default function AddFriendScreen() {
                 },
                 body: { user: user, contact: find },
             })
+            setFind("Search for users.")
         } catch (err) {
             console.error(err, "Error getting users.")
+            setFind("Search for users.")
         }
     }
 
     const noHandler = () => {
         setFind("Search for users.")
     }
-
+    console.log(find)
     return (
         <View style={styles.container}>
             <SearchInput />
@@ -40,14 +42,23 @@ export default function AddFriendScreen() {
                         justifyContent: "center",
                     }}
                     onPress={() => {
-                        Alert.alert(
-                            "Send Request",
-                            `Would you like to send a friend request to ${find.email}?`,
-                            [
-                                { text: "YES", onPress: addFriend },
-                                { text: "NO", onPress: noHandler },
-                            ],
-                        )
+                        console.log(user)
+                        if (user.sentRequests.includes(find.email)) {
+                            Alert.alert(
+                                "Already Sent",
+                                `A friend request was already sent to ${find.email}?`,
+                                [{ text: "OK", onPress: noHandler }],
+                            )
+                        } else {
+                            Alert.alert(
+                                "Send Request",
+                                `Would you like to send a friend request to ${find.email}?`,
+                                [
+                                    { text: "YES", onPress: addFriend },
+                                    { text: "NO", onPress: noHandler },
+                                ],
+                            )
+                        }
                     }}
                 >
                     <View
@@ -59,7 +70,7 @@ export default function AddFriendScreen() {
                         }}
                     >
                         <Text
-                            id={find._id}
+                            id={find.email}
                             style={{
                                 color: "white",
                                 fontSize: 18,

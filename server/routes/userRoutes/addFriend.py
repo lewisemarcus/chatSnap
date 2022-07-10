@@ -3,7 +3,7 @@ from models.User import User
 from flask import jsonify, request
 from flask_cors import cross_origin
 
-def addAFriend(app, emit): 
+def addAFriend(app, socketio): 
     @app.route('/addFriend', methods=['POST'])
     @cross_origin()
     def addFriend():
@@ -11,17 +11,20 @@ def addAFriend(app, emit):
             keys = ['body']
             getRequest = itemgetter(*keys)
             values = getRequest(request.json)
-            user = User.objects(email=values['user']['email'])
-            newContact = User.objects(email=values['contact'])
+            userList = User.objects(email=values['user']['email'])
+            user= userList[0]
+            contactList = User.objects(email=values['contact']['email'])
+            newContact = contactList[0]
             if values['user']['email'] in newContact.requests:
                 return jsonify(error='Friend request already sent.'), 500
             else:  
                 newContact.requests.append(values['user']['email'])
-                user.sentRequests.append(values['contact'])
+                user.sentRequests.append(values['contact']['email'])
                 newContact.save()
                 user.save()
-                emit('request-received', jsonify(user))
+                socketio.emit('request-received', userList.to_json())
+                socketio.emit('request-sent', contactList.to_json())
                 return jsonify(friendAdded=user), 201
         except Exception as e:
             print("Error: ", e, flush=True)
-            return jsonify(e), 500
+            return e, 500

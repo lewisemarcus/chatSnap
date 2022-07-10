@@ -150,12 +150,12 @@ export const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        if (Object.keys(user).length !== 0)
-            AsyncStorage.setItem("user", JSON.stringify(user))
+        if (user != null)
+            if (Object.keys(user).length !== 0)
+                AsyncStorage.setItem("user", JSON.stringify(user))
     }, [user])
 
     useEffect(() => {
-        console.log(user)
         isLoggedIn()
     }, [])
 
@@ -171,6 +171,7 @@ export const AuthProvider = ({ children }) => {
                 register,
                 isLoading,
                 token,
+                setUser,
                 setName,
                 setEmail,
                 setPassword,

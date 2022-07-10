@@ -1,5 +1,4 @@
-import { StyleSheet, View, FlatList } from "react-native"
-import { useContext, useEffect, useState } from "react"
+import { StyleSheet, View, FlatList, Text } from "react-native"
 
 import MenuItem from "../components/MenuItem/MenuItem"
 const options = ["Friend Requests", "Settings"]

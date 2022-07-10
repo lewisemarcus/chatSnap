@@ -10,7 +10,7 @@ const socket = io(uri, {
 })
 
 export const SocketProvider = ({ children }) => {
-    const { setUser } = useContext(AuthContext)
+    const { setUser, user } = useContext(AuthContext)
     socket.on("connect", () => {
         try {
             socket.send("connected")
@@ -20,7 +20,13 @@ export const SocketProvider = ({ children }) => {
     })
 
     socket.on("request-received", (userData) => {
-        setUser(JSON.parse(userData))
+        currentUser = JSON.parse(userData)
+        if (user.email === currentUser[0].email) setUser(currentUser[0])
+    })
+
+    socket.on("request-sent", (userData) => {
+        currentUser = JSON.parse(userData)
+        setUser(currentUser[0])
     })
 
     socket.on("message-event", (data) => {

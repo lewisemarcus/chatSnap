@@ -83,14 +83,17 @@ const RootNavigator = () => {
 
 const HomeHeader = (props) => {
     const { logout } = useContext(AuthContext)
-    const { addFriend } = useContext(SocketContext)
     const { width } = useWindowDimensions()
     const navigation = useNavigation()
     const addFriendHandler = () => {
         navigation.navigate("Add A Friend")
     }
     const menuHandler = () => {
-        navigation.navigate("Menu")
+        try {
+            navigation.navigate("Menu")
+        } catch (err) {
+            console.log("crash", err)
+        }
     }
     return (
         <View
@@ -136,13 +139,14 @@ const HomeHeader = (props) => {
                     style={{ marginHorizontal: 10 }}
                 />
             </TouchableWithoutFeedback>
-            <Feather
-                onPress={menuHandler}
-                name="menu"
-                size={30}
-                color="black"
-                style={{ marginHorizontal: 10 }}
-            />
+            <TouchableWithoutFeedback onPress={menuHandler}>
+                <Feather
+                    name="menu"
+                    size={30}
+                    color="black"
+                    style={{ marginHorizontal: 10 }}
+                />
+            </TouchableWithoutFeedback>
         </View>
     )
 }
