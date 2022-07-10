@@ -10,15 +10,22 @@ export default function MenuItem({ option }) {
         navigation.navigate(`${option}`)
     }
     const { user } = useContext(AuthContext)
-    console.log(user)
     return (
-        <Pressable style={styles.container} onPress={onPress}>
-            {option === "Friend Requests" && user.requests.length > 0 && (
-                <View style={styles.badgeContainer}>
-                    <Text style={styles.badgeText}>{user.requests.length}</Text>
-                </View>
+        <View style={styles.container}>
+            {option === "Friend Requests" && user.requests.length > 0 ? (
+                <Pressable style={styles.container} onPress={onPress}>
+                    <View style={styles.badgeContainer}>
+                        <Text style={styles.badgeText}>
+                            {user.requests.length}
+                        </Text>
+                    </View>
+                    <Text style={styles.text}>{option}</Text>
+                </Pressable>
+            ) : (
+                <Pressable style={styles.container} onPress={onPress}>
+                    <Text style={styles.text}>{option}</Text>
+                </Pressable>
             )}
-            <Text style={styles.text}>{option}</Text>
-        </Pressable>
+        </View>
     )
 }

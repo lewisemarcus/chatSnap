@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
     text: {
         color: "#3777f0",
         fontWeight: "bolder",
-        fontSize: "30px",
+        fontSize: 30,
     },
     container: {
         border: "2px solid white",
