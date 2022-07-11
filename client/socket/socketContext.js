@@ -37,7 +37,7 @@ export const SocketProvider = ({ children }) => {
         if (user.email === currentUser[0].email) setUser(currentUser[0])
     })
 
-    socket.on("message-event", (data) => {
+    socket.on("message-received", (data) => {
         try {
             console.log(data)
         } catch (err) {
@@ -48,10 +48,10 @@ export const SocketProvider = ({ children }) => {
     const sendMessage = (content) => {
         try {
             console.log("Content", content)
+            socket.emit("message-sent", JSON.stringify(content))
         } catch (err) {
             console.log("SEND MESSAGE ERROR: ", err)
         }
-        socket.emit("message-event", JSON.stringify(content))
     }
     return (
         <SocketContext.Provider value={{ socket, sendMessage }}>
