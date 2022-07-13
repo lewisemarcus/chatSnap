@@ -1,14 +1,16 @@
 import os
+
 from routes.userRoutes.acceptFriend import acceptAFriend
 from flask import Flask, jsonify
 from dotenv import load_dotenv
 from flask_mongoengine import MongoEngine
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-from flask_socketio import SocketIO,  emit
+from flask_socketio import SocketIO, emit
 from socketIO.sendMessage.sendMessage import socketMessage
 from routes.userRoutes.addFriend import addAFriend
 from routes.onboardingRoutes.register import register
+from routes.userRoutes.getFriends import getFriends
 from routes.onboardingRoutes.login import login
 from routes.userRoutes.findUser import findUser
 load_dotenv()
@@ -44,6 +46,7 @@ acceptAFriend(app, socketio)
 register(app)
 login(app)
 findUser(app)
+getFriends(app)
 
 # socket routing
 socketMessage(socketio,  emit)

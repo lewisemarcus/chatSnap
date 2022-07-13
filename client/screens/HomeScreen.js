@@ -7,27 +7,8 @@ import { AuthContext } from "../context/AuthContext"
 
 export default function Home() {
     const [users, setUsers] = useState([])
-    const { instance } = useContext(AuthContext)
-    useEffect(() => {
-        //TODO: replace below with getFriends query
-        // const getUsers = async () => {
-        //     try {
-        //         const userData = await instance("users", {
-        //             headers: {
-        //                 Accept: "application/json",
-        //                 "Content-Type": "application/json",
-        //             },
-        //         })
-        //         const userList = userData.data
-        //         console.log(userList)
-        //         setUsers(userList)
-        //     } catch (err) {
-        //         console.error(err, "Error getting users.")
-        //     }
-        // }
-        // getUsers()
-    }, [])
-
+    const { instance, user } = useContext(AuthContext)
+    //TODO: replace chatRoomsData with user.chatrooms
     return (
         <View style={styles.container}>
             {/* FlatList enables scrollability */}
