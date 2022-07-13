@@ -7,7 +7,6 @@ def findUser(app):
     def user():
         try:
             keys = ['body']
-            print(request.json, flush=True)
             getUser = itemgetter(*keys)
             values = getUser(request.json)
             email = values['email']
