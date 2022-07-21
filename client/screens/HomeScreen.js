@@ -4,8 +4,9 @@ import { useContext, useEffect, useState } from "react"
 import ChatRoomItem from "../components/ChatRoomItem/ChatRoomItem"
 import chatRoomsData from "../assets/dummy-data/ChatRooms"
 import { AuthContext } from "../context/AuthContext"
+import { NewMessageBtn } from "../components/NewMessageBtn/NewMessageBtn"
 
-export default function Home() {
+export default function Home({ navigation }) {
     const [users, setUsers] = useState([])
     const { instance, user } = useContext(AuthContext)
     //TODO: replace chatRoomsData with user.chatrooms
@@ -22,6 +23,7 @@ export default function Home() {
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
             />
+            <NewMessageBtn navigation={navigation} />
         </View>
     )
 }
