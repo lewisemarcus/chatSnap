@@ -4,8 +4,7 @@ import Message from "../components/Message"
 import chatRoomData from "../assets/dummy-data/Chats"
 import MessageInput from "../components/MessageInput"
 import { useRoute } from "@react-navigation/core"
-export default function ChatRoomScreen() {
-    const route = useRoute()
+export default function ChatRoomScreen({ navigation }) {
     return (
         <SafeAreaView style={styles.page}>
             <FlatList

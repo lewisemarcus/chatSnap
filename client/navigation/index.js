@@ -26,6 +26,7 @@ import {
     AddFriendScreen,
     MenuScreen,
     FriendRequestScreen,
+    NewChatScreen,
 } from "../screens/index"
 import LinkingConfiguration from "./LinkingConfiguration"
 import { SocketContext } from "../socket/SocketContext"
@@ -49,6 +50,11 @@ const RootNavigator = () => {
                 name="ChatRoom"
                 component={ChatRoomScreen}
                 options={{ headerTitle: ChatRoomHeader }}
+            />
+            <Stack.Screen
+                name="New Chat"
+                component={NewChatScreen}
+                options={{ headerShown: true }}
             />
             <Stack.Screen
                 name="Add A Friend"
@@ -93,7 +99,7 @@ const HomeHeader = (props) => {
         try {
             navigation.navigate("Menu")
         } catch (err) {
-            console.log("crash", err)
+            console.log("crashed", err)
         }
     }
     return (
