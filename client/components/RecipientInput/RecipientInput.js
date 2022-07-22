@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect, useState, useRef } from "react"
 import {
     View,
     Text,
@@ -8,15 +8,16 @@ import {
     KeyboardAvoidingView,
     Platform,
     FlatList,
+    Keyboard,
 } from "react-native"
 
 import { AuthContext } from "../../context/AuthContext"
 
-export default function RecipientInput({ receiver }) {
+export default function RecipientInput({ messageRef }) {
     const [recipient, setRecipient] = useState("")
     const [searchedContacts, setContacts] = useState([])
     const { user } = useContext(AuthContext)
-
+    const inputRef = useRef()
     useEffect(() => {
         if (recipient.length > 1) {
             const matches = user.contacts.filter((contact) => {
@@ -25,6 +26,29 @@ export default function RecipientInput({ receiver }) {
             setContacts(matches)
         }
     }, [recipient])
+
+    useEffect(() => {
+        const keyboardHideListener = Keyboard.addListener(
+            "keyboardDidHide",
+            () => {
+                messageRef.current.setNativeProps({
+                    marginTop: 500,
+                })
+            },
+        )
+        const keyboardShowListener = Keyboard.addListener(
+            "keyboardDidShow",
+            () => {
+                messageRef.current.setNativeProps({
+                    marginTop: 350,
+                })
+            },
+        )
+        return () => {
+            keyboardHideListener.remove()
+            keyboardShowListener.remove()
+        }
+    })
     const onPress = () => {
         if (recipient) {
             console.log("hi")
@@ -43,6 +67,15 @@ export default function RecipientInput({ receiver }) {
                     value={recipient}
                     onChangeText={setRecipient}
                     placeholder="Recipient"
+                    ref={inputRef}
+                    onLayout={() => {
+                        inputRef.current.focus()
+                    }}
+                    onFocus={() => {
+                        messageRef.current.setNativeProps({
+                            marginTop: 350,
+                        })
+                    }}
                 />
                 {searchedContacts && (
                     <FlatList
@@ -85,7 +118,9 @@ const styles = StyleSheet.create({
         padding: 5,
     },
     buttonContainer: {
+        display: "flex",
         color: "white",
+        flexDirection: "column",
         width: 40,
         height: 40,
         backgroundColor: "#3777f0",
@@ -94,7 +129,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     buttonText: {
-        marginBottom: 5,
+        marginTop: -7,
         marginRight: 1,
         color: "white",
         fontSize: 30,
