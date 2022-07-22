@@ -20,6 +20,7 @@ export default function MessageInput({ receiver }) {
     const [message, setMessage] = useState("")
     const { sendMessage } = useContext(SocketContext)
     const { user } = useContext(AuthContext)
+
     const onPress = () => {
         if (message) {
             sendMessage({ user, receiver, message })

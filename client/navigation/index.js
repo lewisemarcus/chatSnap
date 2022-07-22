@@ -28,7 +28,7 @@ import {
     FriendRequestScreen,
     NewChatScreen,
 } from "../screens/index"
-import LinkingConfiguration from "./LinkingConfiguration"
+
 import { SocketContext } from "../socket/SocketContext"
 import { useNavigation } from "@react-navigation/core"
 /**
