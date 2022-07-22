@@ -5,7 +5,6 @@ export const NewMessageBtn = ({ navigation }) => {
     return (
         <TouchableHighlight
             onPress={() => {
-                console.log("hi")
                 navigation.navigate("New Chat")
             }}
         >
