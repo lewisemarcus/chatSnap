@@ -1,7 +1,7 @@
 import mongoengine as mongoDB
 class Contact(mongoDB.EmbeddedDocument):
-    name = mongoDB.StringField(required=True)
-    email = mongoDB.EmailField(required=True, unique=True)
+    name = mongoDB.StringField()
+    email = mongoDB.EmailField()
 class User(mongoDB.Document):
     name = mongoDB.StringField(required=True)
     email = mongoDB.EmailField(required=True, unique=True)
