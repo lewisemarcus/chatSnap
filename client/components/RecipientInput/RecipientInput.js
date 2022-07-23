@@ -18,8 +18,16 @@ export default function RecipientInput() {
     const [searchedContacts, setContacts] = useState([])
     const { user } = useContext(AuthContext)
     const inputRef = useRef()
-
-    console.log("contacts", searchedContacts)
+    useEffect(() => {
+        if (recipient.length != 0) {
+            let matches = user.contacts.filter((contact) => {
+                console.log("rec", recipient)
+                console.log(contact.email.includes(recipient))
+                return contact.email.includes(recipient)
+            })
+            setContacts(matches)
+        } else setContacts([])
+    }, [recipient])
     const onPress = () => {
         if (recipient) {
             console.log("hi")
@@ -36,14 +44,16 @@ export default function RecipientInput() {
                 <TextInput
                     style={styles.input}
                     value={recipient}
-                    onChange={() => {
-                        console.log(user.contacts)
-                        // let matches = user.contacts.filter((contact) => {
-                        //     console.log(">>", contact)
-                        //     return contact.email.includes(recipient)
-                        // })
-                        // setContacts(matches)
-                    }}
+                    // onChange={() => {
+                    //     if (recipient.length > 1) {
+                    //         let matches = user.contacts.filter((contact) => {
+                    //             console.log("rec", recipient)
+                    //             console.log(contact.email.includes(recipient))
+                    //             return contact.email.includes(recipient)
+                    //         })
+                    //         setContacts(matches)
+                    //     }
+                    // }}
                     onChangeText={setRecipient}
                     placeholder="Recipient"
                     ref={inputRef}
@@ -51,11 +61,13 @@ export default function RecipientInput() {
                         inputRef.current.focus()
                     }}
                 />
-                {searchedContacts && (
+                {searchedContacts.length != 0 && (
                     <FlatList
                         data={searchedContacts}
                         renderItem={({ item: eachContact }) => (
-                            <View>{eachContact}</View>
+                            <View>
+                                <Text>{eachContact.email}</Text>
+                            </View>
                         )}
                     />
                 )}
