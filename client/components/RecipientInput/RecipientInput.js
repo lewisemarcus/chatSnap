@@ -37,11 +37,12 @@ export default function RecipientInput() {
                     style={styles.input}
                     value={recipient}
                     onChange={() => {
-                        let matches = user.contacts.filter((contact) => {
-                            console.log(">>", contact)
-                            return contact.email.includes(recipient)
-                        })
-                        setContacts(matches)
+                        console.log(user.contacts)
+                        // let matches = user.contacts.filter((contact) => {
+                        //     console.log(">>", contact)
+                        //     return contact.email.includes(recipient)
+                        // })
+                        // setContacts(matches)
                     }}
                     onChangeText={setRecipient}
                     placeholder="Recipient"

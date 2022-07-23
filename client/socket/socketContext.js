@@ -21,6 +21,7 @@ export const SocketProvider = ({ children }) => {
 
     socket.on("request-received", (userData) => {
         currentUser = JSON.parse(userData)
+        console.log(user, currentUser)
         if (user.email === currentUser[0].email) setUser(currentUser[0])
     })
 
