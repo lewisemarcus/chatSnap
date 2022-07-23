@@ -18,15 +18,8 @@ export default function RecipientInput() {
     const [searchedContacts, setContacts] = useState([])
     const { user } = useContext(AuthContext)
     const inputRef = useRef()
-    useEffect(() => {
-        if (recipient.length > 1) {
-            const matches = user.contacts.filter((contact) => {
-                return contact.email.includes(recipient)
-            })
-            setContacts(matches)
-        }
-    }, [recipient])
 
+    console.log("contacts", searchedContacts)
     const onPress = () => {
         if (recipient) {
             console.log("hi")
@@ -43,6 +36,13 @@ export default function RecipientInput() {
                 <TextInput
                     style={styles.input}
                     value={recipient}
+                    onChange={() => {
+                        let matches = user.contacts.filter((contact) => {
+                            console.log(">>", contact)
+                            return contact.email.includes(recipient)
+                        })
+                        setContacts(matches)
+                    }}
                     onChangeText={setRecipient}
                     placeholder="Recipient"
                     ref={inputRef}

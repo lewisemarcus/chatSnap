@@ -8,7 +8,6 @@ export default function NewChatScreen({ navigation }) {
             <ScrollView>
                 <RecipientInput />
             </ScrollView>
-
             <View>
                 <MessageInput />
             </View>
