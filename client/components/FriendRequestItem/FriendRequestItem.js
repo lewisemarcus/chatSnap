@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { Text, View, Image, Pressable } from "react-native"
+import { Text, View, Image, Pressable, Alert } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 import styles from "./styles/FriendRequestStyles"
 import { AuthContext } from "../../context/AuthContext"
@@ -18,15 +18,9 @@ export default function FriendRequestItem({ request }) {
                 },
                 body: { userEmail: user.email, contact: request },
             })
-            setAccepted("")
         } catch (err) {
             console.error(err, "Error accepting request.")
-            setAccepted("")
         }
-    }
-
-    const noHandler = () => {
-        setAccepted("")
     }
 
     const onPress = () => {
@@ -40,7 +34,6 @@ export default function FriendRequestItem({ request }) {
                 },
                 {
                     text: "No",
-                    onPress: noHandler,
                 },
             ],
         )
