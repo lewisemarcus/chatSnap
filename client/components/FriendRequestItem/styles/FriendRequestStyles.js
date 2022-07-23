@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native"
 const styles = StyleSheet.create({
     text: {
         color: "#3777f0",
-        fontWeight: "bolder",
+        fontWeight: "700",
         fontSize: 30,
     },
     container: {
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
         color: "#1E87F0",
         textAlign: "center",
         fontSize: 12,
-        fontWeight: "bolder",
+        fontWeight: "700",
     },
     badgeContainer: {
         backgroundColor: "white",

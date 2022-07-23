@@ -21,7 +21,7 @@ export const SocketProvider = ({ children }) => {
 
     socket.on("request-received", (userData) => {
         currentUser = JSON.parse(userData)
-        console.log(user, currentUser)
+
         if (user.email === currentUser[0].email) setUser(currentUser[0])
     })
 
@@ -31,10 +31,12 @@ export const SocketProvider = ({ children }) => {
     })
     socket.on("accepted-request", (userData) => {
         currentUser = JSON.parse(userData)
+        console.log(currentUser[0].email, user.email)
         if (user.email === currentUser[0].email) setUser(currentUser[0])
     })
     socket.on("request-accepted", (userData) => {
         currentUser = JSON.parse(userData)
+        console.log(currentUser[0].email, user.email, 2)
         if (user.email === currentUser[0].email) setUser(currentUser[0])
     })
 
