@@ -13,7 +13,7 @@ import {
 
 import { AuthContext } from "../../context/AuthContext"
 
-export default function RecipientInput({ messageRef }) {
+export default function RecipientInput() {
     const [recipient, setRecipient] = useState("")
     const [searchedContacts, setContacts] = useState([])
     const { user } = useContext(AuthContext)
@@ -27,28 +27,6 @@ export default function RecipientInput({ messageRef }) {
         }
     }, [recipient])
 
-    useEffect(() => {
-        const keyboardHideListener = Keyboard.addListener(
-            "keyboardDidHide",
-            () => {
-                messageRef.current.setNativeProps({
-                    marginTop: 500,
-                })
-            },
-        )
-        const keyboardShowListener = Keyboard.addListener(
-            "keyboardDidShow",
-            () => {
-                messageRef.current.setNativeProps({
-                    marginTop: 350,
-                })
-            },
-        )
-        return () => {
-            keyboardHideListener.remove()
-            keyboardShowListener.remove()
-        }
-    })
     const onPress = () => {
         if (recipient) {
             console.log("hi")
@@ -70,11 +48,6 @@ export default function RecipientInput({ messageRef }) {
                     ref={inputRef}
                     onLayout={() => {
                         inputRef.current.focus()
-                    }}
-                    onFocus={() => {
-                        messageRef.current.setNativeProps({
-                            marginTop: 350,
-                        })
                     }}
                 />
                 {searchedContacts && (
