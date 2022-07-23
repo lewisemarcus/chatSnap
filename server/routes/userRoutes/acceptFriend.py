@@ -15,8 +15,8 @@ def acceptAFriend(app, socketio):
             user = userList[0]
             contactList = User.objects(email=values['contact'])
             newContact = contactList[0]
-            newContact.contacts.append({'userName' : user.name, 'userEmail' : user.email, 'userId' : user.id})
-            user.contacts.append({'userName' : newContact.name, 'userEmail' : newContact.email, 'userId' : newContact.id})
+            newContact.contacts.append(name=user.name, email=user.email)
+            user.contacts.append(name=newContact.name, email=newContact.email)
             user.update(pull__contacts=newContact.email)
             newContact.update(pull__sentRequests=user.email)
             newContact.save()
