@@ -44,16 +44,6 @@ export default function RecipientInput() {
                 <TextInput
                     style={styles.input}
                     value={recipient}
-                    // onChange={() => {
-                    //     if (recipient.length > 1) {
-                    //         let matches = user.contacts.filter((contact) => {
-                    //             console.log("rec", recipient)
-                    //             console.log(contact.email.includes(recipient))
-                    //             return contact.email.includes(recipient)
-                    //         })
-                    //         setContacts(matches)
-                    //     }
-                    // }}
                     onChangeText={setRecipient}
                     placeholder="Recipient"
                     ref={inputRef}
