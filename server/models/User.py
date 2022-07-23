@@ -5,6 +5,6 @@ class User(mongoDB.Document):
     password = mongoDB.StringField(required=True)
     requests = mongoDB.ListField(mongoDB.StringField())
     sentRequests = mongoDB.ListField(mongoDB.StringField())
-    contacts = mongoDB.ListField()
+    contacts = mongoDB.ListField(mongoDB.DictField())
     chatrooms = mongoDB.ListField(mongoDB.ReferenceField('Chatroom'))
     meta = {'collection': 'users'}
