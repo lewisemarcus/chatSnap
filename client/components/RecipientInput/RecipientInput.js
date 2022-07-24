@@ -16,23 +16,20 @@ import { AuthContext } from "../../context/AuthContext"
 export default function RecipientInput() {
     const [recipient, setRecipient] = useState("")
     const [searchedContacts, setContacts] = useState([])
-    const { user } = useContext(AuthContext)
+    const { user, setReceiver, receiver } = useContext(AuthContext)
     const inputRef = useRef()
+    const receiverRef = useRef()
     useEffect(() => {
         if (recipient.length != 0) {
             let matches = user.contacts.filter((contact) => {
-                console.log("rec", recipient)
-                console.log(contact.email.includes(recipient))
                 return contact.email.includes(recipient)
             })
             setContacts(matches)
         } else setContacts([])
     }, [recipient])
     const onPress = () => {
-        if (recipient) {
-            console.log("hi")
-        }
-        setRecipient("")
+        //TODO: create contact page for this onPress function.
+        console.log("hi")
     }
 
     return (
@@ -40,27 +37,40 @@ export default function RecipientInput() {
             style={styles.root}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-            <View style={styles.inputContainer}>
-                <TextInput
-                    style={styles.input}
-                    value={recipient}
-                    onChangeText={setRecipient}
-                    placeholder="Recipient"
-                    ref={inputRef}
-                    onLayout={() => {
-                        inputRef.current.focus()
-                    }}
-                />
-                {searchedContacts.length != 0 && (
-                    <FlatList
-                        data={searchedContacts}
-                        renderItem={({ item: eachContact }) => (
-                            <View>
-                                <Text>{eachContact.email}</Text>
-                            </View>
-                        )}
+            <View style={styles.container}>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        value={recipient}
+                        onChangeText={setRecipient}
+                        placeholder="Recipient"
+                        ref={inputRef}
+                        onLayout={() => {
+                            inputRef.current.focus()
+                        }}
                     />
-                )}
+                </View>
+                <View>
+                    {searchedContacts.length != 0 && (
+                        <FlatList
+                            data={searchedContacts}
+                            renderItem={({ item: eachContact }) => (
+                                <Pressable
+                                    onPress={() => {
+                                        setReceiver(
+                                            receiverRef.current.textContent,
+                                        )
+                                        setRecipient("")
+                                    }}
+                                >
+                                    <Text ref={receiverRef}>
+                                        {eachContact.email}
+                                    </Text>
+                                </Pressable>
+                            )}
+                        />
+                    )}
+                </View>
             </View>
             <Pressable onPress={onPress} style={styles.buttonContainer}>
                 <Text style={styles.buttonText}>+</Text>
@@ -73,6 +83,10 @@ const styles = StyleSheet.create({
     root: {
         padding: 5,
         flexDirection: "row",
+    },
+    container: {
+        width: "85%",
+        flexDirection: "column",
     },
     input: {
         flex: 1,

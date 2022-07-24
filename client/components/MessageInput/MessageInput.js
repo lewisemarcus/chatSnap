@@ -15,13 +15,17 @@ import {
     MaterialCommunityIcons,
 } from "@expo/vector-icons"
 import { AuthContext } from "../../context/AuthContext"
-
-export default function MessageInput({ receiver }) {
+import { useRoute } from "@react-navigation/native"
+export default function MessageInput({ navigation }) {
     const [message, setMessage] = useState("")
     const { sendMessage } = useContext(SocketContext)
-    const { user } = useContext(AuthContext)
-
+    const { user, receiver } = useContext(AuthContext)
+    const route = useRoute()
     const onPress = () => {
+        if (route.name === "New Chat") {
+            navigation.navigate("ChatRoomScreen", {})
+        }
+
         if (message) {
             sendMessage({ user, receiver, message })
         }
