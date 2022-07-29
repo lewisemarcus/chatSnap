@@ -22,7 +22,9 @@ export default function RecipientInput() {
     useEffect(() => {
         if (recipient.length != 0) {
             let matches = user.contacts.filter((contact) => {
-                return contact.email.includes(recipient)
+                return contact.email
+                    .toUpperCase()
+                    .includes(recipient.toUpperCase())
             })
             setContacts(matches)
         } else setContacts([])
@@ -32,6 +34,11 @@ export default function RecipientInput() {
         console.log("hi")
     }
 
+    const addReceiver = (contact) => {
+        setReceiver(contact)
+        setRecipient("")
+    }
+    console.log(receiver)
     return (
         <KeyboardAvoidingView
             style={styles.root}
@@ -39,6 +46,20 @@ export default function RecipientInput() {
         >
             <View style={styles.container}>
                 <View style={styles.inputContainer}>
+                    {receiver && (
+                        <Pressable
+                            style={{
+                                backgroundColor: "white",
+                                padding: 3,
+                                borderRadius: 10,
+                            }}
+                        >
+                            <Text>
+                                {receiver}{" "}
+                                <Text style={{ color: "red" }}>X</Text>
+                            </Text>
+                        </Pressable>
+                    )}
                     <TextInput
                         style={styles.input}
                         value={recipient}
@@ -50,27 +71,48 @@ export default function RecipientInput() {
                         }}
                     />
                 </View>
-                <View>
-                    {searchedContacts.length != 0 && (
+                {searchedContacts.length != 0 && (
+                    <View
+                        style={{
+                            maxHeight: 300,
+                            minHeight: 300,
+                            marginLeft: 40,
+                            marginTop: 10,
+                            borderRadius: 10,
+                            backgroundColor: "white",
+                        }}
+                    >
                         <FlatList
                             data={searchedContacts}
                             renderItem={({ item: eachContact }) => (
                                 <Pressable
                                     onPress={() => {
-                                        setReceiver(
-                                            receiverRef.current.textContent,
-                                        )
-                                        setRecipient("")
+                                        addReceiver(eachContact.email)
                                     }}
                                 >
-                                    <Text ref={receiverRef}>
-                                        {eachContact.email}
-                                    </Text>
+                                    <View
+                                        style={{
+                                            height: 50,
+                                            borderColor: "#3777f0",
+                                            borderWidth: 1,
+                                            borderLeftWidth: 0,
+                                            borderRightWidth: 0,
+                                            borderTopWidth: 0,
+                                            borderRadius: 10,
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <Text ref={receiverRef}>
+                                            {eachContact.email}
+                                        </Text>
+                                    </View>
                                 </Pressable>
                             )}
                         />
-                    )}
-                </View>
+                    </View>
+                )}
             </View>
             <Pressable onPress={onPress} style={styles.buttonContainer}>
                 <Text style={styles.buttonText}>+</Text>
