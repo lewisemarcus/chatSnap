@@ -16,9 +16,8 @@ import { AuthContext } from "../../context/AuthContext"
 export default function RecipientInput() {
     const [recipient, setRecipient] = useState("")
     const [searchedContacts, setContacts] = useState([])
-    const { user, setReceiver, receiver } = useContext(AuthContext)
+    const { user, setReceivers, receivers } = useContext(AuthContext)
     const inputRef = useRef()
-    const receiverRef = useRef()
     useEffect(() => {
         if (recipient.length != 0) {
             let matches = user.contacts.filter((contact) => {
@@ -35,10 +34,18 @@ export default function RecipientInput() {
     }
 
     const addReceiver = (contact) => {
-        setReceiver(contact)
+        setReceivers((oldReceivers) => {
+            ;[...oldReceivers, contact]
+        })
         setRecipient("")
     }
-    console.log(receiver)
+    const removeReceiver = (contact) => {
+        setReceivers((receivers) => {
+            receivers.filter((receiver) => {
+                return receiver !== contact
+            })
+        })
+    }
     return (
         <KeyboardAvoidingView
             style={styles.root}
@@ -46,19 +53,25 @@ export default function RecipientInput() {
         >
             <View style={styles.container}>
                 <View style={styles.inputContainer}>
-                    {receiver && (
-                        <Pressable
-                            style={{
-                                backgroundColor: "white",
-                                padding: 3,
-                                borderRadius: 10,
-                            }}
-                        >
-                            <Text>
-                                {receiver}{" "}
-                                <Text style={{ color: "red" }}>X</Text>
-                            </Text>
-                        </Pressable>
+                    {receivers.length > 0 && (
+                        <FlatList
+                            data={receivers}
+                            renderItem={({ item: receiver }) => (
+                                <Pressable
+                                    onPress={removeReceiver(receiver)}
+                                    style={{
+                                        backgroundColor: "white",
+                                        padding: 3,
+                                        borderRadius: 10,
+                                    }}
+                                >
+                                    <Text>
+                                        {receiver}{" "}
+                                        <Text style={{ color: "red" }}>X</Text>
+                                    </Text>
+                                </Pressable>
+                            )}
+                        />
                     )}
                     <TextInput
                         style={styles.input}
@@ -104,9 +117,7 @@ export default function RecipientInput() {
                                             alignItems: "center",
                                         }}
                                     >
-                                        <Text ref={receiverRef}>
-                                            {eachContact.email}
-                                        </Text>
+                                        <Text>{eachContact.email}</Text>
                                     </View>
                                 </Pressable>
                             )}
