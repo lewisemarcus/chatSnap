@@ -6,7 +6,7 @@ export default function NewChatScreen({ navigation }) {
     return (
         <KeyboardAvoidingView style={{ display: "flex", flex: 1 }}>
             <ScrollView>
-                <RecipientInput />
+                <RecipientInput navigation={navigation} />
             </ScrollView>
             <View>
                 <MessageInput />

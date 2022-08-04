@@ -183,8 +183,8 @@ export const AuthProvider = ({ children }) => {
                 setPasswordConfirm,
                 user,
                 instance,
-                receiver,
-                setReceiver,
+                receivers,
+                setReceivers,
             }}
         >
             {children}
