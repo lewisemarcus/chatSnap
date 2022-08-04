@@ -9,11 +9,12 @@ import {
     Platform,
     FlatList,
     Keyboard,
+    Alert,
 } from "react-native"
 
 import { AuthContext } from "../../context/AuthContext"
 
-export default function RecipientInput() {
+export default function RecipientInput({ navigation }) {
     const [recipient, setRecipient] = useState("")
     const [searchedContacts, setContacts] = useState([])
     const { user, setReceivers, receivers } = useContext(AuthContext)
@@ -29,16 +30,18 @@ export default function RecipientInput() {
         } else setContacts([])
     }, [recipient])
     const onPress = () => {
-        //TODO: create contact page for this onPress function.
-        console.log("hi")
+        navigation.navigate("Select Contact")
     }
 
     const addReceiver = (contact) => {
-        setReceivers((oldReceivers) => {
-            ;[...oldReceivers, contact]
-        })
+        if (receivers.includes(contact))
+            Alert.alert("Recipient already added", [
+                { text: "OK", onPress: noHandler },
+            ])
+        else setReceivers((oldReceivers) => [...oldReceivers, contact])
         setRecipient("")
     }
+
     const removeReceiver = (contact) => {
         setReceivers((receivers) => {
             receivers.filter((receiver) => {
@@ -46,6 +49,7 @@ export default function RecipientInput() {
             })
         })
     }
+    console.log(">>", receivers)
     return (
         <KeyboardAvoidingView
             style={styles.root}
@@ -53,7 +57,7 @@ export default function RecipientInput() {
         >
             <View style={styles.container}>
                 <View style={styles.inputContainer}>
-                    {receivers.length > 0 && (
+                    {receivers !== undefined && (
                         <FlatList
                             data={receivers}
                             renderItem={({ item: receiver }) => (

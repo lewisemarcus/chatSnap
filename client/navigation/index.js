@@ -27,6 +27,7 @@ import {
     MenuScreen,
     FriendRequestScreen,
     NewChatScreen,
+    SelectContactScreen,
 } from "../screens/index"
 
 import { SocketContext } from "../socket/SocketContext"
@@ -54,6 +55,11 @@ const RootNavigator = () => {
             <Stack.Screen
                 name="New Chat"
                 component={NewChatScreen}
+                options={{ headerShown: true }}
+            />
+            <Stack.Screen
+                name="Select Contact"
+                component={SelectContactScreen}
                 options={{ headerShown: true }}
             />
             <Stack.Screen
