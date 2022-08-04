@@ -34,20 +34,17 @@ export default function RecipientInput({ navigation }) {
     }
 
     const addReceiver = (contact) => {
-        if (receivers.includes(contact))
-            Alert.alert("Recipient already added", [
-                { text: "OK", onPress: noHandler },
-            ])
+        if (receivers.includes(contact)) Alert.alert("Recipient already added")
         else setReceivers((oldReceivers) => [...oldReceivers, contact])
         setRecipient("")
     }
 
     const removeReceiver = (contact) => {
-        setReceivers((receivers) => {
+        setReceivers(
             receivers.filter((receiver) => {
                 return receiver !== contact
-            })
-        })
+            }),
+        )
     }
     console.log(">>", receivers)
     return (
@@ -56,27 +53,37 @@ export default function RecipientInput({ navigation }) {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
             <View style={styles.container}>
-                <View style={styles.inputContainer}>
-                    {receivers !== undefined && (
+                <View horizontal={true} style={styles.recipients}>
+                    {receivers.length > 0 && (
                         <FlatList
                             data={receivers}
                             renderItem={({ item: receiver }) => (
                                 <Pressable
-                                    onPress={removeReceiver(receiver)}
+                                    onPress={() => {
+                                        removeReceiver(receiver)
+                                    }}
                                     style={{
                                         backgroundColor: "white",
                                         padding: 3,
                                         borderRadius: 10,
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        flexDirection: "row",
+                                        alignItems: "center",
                                     }}
                                 >
-                                    <Text>
-                                        {receiver}{" "}
-                                        <Text style={{ color: "red" }}>X</Text>
+                                    <Text>{receiver} </Text>
+                                    <Text
+                                        style={{ color: "red", marginLeft: 5 }}
+                                    >
+                                        X
                                     </Text>
                                 </Pressable>
                             )}
                         />
                     )}
+                </View>
+                <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.input}
                         value={recipient}
@@ -88,8 +95,10 @@ export default function RecipientInput({ navigation }) {
                         }}
                     />
                 </View>
+
                 {searchedContacts.length != 0 && (
                     <View
+                        horizontal={true}
                         style={{
                             maxHeight: 300,
                             minHeight: 300,
@@ -163,6 +172,10 @@ const styles = StyleSheet.create({
         borderColor: "#dedede",
         alignItems: "center",
         padding: 5,
+    },
+    recipients: {
+        marginBottom: 5,
+        width: 100,
     },
     buttonContainer: {
         display: "flex",
