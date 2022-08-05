@@ -14,7 +14,6 @@ export default function Home({ navigation }) {
         <View style={styles.container}>
             {/* FlatList enables scrollability */}
             <FlatList
-                // TODO: replace chatRoomsData with real data once completed.
                 data={chatRoomsData}
                 // rename's the item from props to eachChatRoom
                 renderItem={({ item: eachChatRoom }) => (

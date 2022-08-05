@@ -53,9 +53,15 @@ export default function RecipientInput({ navigation }) {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
             <View style={styles.container}>
-                <View horizontal={true} style={styles.recipients}>
+                <View horizontal={true}>
                     {receivers.length > 0 && (
                         <FlatList
+                            contentContainerStyle={{
+                                flexDirection: "row",
+                                maxWidth: "100%",
+                                flexWrap: "wrap",
+                            }}
+                            numColumns={2}
                             data={receivers}
                             renderItem={({ item: receiver }) => (
                                 <Pressable
@@ -65,6 +71,7 @@ export default function RecipientInput({ navigation }) {
                                     style={{
                                         backgroundColor: "white",
                                         padding: 3,
+                                        margin: 2,
                                         borderRadius: 10,
                                         display: "flex",
                                         justifyContent: "center",
@@ -173,10 +180,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 5,
     },
-    recipients: {
-        marginBottom: 5,
-        width: 100,
-    },
+
     buttonContainer: {
         display: "flex",
         color: "white",
