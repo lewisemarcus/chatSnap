@@ -1,10 +1,10 @@
 import mongoengine as mongoDB
 class Message(mongoDB.EmbeddedDocument):
     message = mongoDB.StringField()
-    userId = mongoDB.StringField()
+    senderEmail = mongoDB.StringField()
 class Chatroom(mongoDB.EmbeddedDocument):
     users = mongoDB.ListField(mongoDB.ReferenceField('User'))
-    messages = mongoDB.ListField(mongoDB.EmbeddedDocumentField(Message))
+    messages = mongoDB.EmbeddedDocumentListField(Message)
     newMessages = mongoDB.IntField()
 class Contact(mongoDB.EmbeddedDocument):
     name = mongoDB.StringField()
@@ -15,7 +15,7 @@ class User(mongoDB.Document):
     password = mongoDB.StringField(required=True)
     requests = mongoDB.ListField(mongoDB.StringField())
     sentRequests = mongoDB.ListField(mongoDB.StringField())
-    contacts = mongoDB.ListField(mongoDB.EmbeddedDocumentField(Contact))
-    chatrooms = mongoDB.ListField(mongoDB.EmbeddedDocumentField(Chatroom))
+    contacts = mongoDB.EmbeddedDocumentListField(Contact)
+    chatrooms = mongoDB.EmbeddedDocumentListField(Chatroom)
     meta = {'collection': 'users'}
 

@@ -21,7 +21,6 @@ export const SocketProvider = ({ children }) => {
 
     socket.on("request-received", (userData) => {
         currentUser = JSON.parse(userData)
-
         if (user.email === currentUser[0].email) setUser(currentUser[0])
     })
 
@@ -42,7 +41,14 @@ export const SocketProvider = ({ children }) => {
 
     socket.on("message-received", (data) => {
         try {
-            console.log(data)
+            console.log("data", data)
+        } catch (err) {
+            console.log("MESSAGE EVENT ERROR: ", err)
+        }
+    })
+    socket.on("sent-message", (data) => {
+        try {
+            console.log("data", data)
         } catch (err) {
             console.log("MESSAGE EVENT ERROR: ", err)
         }
@@ -50,7 +56,7 @@ export const SocketProvider = ({ children }) => {
 
     const sendMessage = (content) => {
         try {
-            console.log("Content", content)
+            console.log("Content>", content)
             socket.emit("message-sent", JSON.stringify(content))
         } catch (err) {
             console.log("SEND MESSAGE ERROR: ", err)
