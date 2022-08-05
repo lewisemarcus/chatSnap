@@ -19,17 +19,17 @@ import { useRoute } from "@react-navigation/native"
 export default function MessageInput({ navigation }) {
     const [message, setMessage] = useState("")
     const { sendMessage } = useContext(SocketContext)
-    const { user, receiver } = useContext(AuthContext)
+    const { user, receivers, setReceivers } = useContext(AuthContext)
     const route = useRoute()
     const onPress = () => {
-        if (route.name === "New Chat") {
-            navigation.navigate("ChatRoomScreen", {})
-        }
-
         if (message) {
-            sendMessage({ user, receiver, message })
+            sendMessage({ user, receivers, message })
+            // if (route.name === "New Chat") {
+            //     navigation.navigate("ChatRoomScreen", {})
+            // }
         }
         setMessage("")
+        setReceivers([])
     }
 
     return (
