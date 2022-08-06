@@ -1,11 +1,14 @@
 import mongoengine as mongoDB
 import uuid
+import datetime
 class Message(mongoDB.EmbeddedDocument):
     message = mongoDB.StringField()
     senderEmail = mongoDB.StringField()
+    createdAt = mongoDB.DateTimeField(required=True, default=datetime.datetime.now)
 class Chatroom(mongoDB.EmbeddedDocument):
     uid = mongoDB.UUIDField(binary=False, default= uuid.uuid4(), required=True)
     users = mongoDB.ListField(mongoDB.ReferenceField('User'))
+    userEmails = mongoDB.ListField(mongoDB.StringField())
     messages = mongoDB.EmbeddedDocumentListField(Message)
     newMessages = mongoDB.IntField()
 class Contact(mongoDB.EmbeddedDocument):

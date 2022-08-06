@@ -2,8 +2,8 @@ from flask import jsonify
 from models.User import User, Message, Chatroom
 import json
 
-def newChatFunction(user, chatters, message, recipientList):
-    newChatroom = Chatroom(users=chatters)
+def newChatFunction(user, chatters, message, recipientList, allEmails):
+    newChatroom = Chatroom(users=chatters, userEmails=allEmails)
     newChatroom.messages.append(message)
     user.chatrooms.append(newChatroom)
     for recipient in recipientList:
@@ -28,6 +28,7 @@ def socketMessage(socketio, emit):
             recipientList = []
             recipientEmitList = []
             chatters = []
+            
             for receiverEmail in receiversEmails:
                 recipientData = User.objects(email=receiverEmail)
                 recipient = recipientData[0]
@@ -38,8 +39,11 @@ def socketMessage(socketio, emit):
             chatters.append(user)
             message = Message(message=messageText, senderEmail=user.email)
             matchingChatters = False
+            allEmails = parsedContent['receivers']
+            allEmails.append(userEmail)
+            print(allEmails, flush=True)
             if len(user.chatrooms) == 0:
-                newChatFunction(user, chatters, message, recipientList)
+                newChatFunction(user, chatters, message, recipientList, allEmails)
             else:
                 for chatroom in user.chatrooms:
                     if len(chatroom.users) != len(chatters):
@@ -58,7 +62,7 @@ def socketMessage(socketio, emit):
                         updateChat(chatroom.uid, message, recipientList)
                         break
                 if matchingChatters == False:
-                    newChatFunction(user, chatters, message, recipientList)
+                    newChatFunction(user, chatters, message, recipientList, allEmails)
                         
 
             user.save()
