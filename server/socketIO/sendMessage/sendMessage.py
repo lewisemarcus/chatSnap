@@ -1,6 +1,23 @@
 from flask import jsonify
 from models.User import User, Message, Chatroom
 import json
+
+def newChatFunction(user, chatters, message, recipientList):
+    newChatroom = Chatroom(users=chatters)
+    newChatroom.messages.append(message)
+    print('>>>1', newChatroom, flush=True)
+    user.chatrooms.append(newChatroom)
+    for recipient in recipientList:
+        recipient.chatrooms.append(newChatroom)
+        recipient.save()
+
+def updateChat(user, chatters, chatroom, message, recipientList):
+    chatroom.messages.append(message)
+    for recipient in recipientList:
+        for chat in recipient.chatrooms:
+            chat.messages.append(message)
+            recipient.save()
+            
 def socketMessage(socketio, emit):
     @socketio.on('message-sent')
     def message(content):
@@ -18,27 +35,33 @@ def socketMessage(socketio, emit):
                 recipientData = User.objects(email=receiverEmail)
                 recipient = recipientData[0]
                 recipientList.append(recipient)
+                recipientEmitList.append(json.loads(recipient.to_json()))
                 chatters.append(recipient)
             
             chatters.append(user)
             message = Message(message=messageText, senderEmail=user.email)
-            
-            for chatroom in user.chatrooms:
-                if chatroom.users != chatters:
-                    newChatroom = Chatroom(users=chatters)
-                    newChatroom.messages.append(message)
-                    user.chatrooms.append(newChatroom)
-                    for recipient in recipientList:
-                        recipient.chatrooms.append(newChatroom)
-                        recipientEmitList.append(json.loads(recipient.to_json()))
-                        recipient.save()
-                else:
-                    chatroom.append(message)
-                    for recipient in recipientList:
-                        for chat in recipient.chatrooms:
-                            chat.append(message)
-                            recipientEmitList.append(json.loads(recipient.to_json()))
-                            recipient.save()
+            matchingChatters = False
+            if len(user.chatrooms) == 0:
+                newChatFunction(user, chatters, message, recipientList)
+            else:
+                for chatroom in user.chatrooms:
+                    if len(chatroom.users) != len(chatters):
+                        matchingChatters = False
+                    else:
+                        for i in range(len(chatters)):
+                            print(chatters[i].email, chatroom.users[i].email, flush=True)
+                            if chatters[i].email != chatroom.users[i].email:
+                                matchingChatters = False
+                                break
+                            else:
+                                matchingChatters = True
+                                break
+                    if matchingChatters == True: 
+                        updateChat(user, chatters, chatroom, message, recipientList)
+                        break
+                if matchingChatters == False:
+                    newChatFunction(user, chatters, message, recipientList)
+                        
 
             user.save()
             emit('sent-message', userList.to_json())
