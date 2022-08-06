@@ -1,8 +1,10 @@
 import mongoengine as mongoDB
+import uuid
 class Message(mongoDB.EmbeddedDocument):
     message = mongoDB.StringField()
     senderEmail = mongoDB.StringField()
 class Chatroom(mongoDB.EmbeddedDocument):
+    uid = mongoDB.UUIDField(binary=False, default= uuid.uuid4(), required=True)
     users = mongoDB.ListField(mongoDB.ReferenceField('User'))
     messages = mongoDB.EmbeddedDocumentListField(Message)
     newMessages = mongoDB.IntField()
