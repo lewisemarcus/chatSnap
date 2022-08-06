@@ -48,7 +48,7 @@ export const SocketProvider = ({ children }) => {
     })
     socket.on("sent-message", (data) => {
         try {
-            console.log("data", data)
+            console.log("data>", data)
         } catch (err) {
             console.log("MESSAGE EVENT ERROR: ", err)
         }
