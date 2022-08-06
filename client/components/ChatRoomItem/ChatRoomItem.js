@@ -1,23 +1,47 @@
 import React, { useContext } from "react"
-import { Text, View, Image, Pressable } from "react-native"
+import { Text, View, Image, Pressable, FlatList } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 import styles from "./styles/ChatRoomStyle"
-
+import LoginSVG from "../../assets/images/user.png"
 export default function ChatRoomItem({ chatRoom }) {
     const navigation = useNavigation()
     const onPress = () => {
         navigation.navigate("ChatRoom", { id: chatRoom.uid })
     }
-    console.log(chatRoom.userEmails)
+    chatRoom.userEmails.pop()
+
     return (
         <Pressable style={styles.container} onPress={onPress}>
             {/* TODO: add image upload function for users on settings page, add default image */}
-            {/* <Image
-                source={{
-                    uri: user.imageUri,
-                }}
-                style={styles.image}
-            /> */}
+            {chatRoom.userImages ? (
+                <FlatList
+                    data={chatRoom.userImages}
+                    renderItem={({ item: userImage }) => (
+                        <Image
+                            source={{
+                                uri: userImage,
+                            }}
+                            style={styles.image}
+                        />
+                    )}
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                />
+            ) : (
+                <FlatList
+                    data={chatRoom.userEmails}
+                    renderItem={() => (
+                        <Image
+                            source={{
+                                uri: LoginSVG,
+                            }}
+                            style={styles.image}
+                        />
+                    )}
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                />
+            )}
 
             {chatRoom.newMessages && (
                 <View style={styles.badgeContainer}>
