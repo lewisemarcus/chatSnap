@@ -10,10 +10,9 @@ def newChatFunction(user, chatters, message, recipientList):
         recipient.chatrooms.append(newChatroom)
         recipient.save()
 
-def updateChat(id, message, recipientList):
+def updateChat(uid, message, recipientList):
     for recipient in recipientList:
-        print(recipient.chatrooms.objects(), flush=True)
-        recipient.chatrooms.objects(id=id).update(push__messages=[message])
+        recipient.chatrooms.update(uid=uid, push__messages=[message])
         recipient.save()
             
 def socketMessage(socketio, emit):
@@ -56,8 +55,7 @@ def socketMessage(socketio, emit):
                                 break
                     if matchingChatters == True: 
                         chatroom.messages.append(message)
-                        print(chatroom,flush=True)
-                        updateChat(chatroom.id, message, recipientList)
+                        updateChat(chatroom.uid, message, recipientList)
                         break
                 if matchingChatters == False:
                     newChatFunction(user, chatters, message, recipientList)
