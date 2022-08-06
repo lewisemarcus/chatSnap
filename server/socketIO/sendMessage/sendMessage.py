@@ -5,18 +5,16 @@ import json
 def newChatFunction(user, chatters, message, recipientList):
     newChatroom = Chatroom(users=chatters)
     newChatroom.messages.append(message)
-    print('>>>1', newChatroom, flush=True)
     user.chatrooms.append(newChatroom)
     for recipient in recipientList:
         recipient.chatrooms.append(newChatroom)
         recipient.save()
 
-def updateChat(user, chatters, chatroom, message, recipientList):
-    chatroom.messages.append(message)
+def updateChat(id, message, recipientList):
     for recipient in recipientList:
-        for chat in recipient.chatrooms:
-            chat.messages.append(message)
-            recipient.save()
+        print(recipient.chatrooms.objects(), flush=True)
+        recipient.chatrooms.objects(id=id).update(push__messages=[message])
+        recipient.save()
             
 def socketMessage(socketio, emit):
     @socketio.on('message-sent')
@@ -57,7 +55,9 @@ def socketMessage(socketio, emit):
                                 matchingChatters = True
                                 break
                     if matchingChatters == True: 
-                        updateChat(user, chatters, chatroom, message, recipientList)
+                        chatroom.messages.append(message)
+                        print(chatroom,flush=True)
+                        updateChat(chatroom.id, message, recipientList)
                         break
                 if matchingChatters == False:
                     newChatFunction(user, chatters, message, recipientList)
