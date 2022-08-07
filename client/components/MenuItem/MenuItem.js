@@ -11,7 +11,7 @@ export default function MenuItem({ option }) {
     }
     const { user } = useContext(AuthContext)
     return (
-        <View style={styles.container}>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
             {option === "Friend Requests" && user.requests.length > 0 ? (
                 <Pressable style={styles.container} onPress={onPress}>
                     <View style={styles.badgeContainer}>

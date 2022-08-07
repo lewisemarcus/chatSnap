@@ -9,6 +9,7 @@ class Chatroom(mongoDB.EmbeddedDocument):
     uid = mongoDB.UUIDField(binary=False, default= uuid.uuid4(), required=True)
     users = mongoDB.ListField(mongoDB.ReferenceField('User'))
     userEmails = mongoDB.ListField(mongoDB.StringField())
+    userImages = mongoDB.StringField()
     messages = mongoDB.EmbeddedDocumentListField(Message)
     newMessages = mongoDB.IntField()
 class Contact(mongoDB.EmbeddedDocument):
@@ -16,6 +17,7 @@ class Contact(mongoDB.EmbeddedDocument):
     email = mongoDB.EmailField()
 class User(mongoDB.Document):
     name = mongoDB.StringField(required=True)
+    userImage = mongoDB.StringField()
     email = mongoDB.EmailField(required=True, unique=True)
     password = mongoDB.StringField(required=True)
     requests = mongoDB.ListField(mongoDB.StringField())

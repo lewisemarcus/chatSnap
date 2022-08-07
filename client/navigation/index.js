@@ -28,6 +28,7 @@ import {
     FriendRequestScreen,
     NewChatScreen,
     SelectContactScreen,
+    ProfileScreen,
 } from "../screens/index"
 
 import { SocketContext } from "../socket/SocketContext"
@@ -65,6 +66,11 @@ const RootNavigator = () => {
             <Stack.Screen
                 name="Add A Friend"
                 component={AddFriendScreen}
+                options={{ headerShown: true }}
+            />
+            <Stack.Screen
+                name="My Profile"
+                component={ProfileScreen}
                 options={{ headerShown: true }}
             />
             <Stack.Screen
@@ -120,8 +126,11 @@ const HomeHeader = (props) => {
                 alignItems: "center",
             }}
         >
-            {/* TODO: improve logout function */}
-            <TouchableWithoutFeedback onPress={logout}>
+            <TouchableWithoutFeedback
+                onPress={() => {
+                    navigation.navigate("My Profile")
+                }}
+            >
                 <Image
                     source={{
                         uri: "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png",
