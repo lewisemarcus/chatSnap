@@ -9,6 +9,7 @@ def newChatFunction(user, chatters, message, recipientList, allEmails):
     for recipient in recipientList:
         recipient.chatrooms.append(newChatroom)
         recipient.save()
+    return newChatroom
 
 def updateChat(uid, message, recipientList):
     for recipient in recipientList:
@@ -28,7 +29,7 @@ def socketMessage(socketio, emit):
             recipientList = []
             recipientEmitList = []
             chatters = []
-            
+            chatroomId = ''
             for receiverEmail in receiversEmails:
                 recipientData = User.objects(email=receiverEmail)
                 recipient = recipientData[0]
@@ -41,33 +42,35 @@ def socketMessage(socketio, emit):
             matchingChatters = False
             allEmails = parsedContent['receivers']
             allEmails.append(userEmail)
-            print(allEmails, flush=True)
+            
             if len(user.chatrooms) == 0:
-                newChatFunction(user, chatters, message, recipientList, allEmails)
+                chatroom = newChatFunction(user, chatters, message, recipientList, allEmails).uid
+                print('>>>>', chatroom, flush=True)
             else:
                 for chatroom in user.chatrooms:
                     if len(chatroom.users) != len(chatters):
                         matchingChatters = False
                     else:
                         for i in range(len(chatters)):
-                            print(chatters[i].email, chatroom.users[i].email, flush=True)
+
                             if chatters[i].email != chatroom.users[i].email:
                                 matchingChatters = False
                                 break
                             else:
                                 matchingChatters = True
                                 break
-                    if matchingChatters == True: 
+                    if matchingChatters == True:
+                        chatroomId = chatroom.uid 
                         chatroom.messages.append(message)
                         updateChat(chatroom.uid, message, recipientList)
                         break
                 if matchingChatters == False:
                     newChatFunction(user, chatters, message, recipientList, allEmails)
                         
-
+            print(str(user.id),chatroomId, flush=True)
             user.save()
-            emit('sent-message', userList.to_json())
-            emit('message-received', {'recipients' : recipientEmitList})
+            emit('sent-message'+str(user.id), userList.to_json())
+            emit('message-received'+chatroomId, {'recipients' : recipientEmitList})
         except Exception as e:
             print("Error: ", e)
             return jsonify(e), 500
