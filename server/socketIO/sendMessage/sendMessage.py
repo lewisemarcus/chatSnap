@@ -44,8 +44,7 @@ def socketMessage(socketio, emit, join_room, leave_room):
             allEmails.append(userEmail)
             
             if len(user.chatrooms) == 0:
-                chatroom = newChatFunction(user, chatters, message, recipientList, allEmails).uid
-                print('>>>>', chatroom, flush=True)
+                chatroomId = newChatFunction(user, chatters, message, recipientList, allEmails).uid
             else:
                 for chatroom in user.chatrooms:
                     if len(chatroom.users) != len(chatters):
@@ -65,9 +64,9 @@ def socketMessage(socketio, emit, join_room, leave_room):
                         updateChat(chatroom.uid, message, recipientList)
                         break
                 if matchingChatters == False:
-                    newChatFunction(user, chatters, message, recipientList, allEmails)
+                    chatroomId = newChatFunction(user, chatters, message, recipientList, allEmails).uid
                         
-            print(str(user.id),chatroomId, flush=True)
+            print('>>>>chatroomid: ',chatroomId, flush=True)
             user.save()
             join_room('chatroom')
             emit('sent-message'+str(user.id), userList.to_json(), room='chatroom')
