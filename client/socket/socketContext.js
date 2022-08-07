@@ -19,21 +19,23 @@ export const SocketProvider = ({ children }) => {
         }
     })
 
-    socket.on("request-received", (userData) => {
+    socket.on("request-received" + user._id, (userData) => {
         currentUser = JSON.parse(userData)
+        console.log(currentUser)
         if (user.email === currentUser[0].email) setUser(currentUser[0])
     })
 
-    socket.on("request-sent", (userData) => {
+    socket.on("request-sent" + user._id, (userData) => {
         currentUser = JSON.parse(userData)
+        console.log(currentUser)
         if (user.email === currentUser[0].email) setUser(currentUser[0])
     })
-    socket.on("accepted-request", (userData) => {
+    socket.on("accepted-request" + user._id, (userData) => {
         currentUser = JSON.parse(userData)
         console.log(currentUser[0].email, user.email)
         if (user.email === currentUser[0].email) setUser(currentUser[0])
     })
-    socket.on("request-accepted", (userData) => {
+    socket.on("request-accepted" + user._id, (userData) => {
         currentUser = JSON.parse(userData)
         console.log(currentUser[0].email, user.email, 2)
         if (user.email === currentUser[0].email) setUser(currentUser[0])

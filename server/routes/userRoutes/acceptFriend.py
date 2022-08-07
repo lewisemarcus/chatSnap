@@ -28,8 +28,8 @@ def acceptAFriend(app, socketio):
             
             newContact.save()
             user.save()
-            socketio.emit('request-accepted', contactList.to_json())
-            socketio.emit('accepted-request', userList.to_json())
+            socketio.emit('request-accepted'+newContact._id, contactList.to_json())
+            socketio.emit('accepted-request'+user._id, userList.to_json())
             return jsonify(friendAdded=user), 201
         except Exception as e:
             print("Error: ", e, flush=True)
