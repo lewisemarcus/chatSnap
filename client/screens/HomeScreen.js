@@ -8,7 +8,7 @@ import { NewMessageBtn } from "../components/NewMessageBtn/NewMessageBtn"
 
 export default function Home({ navigation }) {
     const { user } = useContext(AuthContext)
-    //TODO: replace chatRoomsData with user.chatrooms
+    //TODO: replace chatRoomsData with user.chatrooms.
 
     return (
         <View style={styles.container}>

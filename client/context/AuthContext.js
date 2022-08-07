@@ -15,7 +15,7 @@ export let uri
 // Checks if on web or on android/ios dev
 // if (manifest.debuggerHost !== undefined) uri = AND_URL
 if (Platform.OS === "ios" || Platform.OS === "android") uri = AND_URL
-else uri = WEB_URL
+else uri = AND_URL
 
 const config = { timeout: 5000, baseURL: uri }
 const instance = axios.create(config)

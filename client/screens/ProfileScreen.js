@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthContext"
 import LoginSVG from "../assets/images/user.png"
 export default function ProfileScreen() {
     const { user, logout } = useContext(AuthContext)
-    console.log(typeof LoginSVG)
+
     return (
         <View style={styles.container}>
             <View style={styles.profile}>
@@ -13,12 +13,25 @@ export default function ProfileScreen() {
                 ) : (
                     <Image source={LoginSVG} style={styles.image} />
                 )}
-                <Pressable style={styles.editButton}>
-                    <Text style={styles.editText}>Update Photo</Text>
-                </Pressable>
-                <Pressable style={styles.editButton} onPress={logout}>
-                    <Text style={styles.editText}>Logout</Text>
-                </Pressable>
+                <View
+                    style={{
+                        marginTop: 50,
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <Text style={styles.profileText}>{user.name}</Text>
+                    <Text style={styles.profileText}>{user.email}</Text>
+                </View>
+
+                <View style={{ marginTop: 100 }}>
+                    <Pressable style={styles.editButton}>
+                        <Text style={styles.editText}>Edit Profile</Text>
+                    </Pressable>
+                    <Pressable style={styles.editButton} onPress={logout}>
+                        <Text style={styles.editText}>Logout</Text>
+                    </Pressable>
+                </View>
             </View>
         </View>
     )
@@ -40,11 +53,19 @@ const styles = StyleSheet.create({
         margin: 5,
         width: 150,
         height: 150,
+        marginTop: 50,
     },
     editText: {
         fontSize: 25,
     },
+    profileText: {
+        fontSize: 20,
+        borderBottomWidth: 1,
+        borderColor: "black",
+        margin: 10,
+    },
     editButton: {
+        margin: 5,
         backgroundColor: "white",
         width: 200,
         height: 50,

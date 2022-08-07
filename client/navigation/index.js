@@ -30,8 +30,8 @@ import {
     SelectContactScreen,
     ProfileScreen,
 } from "../screens/index"
+import LoginSVG from "../assets/images/user.png"
 
-import { SocketContext } from "../socket/SocketContext"
 import { useNavigation } from "@react-navigation/core"
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
@@ -101,7 +101,7 @@ const RootNavigator = () => {
 }
 
 const HomeHeader = (props) => {
-    const { logout } = useContext(AuthContext)
+    const { user } = useContext(AuthContext)
     const { width } = useWindowDimensions()
     const navigation = useNavigation()
     const addFriendHandler = () => {
@@ -131,17 +131,27 @@ const HomeHeader = (props) => {
                     navigation.navigate("My Profile")
                 }}
             >
-                <Image
-                    source={{
-                        uri: "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png",
-                    }}
-                    style={{
-                        width: 30,
-                        height: 30,
-                        borderRadius: 30,
-                        marginLeft: -20,
-                    }}
-                />
+                {user.userImage ? (
+                    <Image
+                        source={user.userImage}
+                        style={{
+                            width: 30,
+                            height: 30,
+                            borderRadius: 30,
+                            marginLeft: -20,
+                        }}
+                    />
+                ) : (
+                    <Image
+                        source={LoginSVG}
+                        style={{
+                            width: 30,
+                            height: 30,
+                            borderRadius: 30,
+                            marginLeft: -20,
+                        }}
+                    />
+                )}
             </TouchableWithoutFeedback>
             <Text
                 style={{
