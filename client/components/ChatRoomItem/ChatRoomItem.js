@@ -17,12 +17,7 @@ export default function ChatRoomItem({ chatRoom }) {
                 <FlatList
                     data={chatRoom.userImages}
                     renderItem={({ item: userImage }) => (
-                        <Image
-                            source={{
-                                uri: userImage,
-                            }}
-                            style={styles.image}
-                        />
+                        <Image source={userImage} style={styles.image} />
                     )}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
@@ -31,12 +26,7 @@ export default function ChatRoomItem({ chatRoom }) {
                 <FlatList
                     data={chatRoom.userEmails}
                     renderItem={() => (
-                        <Image
-                            source={{
-                                uri: LoginSVG,
-                            }}
-                            style={styles.image}
-                        />
+                        <Image source={LoginSVG} style={styles.image} />
                     )}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
