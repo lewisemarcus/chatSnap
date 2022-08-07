@@ -2,19 +2,22 @@ import { StyleSheet } from "react-native"
 
 const styles = StyleSheet.create({
     text: {
-        color: "#3777f0",
-        fontWeight: "700",
+        textAlign: "center",
+        color: "black",
         fontSize: 30,
     },
     container: {
-        border: "2px solid white",
+        border: "1px solid black",
         flexDirection: "row",
         padding: 10,
+        borderRadius: 25,
+        width: 200,
+        alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#e5e5e5",
+        backgroundColor: "white",
     },
     badgeText: {
-        color: "#1E87F0",
+        color: "black",
         textAlign: "center",
         fontSize: 12,
         fontWeight: "700",
