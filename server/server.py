@@ -48,6 +48,10 @@ login(app)
 findUser(app)
 getFriends(app)
 
+@socketio.on('connect')
+def joinRoom():
+    join_room("chatroom")
+
 # socket routing
 socketMessage(socketio, emit, join_room, leave_room)
 
