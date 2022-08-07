@@ -11,6 +11,7 @@ const socket = io(uri, {
 
 export const SocketProvider = ({ children }) => {
     const { setUser, user } = useContext(AuthContext)
+
     socket.on("connect", () => {
         try {
             socket.send("connected")
@@ -18,41 +19,47 @@ export const SocketProvider = ({ children }) => {
             console.log("CONNECTION ERROR: ", err)
         }
     })
+    if (user._id !== undefined) {
+        socket.on("request-received" + user._id.$oid, (userData) => {
+            let currentUser = JSON.parse(userData)
+            setUser(currentUser[0])
+        })
 
-    socket.on("request-received" + user._id.$oid, (userData) => {
-        let currentUser = JSON.parse(userData)
-        setUser(currentUser[0])
-    })
+        socket.on("request-sent" + user._id.$oid, (userData) => {
+            let currentUser = JSON.parse(userData)
+            setUser(currentUser[0])
+        })
+        socket.on("accepted-request" + user._id.$oid, (userData) => {
+            let currentUser = JSON.parse(userData)
+            setUser(currentUser[0])
+        })
 
-    socket.on("request-sent" + user._id.$oid, (userData) => {
-        let currentUser = JSON.parse(userData)
-        setUser(currentUser[0])
-    })
-    socket.on("accepted-request" + user._id.$oid, (userData) => {
-        let currentUser = JSON.parse(userData)
-        setUser(currentUser[0])
-    })
+        socket.on("request-accepted" + user._id.$oid, (userData) => {
+            let currentUser = JSON.parse(userData)
+            setUser(currentUser[0])
+        })
 
-    socket.on("request-accepted" + user._id.$oid, (userData) => {
-        let currentUser = JSON.parse(userData)
-        setUser(currentUser[0])
-    })
-
-    // for (let chatroom of user.chatrooms)
-    socket.on("message-received", (data) => {
-        try {
-            console.log("data>", data)
-        } catch (err) {
-            console.log("MESSAGE EVENT ERROR: ", err)
+        for (let chatroom of user.chatrooms) {
+            socket.on("message-received" + chatroom.uid.toString(), (data) => {
+                try {
+                    for (let recipient of data.recipients) {
+                        if (user._id.$oid === recipient._id.$oid)
+                            setUser(recipient)
+                    }
+                } catch (err) {
+                    console.log("MESSAGE EVENT ERROR: ", err)
+                }
+            })
         }
-    })
-    socket.on("sent-message", (data) => {
-        try {
-            console.log("data>", data)
-        } catch (err) {
-            console.log("MESSAGE EVENT ERROR: ", err)
-        }
-    })
+
+        socket.on("sent-message" + user._id.$oid, (data) => {
+            try {
+                setUser(JSON.parse(data)[0])
+            } catch (err) {
+                console.log("MESSAGE EVENT ERROR: ", err)
+            }
+        })
+    }
 
     const sendMessage = (content) => {
         try {
