@@ -4,23 +4,14 @@ import { AuthContext } from "../context/AuthContext"
 import LoginSVG from "../assets/images/user.png"
 export default function ProfileScreen() {
     const { user, logout } = useContext(AuthContext)
+    console.log(typeof LoginSVG)
     return (
         <View style={styles.container}>
             <View style={styles.profile}>
-                {user.Image ? (
-                    <Image
-                        source={{
-                            uri: user.userImage,
-                        }}
-                        style={styles.image}
-                    />
+                {user.userImage ? (
+                    <Image source={user.userImage} style={styles.image} />
                 ) : (
-                    <Image
-                        source={{
-                            uri: LoginSVG,
-                        }}
-                        style={styles.image}
-                    />
+                    <Image source={LoginSVG} style={styles.image} />
                 )}
                 <Pressable style={styles.editButton}>
                     <Text style={styles.editText}>Update Photo</Text>
