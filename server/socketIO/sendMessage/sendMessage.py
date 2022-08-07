@@ -69,8 +69,8 @@ def socketMessage(socketio, emit, join_room, leave_room):
             print('>>>>chatroomid: ',chatroomId, flush=True)
             user.save()
             join_room('chatroom')
-            emit('sent-message'+str(user.id), userList.to_json(), room='chatroom')
-            emit('message-received'+str(chatroomId), {'recipients' : recipientEmitList}, room='chatroom')
+            emit('sent-message', userList.to_json(), room=+str(user.id))
+            emit('message-received', {'recipients' : recipientEmitList}, room=+str(chatroomId))
         except Exception as e:
             print("Error: ", e)
             return jsonify(e), 500
