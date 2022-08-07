@@ -16,7 +16,7 @@ def updateChat(uid, message, recipientList):
         recipient.chatrooms.update(uid=uid, push__messages=[message])
         recipient.save()
             
-def socketMessage(socketio, emit):
+def socketMessage(socketio, emit, join_room, leave_room):
     @socketio.on('message-sent')
     def message(content):
         try:
@@ -69,8 +69,9 @@ def socketMessage(socketio, emit):
                         
             print(str(user.id),chatroomId, flush=True)
             user.save()
-            emit('sent-message'+str(user.id), userList.to_json())
-            emit('message-received'+str(chatroomId), {'recipients' : recipientEmitList})
+            join_room('chatroom')
+            emit('sent-message'+str(user.id), userList.to_json(), room='chatroom')
+            emit('message-received'+str(chatroomId), {'recipients' : recipientEmitList}, room='chatroom')
         except Exception as e:
             print("Error: ", e)
             return jsonify(e), 500

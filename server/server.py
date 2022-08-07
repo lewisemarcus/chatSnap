@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from flask_mongoengine import MongoEngine
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, join_room, leave_room
 from socketIO.sendMessage.sendMessage import socketMessage
 from routes.userRoutes.addFriend import addAFriend
 from routes.onboardingRoutes.register import register
@@ -49,7 +49,7 @@ findUser(app)
 getFriends(app)
 
 # socket routing
-socketMessage(socketio,  emit)
+socketMessage(socketio, emit, join_room, leave_room)
 
 if __name__ == "__main__":
     socketio.run(app, host=HOST, port=PORT, debug=DEBUG)
