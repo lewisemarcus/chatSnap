@@ -70,7 +70,7 @@ def socketMessage(socketio, emit):
             print(str(user.id),chatroomId, flush=True)
             user.save()
             emit('sent-message'+str(user.id), userList.to_json())
-            emit('message-received'+chatroomId, {'recipients' : recipientEmitList})
+            emit('message-received'+str(chatroomId), {'recipients' : recipientEmitList})
         except Exception as e:
             print("Error: ", e)
             return jsonify(e), 500
