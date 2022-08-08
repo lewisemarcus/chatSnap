@@ -54,14 +54,12 @@ def socketMessage(socketio, emit):
                     if len(chatroom.users) != len(chatters):
                         matchingChatters = False
                     else:
-                        
                         for i in range(len(chatters)):
                             if chatters[i] not in allEmails:
                                 matchingChatters = False
                                 break
                             else:
                                 matchingChatters = True
-                                break
                     if matchingChatters == True:
                         chatroomId = chatroom.uid 
                         chatroom.messages.append(message)
