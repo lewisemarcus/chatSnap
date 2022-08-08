@@ -26,7 +26,8 @@ def socketMessage(socketio, emit):
         try:
             parsedContent = json.loads(content)
             userEmail = parsedContent['user']['email']
-            receiversEmails = parsedContent['receivers']
+            receiversEmails = parsedContent['receivers'].copy()
+            print(receiversEmails, flush=True)
             messageText = parsedContent['message']
             userList = User.objects(email=userEmail)
             user = userList[0]
@@ -43,7 +44,7 @@ def socketMessage(socketio, emit):
             chatters.append(user)
             message = Message(message=messageText, senderEmail=user.email)
             matchingChatters = False
-            allEmails = parsedContent['receivers']
+            allEmails = parsedContent['receivers'].copy()
             allEmails.append(userEmail)
             
             if len(user.chatrooms) == 0:
@@ -69,10 +70,15 @@ def socketMessage(socketio, emit):
                 if matchingChatters == False:
                     chatroomId = newChatFunction(user, chatters, message, recipientList, allEmails, recipientEmitList).uid
                         
-            print('>>>>recipientEmitList: ',recipientEmitList, flush=True)
             user.save()
+            for i in range(len(receiversEmails)):
+                if receiversEmails[i] == user.email:
+                    receiversEmails = receiversEmails.pop(i)
+                    
             emit('sent-message'+str(user.id), userList.to_json(), room='chatroom')
-            emit('message-received'+str(chatroomId), {'recipients' : recipientEmitList}, room='chatroom')
+    
+            emit('message-received'+",".join(receiversEmails), {'recipients' : recipientEmitList}, room='chatroom')
+           
         except Exception as e:
             print("Error: ", e)
             return jsonify(e), 500
