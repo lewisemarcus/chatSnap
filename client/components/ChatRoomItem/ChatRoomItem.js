@@ -3,12 +3,16 @@ import { Text, View, Image, Pressable, FlatList } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 import styles from "./styles/ChatRoomStyle"
 import LoginSVG from "../../assets/images/user.png"
+import { AuthContext } from "../../context/AuthContext"
 export default function ChatRoomItem({ chatRoom }) {
     const navigation = useNavigation()
+    const { user } = useContext(AuthContext)
     const onPress = () => {
         navigation.navigate("ChatRoom", { id: chatRoom.uid })
     }
-    chatRoom.userEmails.pop()
+    chatRoom.userEmails = chatRoom.userEmails.filter((email) => {
+        return email != user.email
+    })
 
     return (
         <Pressable style={styles.container} onPress={onPress}>
