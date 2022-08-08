@@ -1,13 +1,12 @@
-import React from "react"
+import React, { useContext } from "react"
 import { View, Text, StyleSheet } from "react-native"
+import { AuthContext } from "../../context/AuthContext"
 
-export default function Message({ chat }) {
-    const blue = "#3777f0"
-    const grey = "#f2f2f2"
-    const myId = "u1"
+export default function Message({ message }) {
+    const { user } = useContext(AuthContext)
 
-    const isMe = chat.user.id === myId
-
+    const isMe = message.senderEmail === user.email
+    console.log(message)
     return (
         <View
             style={[
@@ -16,7 +15,7 @@ export default function Message({ chat }) {
             ]}
         >
             <Text style={{ color: isMe ? "black" : "white" }}>
-                {chat.content}
+                {message.message}
             </Text>
         </View>
     )

@@ -1,16 +1,31 @@
-import React from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { StyleSheet, FlatList, SafeAreaView } from "react-native"
 import Message from "../components/Message"
 import chatRoomData from "../assets/dummy-data/Chats"
 import MessageInput from "../components/MessageInput"
 import { useRoute } from "@react-navigation/core"
+import { AuthContext } from "../context/AuthContext"
 export default function ChatRoomScreen({ navigation }) {
+    const route = useRoute()
+    const chatroomId = route.params.id
+    const { user } = useContext(AuthContext)
+    const [messages, setMessages] = useState([])
+    useEffect(() => {
+        for (let chatroom of user.chatrooms) {
+            if (chatroom.uid === chatroomId) {
+                setMessages(chatroom.messages)
+                break
+            }
+        }
+    }, [user.chatrooms])
     return (
         <SafeAreaView style={styles.page}>
             <FlatList
-                data={chatRoomData.messages}
+                data={messages}
                 // rename's the item from props to eachChatRoom
-                renderItem={({ item: eachChat }) => <Message chat={eachChat} />}
+                renderItem={({ item: message }) => (
+                    <Message message={message} />
+                )}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
                 inverted

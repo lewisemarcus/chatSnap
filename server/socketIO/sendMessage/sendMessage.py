@@ -25,10 +25,10 @@ def socketMessage(socketio, emit):
     def message(content):
         try:
             parsedContent = json.loads(content)
-            userEmail = parsedContent['user']['email']
+            userEmail = parsedContent['user']['email'].copy()
             receiversEmails = parsedContent['receivers'].copy()
             print(receiversEmails, flush=True)
-            messageText = parsedContent['message']
+            messageText = parsedContent['message'].copy()
             userList = User.objects(email=userEmail)
             user = userList[0]
             recipientList = []
@@ -54,8 +54,9 @@ def socketMessage(socketio, emit):
                     if len(chatroom.users) != len(chatters):
                         matchingChatters = False
                     else:
+                        print(chatters, chatroom.users, flush=True)
                         for i in range(len(chatters)):
-
+                            
                             if chatters[i].email != chatroom.users[i].email:
                                 matchingChatters = False
                                 break
