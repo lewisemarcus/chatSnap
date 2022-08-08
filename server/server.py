@@ -53,7 +53,7 @@ def joinRoom(content):
     join_room("chatroom")
 
 # socket routing
-socketMessage(socketio, emit, join_room, leave_room)
+socketMessage(socketio, emit)
 
 if __name__ == "__main__":
     socketio.run(app, host=HOST, port=PORT, debug=DEBUG)
