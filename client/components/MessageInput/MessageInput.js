@@ -20,12 +20,13 @@ export default function MessageInput({ navigation }) {
     const [message, setMessage] = useState("")
     const { sendMessage } = useContext(SocketContext)
     const { user, receivers, setReceivers } = useContext(AuthContext)
+    const route = useRoute()
     const onPress = () => {
         if (message) {
             sendMessage({ user, receivers, message })
             //TODO: once new chatroom is created change to chatroom screen
             // if (route.name === "New Chat") {
-            //     navigation.navigate("ChatRoomScreen", {})
+            //     navigation.navigate("ChatRoom", {id: })
             // }
         }
         setMessage("")

@@ -46,7 +46,7 @@ export default function RecipientInput({ navigation }) {
             }),
         )
     }
-    console.log(">>", receivers)
+
     return (
         <KeyboardAvoidingView
             style={styles.root}
