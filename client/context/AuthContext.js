@@ -31,6 +31,7 @@ export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(null)
     const [name, setName] = useState("")
     const [chatroomId, setChatroomId] = useState("")
+    const [chatroom, setChatroom] = useState(null)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [passwordConfirm, setPasswordConfirm] = useState("")
@@ -189,6 +190,8 @@ export const AuthProvider = ({ children }) => {
                 setReceivers,
                 chatroomId,
                 setChatroomId,
+                chatroom,
+                setChatroom,
             }}
         >
             {children}

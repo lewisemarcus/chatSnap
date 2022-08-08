@@ -6,7 +6,6 @@ export default function Message({ message }) {
     const { user } = useContext(AuthContext)
 
     const isMe = message.senderEmail === user.email
-    console.log(message)
     return (
         <View
             style={[

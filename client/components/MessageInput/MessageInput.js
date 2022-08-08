@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import {
     View,
     Text,
@@ -14,26 +14,32 @@ import {
     Feather,
     MaterialCommunityIcons,
 } from "@expo/vector-icons"
+
 import { AuthContext } from "../../context/AuthContext"
-import { useRoute } from "@react-navigation/native"
-export default function MessageInput({ navigation }) {
+import { useRoute, useNavigation } from "@react-navigation/native"
+export default function MessageInput() {
     const [message, setMessage] = useState("")
+    const [sentMessage, setSentMessage] = useState(false)
     const { sendMessage } = useContext(SocketContext)
-    const { user, receivers, setReceivers, chatroomId } =
+    const { user, receivers, setReceivers, chatroomId, setChatroomId } =
         useContext(AuthContext)
     const route = useRoute()
+    const navigation = useNavigation()
     const onPress = () => {
         if (message) {
             sendMessage({ user, receivers, message })
-            //TODO: once new chatroom is created change to chatroom screen
-            if (route.name === "New Chat") {
-                navigation.navigate("ChatRoom", { id: chatroomId })
-            }
+            setSentMessage(true)
         }
         setMessage("")
         setReceivers([])
     }
-
+    useEffect(() => {
+        if (sentMessage && route.name === "New Chat") {
+            navigation.navigate("ChatRoom", { id: chatroomId })
+        }
+        setSentMessage(false)
+        setChatroomId("")
+    }, [chatroomId.length > 0])
     return (
         <KeyboardAvoidingView
             style={styles.root}

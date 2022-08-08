@@ -20,7 +20,6 @@ export const SocketProvider = ({ children }) => {
                 console.log("CONNECTION ERROR: ", err)
             }
         })
-        // return () => socket.off("connect")
     }, [])
 
     useEffect(() => {
@@ -39,8 +38,6 @@ export const SocketProvider = ({ children }) => {
                 let currentUser = JSON.parse(userData)
                 setUser(currentUser[0])
             })
-
-            // return () => socket.off("request-sent" + user._id.$oid)
         }
     })
     useEffect(() => {
@@ -49,8 +46,6 @@ export const SocketProvider = ({ children }) => {
                 let currentUser = JSON.parse(userData)
                 setUser(currentUser[0])
             })
-
-            // return () => socket.off("accepted-request" + user._id.$oid)
         }
     })
     useEffect(() => {
@@ -59,8 +54,6 @@ export const SocketProvider = ({ children }) => {
                 let currentUser = JSON.parse(userData)
                 setUser(currentUser[0])
             })
-
-            // return socket.off("request-accepted" + user._id.$oid)
         }
     })
 
@@ -68,8 +61,8 @@ export const SocketProvider = ({ children }) => {
         if (user._id !== undefined) {
             socket.on("sent-message" + user._id.$oid, (data) => {
                 try {
-                    console.log("hi")
-                    setUser(JSON.parse(data)[0])
+                    setChatroomId(data.chatroomId)
+                    setUser(JSON.parse(data.user)[0])
                 } catch (err) {
                     console.log("MESSAGE EVENT ERROR: ", err)
                 }

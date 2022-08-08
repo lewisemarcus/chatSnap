@@ -7,6 +7,7 @@ import { AuthContext } from "../../context/AuthContext"
 export default function ChatRoomItem({ chatRoom }) {
     const navigation = useNavigation()
     const { user } = useContext(AuthContext)
+    console.log("uh", chatRoom.uid)
     const onPress = () => {
         navigation.navigate("ChatRoom", { id: chatRoom.uid })
     }

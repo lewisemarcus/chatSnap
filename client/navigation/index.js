@@ -5,6 +5,7 @@ import {
     DefaultTheme,
     DarkTheme,
 } from "@react-navigation/native"
+import { HeaderBackButton } from "@react-navigation/elements"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import React, { useContext, useState, useEffect } from "react"
 import {
@@ -40,6 +41,7 @@ import { useNavigation } from "@react-navigation/core"
 const Stack = createNativeStackNavigator()
 
 const RootNavigator = () => {
+    const navigation = useNavigation()
     return (
         <Stack.Navigator>
             <Stack.Screen
@@ -51,7 +53,18 @@ const RootNavigator = () => {
             <Stack.Screen
                 name="ChatRoom"
                 component={ChatRoomScreen}
-                options={{ headerTitle: ChatRoomHeader }}
+                options={{
+                    headerTitle: ChatRoomHeader,
+                    headerBackVisible: false,
+                    headerLeft: () => (
+                        <HeaderBackButton
+                            style={{ marginRight: 40, marginLeft: 0 }}
+                            onPress={() => {
+                                navigation.navigate("Home")
+                            }}
+                        />
+                    ),
+                }}
             />
             <Stack.Screen
                 name="New Chat"
