@@ -54,14 +54,12 @@ def socketMessage(socketio, emit):
                     if len(chatroom.users) != len(chatters):
                         matchingChatters = False
                     else:
-                        
                         for i in range(len(chatters)):
                             if chatters[i] not in allEmails:
                                 matchingChatters = False
                                 break
                             else:
                                 matchingChatters = True
-                                break
                     if matchingChatters == True:
                         chatroomId = chatroom.uid 
                         chatroom.messages.append(message)
@@ -77,7 +75,7 @@ def socketMessage(socketio, emit):
                     
             emit('sent-message'+str(user.id), userList.to_json(), room='chatroom')
     
-            emit('message-received'+",".join(receiversEmails), {'recipients' : recipientEmitList}, room='chatroom')
+            emit('message-received'+",".join(receiversEmails), {'recipients' : recipientEmitList, 'chatroomId' : str(chatroomId)}, room='chatroom')
            
         except Exception as e:
             print("Error: ", e)

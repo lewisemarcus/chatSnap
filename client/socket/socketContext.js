@@ -10,7 +10,7 @@ const socket = io(uri, {
 })
 
 export const SocketProvider = ({ children }) => {
-    const { setUser, user } = useContext(AuthContext)
+    const { setUser, user, setChatroomId } = useContext(AuthContext)
     const [sentMessage, setSentMessage] = useState(false)
     useEffect(() => {
         socket.on("connect", () => {
@@ -82,6 +82,7 @@ export const SocketProvider = ({ children }) => {
             socket.on("message-received" + user.email, (data) => {
                 if (count == 0)
                     try {
+                        setChatroomId(data.chatroomId)
                         for (let recipient of data.recipients) {
                             if (user._id.$oid === recipient._id.$oid)
                                 setUser(recipient)
