@@ -75,7 +75,7 @@ def socketMessage(socketio, emit):
                     
             emit('sent-message'+str(user.id), userList.to_json(), room='chatroom')
     
-            emit('message-received'+",".join(receiversEmails), {'recipients' : recipientEmitList}, room='chatroom')
+            emit('message-received'+",".join(receiversEmails), {'recipients' : recipientEmitList, 'chatroomId' : str(chatroomId)}, room='chatroom')
            
         except Exception as e:
             print("Error: ", e)
