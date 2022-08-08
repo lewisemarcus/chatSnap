@@ -2,19 +2,21 @@ from flask import jsonify
 from models.User import User, Message, Chatroom
 import json
 
-def newChatFunction(user, chatters, message, recipientList, allEmails):
+def newChatFunction(user, chatters, message, recipientList, allEmails, recipientEmitList):
     newChatroom = Chatroom(users=chatters, userEmails=allEmails)
     newChatroom.messages.append(message)
     user.chatrooms.append(newChatroom)
     for recipient in recipientList:
         recipient.chatrooms.append(newChatroom)
         recipient.save()
+        recipientEmitList.append(json.loads(recipient.to_json()))
     return newChatroom
 
-def updateChat(uid, message, recipientList):
+def updateChat(uid, message, recipientList, recipientEmitList):
     for recipient in recipientList:
         recipient.chatrooms.update(uid=uid, push__messages=[message])
         recipient.save()
+        recipientEmitList.append(json.loads(recipient.to_json()))
             
 def socketMessage(socketio, emit, join_room, leave_room):
     @socketio.on('message-sent')
@@ -34,7 +36,7 @@ def socketMessage(socketio, emit, join_room, leave_room):
                 recipientData = User.objects(email=receiverEmail)
                 recipient = recipientData[0]
                 recipientList.append(recipient)
-                recipientEmitList.append(json.loads(recipient.to_json()))
+                
                 chatters.append(recipient)
             
             chatters.append(user)
@@ -44,7 +46,7 @@ def socketMessage(socketio, emit, join_room, leave_room):
             allEmails.append(userEmail)
             
             if len(user.chatrooms) == 0:
-                chatroomId = newChatFunction(user, chatters, message, recipientList, allEmails).uid
+                chatroomId = newChatFunction(user, chatters, message, recipientList, allEmails, recipientEmitList).uid
             else:
                 for chatroom in user.chatrooms:
                     if len(chatroom.users) != len(chatters):
@@ -61,14 +63,13 @@ def socketMessage(socketio, emit, join_room, leave_room):
                     if matchingChatters == True:
                         chatroomId = chatroom.uid 
                         chatroom.messages.append(message)
-                        updateChat(chatroom.uid, message, recipientList)
+                        updateChat(chatroom.uid, message, recipientList, recipientEmitList)
                         break
                 if matchingChatters == False:
-                    chatroomId = newChatFunction(user, chatters, message, recipientList, allEmails).uid
+                    chatroomId = newChatFunction(user, chatters, message, recipientList, allEmails, recipientEmitList).uid
                         
             print('>>>>chatroomid: ',chatroomId, flush=True)
             user.save()
-            join_room('chatroom')
             emit('sent-message'+str(user.id), userList.to_json(), room='chatroom')
             emit('message-received'+str(chatroomId), {'recipients' : recipientEmitList}, room='chatroom')
         except Exception as e:

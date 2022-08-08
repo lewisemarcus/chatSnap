@@ -15,7 +15,6 @@ export const SocketProvider = ({ children }) => {
     socket.on("connect", () => {
         try {
             socket.send("connected")
-            socket.join("chatroom")
         } catch (err) {
             console.log("CONNECTION ERROR: ", err)
         }
@@ -43,7 +42,9 @@ export const SocketProvider = ({ children }) => {
         for (let chatroom of user.chatrooms) {
             socket.on("message-received" + chatroom.uid.toString(), (data) => {
                 try {
+                    console.log("HIYA", data.recipients, user)
                     for (let recipient of data.recipients) {
+                        console.log(user._id.$oid === recipient._id.$oid)
                         if (user._id.$oid === recipient._id.$oid)
                             setUser(recipient)
                     }
@@ -66,7 +67,7 @@ export const SocketProvider = ({ children }) => {
     const sendMessage = (content) => {
         try {
             console.log("Content>", content)
-            socket.to("chatroom").emit("message-sent", JSON.stringify(content))
+            socket.emit("message-sent", JSON.stringify(content))
         } catch (err) {
             console.log("SEND MESSAGE ERROR: ", err)
         }
