@@ -12,7 +12,6 @@ export default function ChatRoomScreen({ navigation }) {
     const [messages, setMessages] = useState([])
     useEffect(() => {
         for (let chatroom of user.chatrooms) {
-            console.log(chatroom.uid, chatroomId)
             if (chatroom.uid === chatroomId) {
                 setMessages(chatroom.messages)
                 break
