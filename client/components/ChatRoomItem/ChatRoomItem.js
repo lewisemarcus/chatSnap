@@ -48,6 +48,7 @@ export default function ChatRoomItem({ chatRoom }) {
                         <Text style={styles.name}>
                             {chatRoom.userEmails[0]}
                         </Text>
+
                         <Text style={styles.text}>
                             {
                                 chatRoom.messages[chatRoom.messages.length - 1]
@@ -55,12 +56,29 @@ export default function ChatRoomItem({ chatRoom }) {
                             }
                         </Text>
                     </View>
-                    <Text numberOfLines={1} style={styles.text}>
-                        {
-                            chatRoom.messages[chatRoom.messages.length - 1]
-                                .message
-                        }
-                    </Text>
+                    {user.email ==
+                    chatRoom.messages[chatRoom.messages.length - 1]
+                        .senderEmail ? (
+                        <Text numberOfLines={1} style={styles.text}>
+                            You:{" "}
+                            {
+                                chatRoom.messages[chatRoom.messages.length - 1]
+                                    .message
+                            }
+                        </Text>
+                    ) : (
+                        <Text numberOfLines={1} style={styles.text}>
+                            {
+                                chatRoom.messages[chatRoom.messages.length - 1]
+                                    .senderEmail
+                            }
+                            :{" "}
+                            {
+                                chatRoom.messages[chatRoom.messages.length - 1]
+                                    .message
+                            }
+                        </Text>
+                    )}
                 </View>
             )}
         </Pressable>

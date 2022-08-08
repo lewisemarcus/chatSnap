@@ -82,7 +82,6 @@ export const SocketProvider = ({ children }) => {
             socket.on("message-received" + user.email, (data) => {
                 if (count == 0)
                     try {
-                        console.log("hi")
                         for (let recipient of data.recipients) {
                             if (user._id.$oid === recipient._id.$oid)
                                 setUser(recipient)
