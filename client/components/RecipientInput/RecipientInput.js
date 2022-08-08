@@ -8,7 +8,6 @@ import {
     KeyboardAvoidingView,
     Platform,
     FlatList,
-    Keyboard,
     Alert,
 } from "react-native"
 
@@ -17,8 +16,12 @@ import { AuthContext } from "../../context/AuthContext"
 export default function RecipientInput({ navigation }) {
     const [recipient, setRecipient] = useState("")
     const [searchedContacts, setContacts] = useState([])
-    const { user, setReceivers, receivers } = useContext(AuthContext)
+    const { user, setReceivers, receivers, setChatroom } =
+        useContext(AuthContext)
     const inputRef = useRef()
+    useEffect(() => {
+        setReceivers([])
+    }, [])
     useEffect(() => {
         if (recipient.length != 0) {
             let matches = user.contacts.filter((contact) => {
@@ -32,6 +35,24 @@ export default function RecipientInput({ navigation }) {
     const onPress = () => {
         navigation.navigate("Select Contact")
     }
+
+    useEffect(() => {
+        if (receivers.length == 0) setChatroom(null)
+        for (let chatroom of user.chatrooms) {
+            if (chatroom.users.length - 1 !== receivers.length) break
+            const tempChatters = chatroom.userEmails.filter((chatter) => {
+                return chatter != user.email
+            })
+
+            for (let chatter of tempChatters) {
+                if (!receivers.includes(chatter)) {
+                    setChatroom(null)
+                    break
+                }
+                setChatroom(chatroom)
+            }
+        }
+    }, [receivers])
 
     const addReceiver = (contact) => {
         if (receivers.includes(contact)) Alert.alert("Recipient already added")
@@ -69,7 +90,7 @@ export default function RecipientInput({ navigation }) {
                                         removeReceiver(receiver)
                                     }}
                                     style={{
-                                        backgroundColor: "white",
+                                        backgroundColor: "#eeeeee",
                                         padding: 3,
                                         margin: 2,
                                         borderRadius: 10,

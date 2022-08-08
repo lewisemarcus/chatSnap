@@ -1,17 +1,18 @@
 import React, { useContext, useEffect, useState } from "react"
 import { StyleSheet, FlatList, SafeAreaView } from "react-native"
 import Message from "../components/Message"
-import chatRoomData from "../assets/dummy-data/Chats"
+
 import MessageInput from "../components/MessageInput"
 import { useRoute } from "@react-navigation/core"
 import { AuthContext } from "../context/AuthContext"
 export default function ChatRoomScreen({ navigation }) {
     const route = useRoute()
     const chatroomId = route.params.id
-    const { user, receivers, setReceivers } = useContext(AuthContext)
+    const { user, setReceivers } = useContext(AuthContext)
     const [messages, setMessages] = useState([])
     useEffect(() => {
         for (let chatroom of user.chatrooms) {
+            console.log(chatroom.uid, chatroomId)
             if (chatroom.uid === chatroomId) {
                 setMessages(chatroom.messages)
                 break

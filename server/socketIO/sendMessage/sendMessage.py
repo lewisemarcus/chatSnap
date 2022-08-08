@@ -1,9 +1,10 @@
 from flask import jsonify
 from models.User import User, Message, Chatroom
 import json
+import uuid
 
 def newChatFunction(user, chatters, message, recipientList, allEmails, recipientEmitList):
-    newChatroom = Chatroom(users=chatters, userEmails=allEmails)
+    newChatroom = Chatroom(users=chatters, userEmails=allEmails, uid=uuid.uuid4())
     newChatroom.messages.append(message)
     user.chatrooms.append(newChatroom)
     for recipient in recipientList:
@@ -55,7 +56,7 @@ def socketMessage(socketio, emit):
                         matchingChatters = False
                     else:
                         for i in range(len(chatters)):
-                            if chatters[i] not in allEmails:
+                            if chatters[i].email not in chatroom.userEmails:
                                 matchingChatters = False
                                 break
                             else:
@@ -73,7 +74,7 @@ def socketMessage(socketio, emit):
                 if receiversEmails[i] == user.email:
                     receiversEmails = receiversEmails.pop(i)
                     
-            emit('sent-message'+str(user.id), userList.to_json(), room='chatroom')
+            emit('sent-message'+str(user.id), {'user': userList.to_json(), 'chatroomId': str(chatroomId)}, room='chatroom')
     
             emit('message-received'+",".join(receiversEmails), {'recipients' : recipientEmitList, 'chatroomId' : str(chatroomId)}, room='chatroom')
            
