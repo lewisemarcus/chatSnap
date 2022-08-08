@@ -25,10 +25,10 @@ def socketMessage(socketio, emit):
     def message(content):
         try:
             parsedContent = json.loads(content)
-            userEmail = parsedContent['user']['email'].copy()
+            userEmail = parsedContent['user']['email']
             receiversEmails = parsedContent['receivers'].copy()
             print(receiversEmails, flush=True)
-            messageText = parsedContent['message'].copy()
+            messageText = parsedContent['message']
             userList = User.objects(email=userEmail)
             user = userList[0]
             recipientList = []
@@ -54,10 +54,9 @@ def socketMessage(socketio, emit):
                     if len(chatroom.users) != len(chatters):
                         matchingChatters = False
                     else:
-                        print(chatters, chatroom.users, flush=True)
+                        
                         for i in range(len(chatters)):
-                            
-                            if chatters[i].email != chatroom.users[i].email:
+                            if chatters[i] not in allEmails:
                                 matchingChatters = False
                                 break
                             else:

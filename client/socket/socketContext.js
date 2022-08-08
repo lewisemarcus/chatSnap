@@ -30,7 +30,7 @@ export const SocketProvider = ({ children }) => {
                 setUser(currentUser[0])
             })
 
-            // return () => socket.off("request-received" + user._id.$oid)
+            return () => socket.off("request-received" + user._id.$oid)
         }
     })
     useEffect(() => {

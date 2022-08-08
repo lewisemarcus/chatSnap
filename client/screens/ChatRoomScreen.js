@@ -8,7 +8,7 @@ import { AuthContext } from "../context/AuthContext"
 export default function ChatRoomScreen({ navigation }) {
     const route = useRoute()
     const chatroomId = route.params.id
-    const { user } = useContext(AuthContext)
+    const { user, receivers, setReceivers } = useContext(AuthContext)
     const [messages, setMessages] = useState([])
     useEffect(() => {
         for (let chatroom of user.chatrooms) {
@@ -18,6 +18,17 @@ export default function ChatRoomScreen({ navigation }) {
             }
         }
     }, [user.chatrooms])
+    useEffect(() => {
+        for (let chatroom of user.chatrooms) {
+            if (chatroom.uid === chatroomId) {
+                setReceivers(
+                    chatroom.userEmails.filter((receiver) => {
+                        return receiver !== user.email
+                    }),
+                )
+            }
+        }
+    }, [])
     return (
         <SafeAreaView style={styles.page}>
             <FlatList
