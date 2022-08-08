@@ -42,7 +42,7 @@ export const SocketProvider = ({ children }) => {
         for (let chatroom of user.chatrooms) {
             socket.on("message-received" + chatroom.uid.toString(), (data) => {
                 try {
-                    console.log("HIYA", data.recipients, user)
+                    console.log("HIYA>", data.recipients, user)
                     for (let recipient of data.recipients) {
                         console.log(user._id.$oid === recipient._id.$oid)
                         if (user._id.$oid === recipient._id.$oid)

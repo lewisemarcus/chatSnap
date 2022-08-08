@@ -12,13 +12,14 @@ def newChatFunction(user, chatters, message, recipientList, allEmails, recipient
         recipientEmitList.append(json.loads(recipient.to_json()))
     return newChatroom
 
-def updateChat(uid, message, recipientList, recipientEmitList):
+def updateChat(message, recipientList, recipientEmitList):
     for recipient in recipientList:
-        recipient.chatrooms.update(uid=uid, push__messages=[message])
+        for chatroom in recipient.chatrooms:
+            chatroom.messages.append(message)
         recipient.save()
         recipientEmitList.append(json.loads(recipient.to_json()))
             
-def socketMessage(socketio, emit, join_room, leave_room):
+def socketMessage(socketio, emit):
     @socketio.on('message-sent')
     def message(content):
         try:
@@ -36,7 +37,6 @@ def socketMessage(socketio, emit, join_room, leave_room):
                 recipientData = User.objects(email=receiverEmail)
                 recipient = recipientData[0]
                 recipientList.append(recipient)
-                
                 chatters.append(recipient)
             
             chatters.append(user)
@@ -63,12 +63,12 @@ def socketMessage(socketio, emit, join_room, leave_room):
                     if matchingChatters == True:
                         chatroomId = chatroom.uid 
                         chatroom.messages.append(message)
-                        updateChat(chatroom.uid, message, recipientList, recipientEmitList)
+                        updateChat(message, recipientList, recipientEmitList)
                         break
                 if matchingChatters == False:
                     chatroomId = newChatFunction(user, chatters, message, recipientList, allEmails, recipientEmitList).uid
                         
-            print('>>>>chatroomid: ',chatroomId, flush=True)
+            print('>>>>recipientEmitList: ',recipientEmitList, flush=True)
             user.save()
             emit('sent-message'+str(user.id), userList.to_json(), room='chatroom')
             emit('message-received'+str(chatroomId), {'recipients' : recipientEmitList}, room='chatroom')
