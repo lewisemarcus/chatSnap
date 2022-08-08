@@ -12,10 +12,11 @@ def newChatFunction(user, chatters, message, recipientList, allEmails, recipient
         recipientEmitList.append(json.loads(recipient.to_json()))
     return newChatroom
 
-def updateChat(message, recipientList, recipientEmitList):
+def updateChat(uid, message, recipientList, recipientEmitList):
     for recipient in recipientList:
         for chatroom in recipient.chatrooms:
-            chatroom.messages.append(message)
+            if(chatroom.uid == uid):
+                chatroom.messages.append(message)
         recipient.save()
         recipientEmitList.append(json.loads(recipient.to_json()))
             
@@ -63,7 +64,7 @@ def socketMessage(socketio, emit):
                     if matchingChatters == True:
                         chatroomId = chatroom.uid 
                         chatroom.messages.append(message)
-                        updateChat(message, recipientList, recipientEmitList)
+                        updateChat(chatroomId, message, recipientList, recipientEmitList)
                         break
                 if matchingChatters == False:
                     chatroomId = newChatFunction(user, chatters, message, recipientList, allEmails, recipientEmitList).uid
