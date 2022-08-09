@@ -6,19 +6,21 @@ import {
     Pressable,
     StyleSheet,
     TextInput,
+    Alert,
 } from "react-native"
 import * as ImagePicker from "expo-image-picker"
 import { AuthContext } from "../context/AuthContext"
 import LoginSVG from "../assets/images/user.png"
 import { Platform } from "react-native"
-import { getStorage, ref, uploadBytes } from "firebase/storage"
+import { getStorage, ref, uploadBytes, deleteObject } from "firebase/storage"
 import FileSystem from "expo-file-system"
 export default function EditProfileScreen({ navigation }) {
     const { user, instance, setUser } = useContext(AuthContext)
     const [fullName, setFullName] = useState(user.name)
     const [photo, setPhoto] = useState(null)
     const [imageRef, setImageRef] = useState(null)
-    const [userInfo, setUserInfo] = useState(null)
+    const [storageRef, setStorage] = useState(null)
+
     const updateUser = async (fullName, email, userImage) => {
         const name = fullName.length > 0 ? fullName : user.name
         const result = await instance.post("updateUser", {
@@ -30,15 +32,11 @@ export default function EditProfileScreen({ navigation }) {
             },
             body: { name, email, userImage },
         })
-        setUserInfo(result.data)
+        result.data.userImage = userImage
+        setUser(result.data)
+        navigation.navigate("My Profile")
     }
 
-    useEffect(() => {
-        if (userInfo) {
-            setUser(userInfo)
-            navigation.navigate("My Profile")
-        }
-    }, [userInfo])
     const pickImage = async () => {
         try {
             // No permissions request is necessary for launching the image library
@@ -55,6 +53,7 @@ export default function EditProfileScreen({ navigation }) {
                 const imageName =
                     result.uri.split("/")[result.uri.split("/").length - 1]
                 setImageRef(ref(storage, imageName))
+                setStorage(storage)
             }
         } catch (err) {
             console.error("Image picking error", err)
@@ -62,16 +61,32 @@ export default function EditProfileScreen({ navigation }) {
     }
 
     const saveProfile = async (imageRef, imageUri) => {
-        const image = await fetch(imageUri.replace("file:///", "file:/"))
-        const imageBytes = await image.blob()
-        const uploaded = await uploadBytes(imageRef, imageBytes)
-        if (uploaded.metadata.bucket.length > 0) {
-            const userImage = `https://firebasestorage.googleapis.com/v0/b/${
-                uploaded.metadata.bucket
-            }/o/${
-                uploaded.metadata.fullPath
-            }?alt=media&token=${uploaded.metadata.fullPath.replace(".jpg", "")}`
-            updateUser(fullName, user.email, userImage)
+        if (user.userImage) {
+            try {
+                let userImageRef = ref(storageRef, user.userImage)
+                await deleteObject(userImageRef)
+            } catch (err) {
+                console.error("Error updating profile picture.", err)
+            }
+        }
+        try {
+            const image = await fetch(imageUri.replace("file:///", "file:/"))
+            const imageBytes = await image.blob()
+            const uploaded = await uploadBytes(imageRef, imageBytes)
+            if (uploaded.metadata.bucket.length > 0) {
+                const userImage = `https://firebasestorage.googleapis.com/v0/b/${
+                    uploaded.metadata.bucket
+                }/o/${
+                    uploaded.metadata.fullPath
+                }?alt=media&token=${uploaded.metadata.fullPath.replace(
+                    ".jpg",
+                    "",
+                )}`
+
+                updateUser(fullName, user.email, userImage)
+            }
+        } catch (err) {
+            console.error("Error updating profile picture.", err)
         }
     }
     return (
