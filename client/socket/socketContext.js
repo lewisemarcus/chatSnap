@@ -23,17 +23,15 @@ export const SocketProvider = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        if (user._id !== undefined) {
+        if (Object.keys(user).length > 0) {
             socket.on("request-received" + user._id.$oid, (userData) => {
                 let currentUser = JSON.parse(userData)
                 setUser(currentUser[0])
             })
-
-            return () => socket.off("request-received" + user._id.$oid)
         }
     })
     useEffect(() => {
-        if (user._id !== undefined) {
+        if (Object.keys(user).length > 0) {
             socket.on("request-sent" + user._id.$oid, (userData) => {
                 let currentUser = JSON.parse(userData)
                 setUser(currentUser[0])
@@ -41,7 +39,7 @@ export const SocketProvider = ({ children }) => {
         }
     })
     useEffect(() => {
-        if (user._id !== undefined) {
+        if (Object.keys(user).length > 0) {
             socket.on("accepted-request" + user._id.$oid, (userData) => {
                 let currentUser = JSON.parse(userData)
                 setUser(currentUser[0])
@@ -49,7 +47,7 @@ export const SocketProvider = ({ children }) => {
         }
     })
     useEffect(() => {
-        if (user._id !== undefined) {
+        if (Object.keys(user).length > 0) {
             socket.on("request-accepted" + user._id.$oid, (userData) => {
                 let currentUser = JSON.parse(userData)
                 setUser(currentUser[0])
@@ -58,7 +56,7 @@ export const SocketProvider = ({ children }) => {
     })
 
     useEffect(() => {
-        if (user._id !== undefined) {
+        if (Object.keys(user).length > 0) {
             socket.on("sent-message" + user._id.$oid, (data) => {
                 try {
                     setChatroomId(data.chatroomId)
@@ -71,7 +69,7 @@ export const SocketProvider = ({ children }) => {
     }, [sentMessage])
     useEffect(() => {
         let count = 0
-        if (user.email !== undefined)
+        if (Object.keys(user).length > 0) {
             socket.on("message-received" + user.email, (data) => {
                 if (count == 0)
                     try {
@@ -85,6 +83,7 @@ export const SocketProvider = ({ children }) => {
                         console.log("MESSAGE EVENT ERROR: ", err)
                     }
             })
+        }
     })
 
     const sendMessage = (content) => {
