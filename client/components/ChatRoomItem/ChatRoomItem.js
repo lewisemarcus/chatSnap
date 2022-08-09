@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { Text, View, Image, Pressable, FlatList } from "react-native"
+import { Text, View, Image, TouchableOpacity } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 import styles from "./styles/ChatRoomStyle"
 import LoginSVG from "../../assets/images/user.png"
@@ -19,7 +19,7 @@ export default function ChatRoomItem({ chatRoom }) {
     })
 
     return (
-        <Pressable style={styles.container} onPress={onPress}>
+        <TouchableOpacity style={styles.container} onPress={onPress}>
             {chatRoom.userImages.length == 0 ? (
                 chatRoom.userEmails.length > 1 ? (
                     <Image source={GroupJPG} style={styles.image} />
@@ -83,6 +83,6 @@ export default function ChatRoomItem({ chatRoom }) {
                     )}
                 </View>
             )}
-        </Pressable>
+        </TouchableOpacity>
     )
 }

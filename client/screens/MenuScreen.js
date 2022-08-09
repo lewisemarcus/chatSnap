@@ -1,7 +1,7 @@
 import { StyleSheet, View, FlatList, Text } from "react-native"
 
 import MenuItem from "../components/MenuItem/MenuItem"
-const options = ["Friend Requests", "Settings"]
+const options = ["Friend Requests", "Settings", "Contacts"]
 export default function MenuScreen() {
     return (
         <View style={styles.container}>

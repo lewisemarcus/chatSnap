@@ -30,6 +30,7 @@ import {
     NewChatScreen,
     SelectContactScreen,
     ProfileScreen,
+    ContactsScreen,
     EditProfileScreen,
 } from "../screens/index"
 import LoginSVG from "../assets/images/user.png"
@@ -118,6 +119,11 @@ const RootNavigator = () => {
             <Stack.Screen
                 name="Settings"
                 component={MenuScreen}
+                options={{ headerShown: true }}
+            />
+            <Stack.Screen
+                name="Contacts"
+                component={ContactsScreen}
                 options={{ headerShown: true }}
             />
             <Stack.Screen

@@ -21,7 +21,7 @@ export default function EditProfileScreen({ navigation }) {
     const [imageRef, setImageRef] = useState(null)
     const [storageRef, setStorage] = useState(null)
 
-    const updateUser = async (fullName, email, userImage) => {
+    const updateUser = async (fullName, email, userImage, contacts) => {
         const name = fullName.length > 0 ? fullName : user.name
         const result = await instance.post("updateUser", {
             headers: {
@@ -30,7 +30,7 @@ export default function EditProfileScreen({ navigation }) {
                 "Access-Control-Allow-Origin": true,
                 "Access-Control-Allow-Credentials": true,
             },
-            body: { name, email, userImage },
+            body: { name, email, userImage, contacts },
         })
         result.data.userImage = userImage
         setUser(result.data)
@@ -83,7 +83,7 @@ export default function EditProfileScreen({ navigation }) {
                     "",
                 )}`
 
-                updateUser(fullName, user.email, userImage)
+                updateUser(fullName, user.email, userImage, user.contacts)
             }
         } catch (err) {
             console.error("Error updating profile picture.", err)
