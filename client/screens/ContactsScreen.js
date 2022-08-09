@@ -14,6 +14,13 @@ export default function ContactsScreen({ navigation }) {
     const { user, instance, setUser } = useContext(AuthContext)
     const [selectedContacts, setSelected] = useState([])
     const [deleteMode, setDeleteMode] = useState(false)
+
+    useEffect(() => {
+        return () => {
+            setSelected([])
+            setDeleteMode(false)
+        }
+    }, [])
     const onLongPress = (contact) => {
         if (selectedContacts.length) {
             setSelected(
