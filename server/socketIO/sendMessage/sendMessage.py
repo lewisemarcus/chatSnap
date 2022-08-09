@@ -18,7 +18,7 @@ def updateChat(uid, message, recipientList, recipientEmitList, recipientImages):
         for i in range(len(recipient.chatrooms)):
             if(recipient.chatrooms[i].uid == uid):
                 recipient.chatrooms[i].messages.append(message)
-                recipient.chatrooms[i].userImages = recipientImages
+
         recipient.save()
         recipientEmitList.append(json.loads(recipient.to_json()))
             
@@ -45,6 +45,7 @@ def socketMessage(socketio, emit):
                 chatters.append(recipient)
             
             chatters.append(user)
+            
             message = Message(message=messageText, senderEmail=user.email)
             matchingChatters = False
             allEmails = parsedContent['receivers'].copy()
@@ -66,6 +67,7 @@ def socketMessage(socketio, emit):
                     if matchingChatters == True:
                         chatroomId = chatroom.uid 
                         chatroom.messages.append(message)
+                        chatroom.userImages = recipientImages
                         updateChat(chatroomId, message, recipientList, recipientEmitList, recipientImages)
                         break
                 if matchingChatters == False:
