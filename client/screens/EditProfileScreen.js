@@ -15,24 +15,23 @@ import { getStorage, ref, uploadBytes } from "firebase/storage"
 import FileSystem from "expo-file-system"
 export default function EditProfileScreen({ navigation }) {
     const { user, instance } = useContext(AuthContext)
-    const [fullName, setFullName] = useState("")
+    const [fullName, setFullName] = useState(user.name)
     const [photo, setPhoto] = useState(null)
     const [imageRef, setImageRef] = useState(null)
-    const [updatedUser, setUpdatedUser] = useState({
-        userImage: "",
-        fullName: user.name,
-        email: user.email,
-    })
-    const updateUser = async (fullName, email, userImage) =>
-        await instance.put("updateUser", {
+
+    const updateUser = async (fullName, email, userImage) => {
+        const name = fullName.length > 0 ? fullName : user.name
+        const result = await instance.post("updateUser", {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": true,
                 "Access-Control-Allow-Credentials": true,
             },
-            body: { fullName, email, userImage },
+            body: { name, email, userImage },
         })
+        console.log(result)
+    }
     const pickImage = async () => {
         try {
             // No permissions request is necessary for launching the image library
@@ -56,12 +55,8 @@ export default function EditProfileScreen({ navigation }) {
     }
 
     const saveProfile = async (imageRef, imageUri) => {
-        console.log(imageUri)
-        console.log(imageUri.replace("file:///", "file:/"))
         const image = await fetch(imageUri.replace("file:///", "file:/"))
-        console.log(image)
         const imageBytes = await image.blob()
-        console.log(imageBytes)
         const uploaded = await uploadBytes(imageRef, imageBytes)
         if (uploaded.metadata.bucket.length > 0) {
             const userImage = `https://firebasestorage.googleapis.com/v0/b/${
@@ -70,7 +65,7 @@ export default function EditProfileScreen({ navigation }) {
                 uploaded.metadata.fullPath
             }?alt=media&token=${uploaded.metadata.fullPath.replace(".jpg", "")}`
             updateUser(fullName, user.email, userImage)
-            navigation.navigate("Edit Profile")
+            navigation.navigate("My Profile")
         }
     }
     return (

@@ -2,14 +2,14 @@ from models.User import User
 from flask import jsonify, request
 from operator import itemgetter
 def updateUser(app):
-    @app.route('/updateUser', methods=['PUT'])
+    @app.route('/updateUser', methods=['POST'])
     def update():
         try:
             keys = ['body']
             getUser = itemgetter(*keys)
             values = getUser(request.json)
             email = values['email']
-            fullName = values['fullName']
+            fullName = values['name']
             userImage = values['userImage']
             userList = User.objects(email=email)
             user = userList[0]
