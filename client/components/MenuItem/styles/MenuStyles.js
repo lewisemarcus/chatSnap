@@ -29,9 +29,9 @@ const styles = StyleSheet.create({
         height: 20,
         borderRadius: 10,
         borderWidth: 0.5,
-        borderColor: "#F0F0F0",
+        borderColor: "black",
         position: "absolute",
-        right: 40,
+        right: 10,
     },
 })
 

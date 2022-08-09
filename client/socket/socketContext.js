@@ -84,6 +84,7 @@ export const SocketProvider = ({ children }) => {
                     try {
                         setChatroomId(data.chatroomId)
                         for (let recipient of data.recipients) {
+                            console.log(recipient, user)
                             if (user._id.$oid === recipient._id.$oid)
                                 setUser(recipient)
                         }
