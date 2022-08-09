@@ -13,27 +13,35 @@ export default function ChatRoomItem({ chatRoom }) {
     chatRoom.userEmails = chatRoom.userEmails.filter((email) => {
         return email != user.email
     })
-    console.log("hi")
+    chatRoom.userImages = chatRoom.userImages.filter((image) => {
+        return user.userImage != image
+    })
+    console.log()
+    console.log(">>>here", chatRoom.userImages)
     return (
         <Pressable style={styles.container} onPress={onPress}>
-            {chatRoom.userImages && chatRoom.userImages.length > 0 ? (
+            {chatRoom.userImages.length == 0 ? (
                 <FlatList
-                    data={chatRoom.userImages}
+                    data={chatRoom.userEmails}
                     renderItem={({ item: userImage }) => (
-                        <Image
-                            source={{ uri: userImage }}
-                            style={styles.image}
-                        />
+                        <Image source={LoginSVG} style={styles.image} />
                     )}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
                 />
             ) : (
                 <FlatList
-                    data={chatRoom.userEmails}
-                    renderItem={() => (
-                        <Image source={LoginSVG} style={styles.image} />
-                    )}
+                    data={chatRoom.userImages}
+                    renderItem={({ item: userImage }) => {
+                        return userImage !== "" ? (
+                            <Image
+                                source={{ uri: userImage }}
+                                style={styles.image}
+                            />
+                        ) : (
+                            <Image source={LoginSVG} style={styles.image} />
+                        )
+                    }}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
                 />

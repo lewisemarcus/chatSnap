@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import {
     Text,
     View,
@@ -18,7 +18,7 @@ export default function EditProfileScreen({ navigation }) {
     const [fullName, setFullName] = useState(user.name)
     const [photo, setPhoto] = useState(null)
     const [imageRef, setImageRef] = useState(null)
-
+    const [userInfo, setUserInfo] = useState(null)
     const updateUser = async (fullName, email, userImage) => {
         const name = fullName.length > 0 ? fullName : user.name
         const result = await instance.post("updateUser", {
@@ -30,8 +30,15 @@ export default function EditProfileScreen({ navigation }) {
             },
             body: { name, email, userImage },
         })
-        if (result.data) setUser(result.data)
+        setUserInfo(result.data)
     }
+
+    useEffect(() => {
+        if (userInfo) {
+            setUser(userInfo)
+            navigation.navigate("My Profile")
+        }
+    }, [userInfo])
     const pickImage = async () => {
         try {
             // No permissions request is necessary for launching the image library
@@ -65,14 +72,16 @@ export default function EditProfileScreen({ navigation }) {
                 uploaded.metadata.fullPath
             }?alt=media&token=${uploaded.metadata.fullPath.replace(".jpg", "")}`
             updateUser(fullName, user.email, userImage)
-            navigation.navigate("My Profile")
         }
     }
     return (
         <View style={styles.container}>
             <View style={styles.profile}>
-                {photo ? (
-                    <Image source={{ uri: photo }} style={styles.image} />
+                {photo || user.userImage !== "" ? (
+                    <Image
+                        source={{ uri: photo || user.userImage }}
+                        style={styles.image}
+                    />
                 ) : (
                     <Image source={LoginSVG} style={styles.image} />
                 )}

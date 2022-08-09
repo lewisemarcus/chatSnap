@@ -24,26 +24,35 @@ export const SocketProvider = ({ children }) => {
 
     useEffect(() => {
         if (Object.keys(user).length > 0) {
-            socket.on("request-received" + user._id.$oid, (userData) => {
-                let currentUser = JSON.parse(userData)
-                setUser(currentUser[0])
-            })
+            let count = 0
+            if (count == 0)
+                socket.on("request-received" + user._id.$oid, (userData) => {
+                    let currentUser = JSON.parse(userData)
+                    setUser(currentUser[0])
+                    count = 1
+                })
+        }
+    })
+    useEffect(() => {
+        let count = 0
+        if (Object.keys(user).length > 0) {
+            if (count == 0)
+                socket.on("request-sent" + user._id.$oid, (userData) => {
+                    let currentUser = JSON.parse(userData)
+                    setUser(currentUser[0])
+                    count = 1
+                })
         }
     })
     useEffect(() => {
         if (Object.keys(user).length > 0) {
-            socket.on("request-sent" + user._id.$oid, (userData) => {
-                let currentUser = JSON.parse(userData)
-                setUser(currentUser[0])
-            })
-        }
-    })
-    useEffect(() => {
-        if (Object.keys(user).length > 0) {
-            socket.on("accepted-request" + user._id.$oid, (userData) => {
-                let currentUser = JSON.parse(userData)
-                setUser(currentUser[0])
-            })
+            let count = 0
+            if (count == 0)
+                socket.on("accepted-request" + user._id.$oid, (userData) => {
+                    let currentUser = JSON.parse(userData)
+                    setUser(currentUser[0])
+                    count = 1
+                })
         }
     })
     useEffect(() => {

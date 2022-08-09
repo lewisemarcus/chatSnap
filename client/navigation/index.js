@@ -203,6 +203,7 @@ const HomeHeader = (props) => {
 }
 
 const ChatRoomHeader = (props) => {
+    const { user } = useContext(AuthContext)
     const { width } = useWindowDimensions()
     return (
         <View
@@ -215,17 +216,29 @@ const ChatRoomHeader = (props) => {
                 alignItems: "center",
             }}
         >
-            <Image
-                source={{
-                    uri: "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png",
-                }}
-                style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: 30,
-                    marginLeft: -20,
-                }}
-            />
+            {user.userImage === "" ? (
+                <Image
+                    source={LoginSVG}
+                    style={{
+                        width: 30,
+                        height: 30,
+                        borderRadius: 30,
+                        marginLeft: -20,
+                    }}
+                />
+            ) : (
+                <Image
+                    source={{
+                        uri: user.userImage,
+                    }}
+                    style={{
+                        width: 30,
+                        height: 30,
+                        borderRadius: 30,
+                        marginLeft: -20,
+                    }}
+                />
+            )}
             <Text
                 style={{
                     flex: 1,
@@ -236,7 +249,6 @@ const ChatRoomHeader = (props) => {
             >
                 Chats
             </Text>
-
             <Feather
                 name="menu"
                 size={30}
