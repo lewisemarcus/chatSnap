@@ -7,7 +7,6 @@ import { AuthContext } from "../../context/AuthContext"
 export default function ChatRoomItem({ chatRoom }) {
     const navigation = useNavigation()
     const { user } = useContext(AuthContext)
-    console.log("uh", chatRoom.uid)
     const onPress = () => {
         navigation.navigate("ChatRoom", { id: chatRoom.uid })
     }
@@ -17,7 +16,6 @@ export default function ChatRoomItem({ chatRoom }) {
 
     return (
         <Pressable style={styles.container} onPress={onPress}>
-            {/* TODO: add image upload function for users on settings page, add default image */}
             {chatRoom.userImages ? (
                 <FlatList
                     data={chatRoom.userImages}

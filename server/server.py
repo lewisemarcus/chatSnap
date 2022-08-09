@@ -13,6 +13,7 @@ from routes.onboardingRoutes.register import register
 from routes.userRoutes.getFriends import getFriends
 from routes.onboardingRoutes.login import login
 from routes.userRoutes.findUser import findUser
+from routes.userRoutes.updateUser import updateUser
 load_dotenv()
 
 DEBUG = os.getenv('DEBUG')
@@ -47,6 +48,7 @@ register(app)
 login(app)
 findUser(app)
 getFriends(app)
+updateUser(app)
 
 @socketio.on('message')
 def joinRoom(content):

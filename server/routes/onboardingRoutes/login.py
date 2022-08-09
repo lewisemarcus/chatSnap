@@ -1,6 +1,5 @@
-from flask import request, Response
+from flask import request, Response, jsonify
 from models.User import User
-from flask import jsonify
 from flask_cors import cross_origin
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
