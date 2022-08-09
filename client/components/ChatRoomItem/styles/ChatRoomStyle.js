@@ -1,6 +1,12 @@
 import { StyleSheet } from "react-native"
 
 const styles = StyleSheet.create({
+    overlay: {
+        position: "absolute",
+        width: "110%",
+        height: "120%",
+        backgroundColor: "rgba(0,0,0,0.4)",
+    },
     text: {
         color: "grey",
     },

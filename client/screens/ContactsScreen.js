@@ -15,15 +15,22 @@ export default function ContactsScreen({ navigation }) {
     const [selectedContacts, setSelected] = useState([])
     const [deleteMode, setDeleteMode] = useState(false)
     const onLongPress = (contact) => {
-        setSelected([...selectedContacts, contact.email])
+        if (selectedContacts.length) {
+            setSelected(
+                selectedContacts.filter((chosen) => chosen != contact.email),
+            )
+        } else setSelected([...selectedContacts, contact.email])
         setDeleteMode(true)
     }
     const getSelected = (contact) => selectedContacts.includes(contact.email)
     const onPress = (contact) => {
         if (selectedContacts.length) return onLongPress(contact)
     }
-    useEffect(() => {}, [user.contacts])
+    useEffect(() => {}, [user.contacts.length])
 
+    useEffect(() => {
+        if (!selectedContacts.length) setDeleteMode(false)
+    }, [selectedContacts.length])
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
@@ -71,6 +78,7 @@ const styles = StyleSheet.create({
     },
     overlay: {
         position: "absolute",
+
         width: "100%",
         height: "100%",
         backgroundColor: "rgba(0,0,0,0.4)",
