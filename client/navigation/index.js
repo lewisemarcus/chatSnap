@@ -152,7 +152,7 @@ const HomeHeader = (props) => {
             >
                 {user.userImage ? (
                     <Image
-                        source={user.userImage}
+                        source={{ uri: user.userImage }}
                         style={{
                             width: 30,
                             height: 30,

@@ -14,7 +14,7 @@ import { Platform } from "react-native"
 import { getStorage, ref, uploadBytes } from "firebase/storage"
 import FileSystem from "expo-file-system"
 export default function EditProfileScreen({ navigation }) {
-    const { user, instance } = useContext(AuthContext)
+    const { user, instance, setUser } = useContext(AuthContext)
     const [fullName, setFullName] = useState(user.name)
     const [photo, setPhoto] = useState(null)
     const [imageRef, setImageRef] = useState(null)
@@ -30,7 +30,7 @@ export default function EditProfileScreen({ navigation }) {
             },
             body: { name, email, userImage },
         })
-        console.log(result)
+        if (result.data) setUser(result.data)
     }
     const pickImage = async () => {
         try {
