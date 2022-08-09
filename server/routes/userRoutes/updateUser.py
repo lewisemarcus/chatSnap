@@ -11,9 +11,10 @@ def updateUser(app):
             email = values['email']
             fullName = values['name']
             userImage = values['userImage']
+            contacts = values['contacts']
             userList = User.objects(email=email)
             user = userList[0]
-            user.update(name=fullName, userImage=userImage)
+            user.update(name=fullName, userImage=userImage, contacts=contacts)
             user.save()
             
             return jsonify(user), 201
