@@ -30,7 +30,7 @@ export default function EditProfileScreen({ navigation }) {
                 "Access-Control-Allow-Origin": true,
                 "Access-Control-Allow-Credentials": true,
             },
-            body: { name, email, userImage, contacts },
+            body: { name, email, userImage, contacts, chatrooms },
         })
         result.data.userImage = userImage
         setUser(result.data)
@@ -83,7 +83,13 @@ export default function EditProfileScreen({ navigation }) {
                     "",
                 )}`
 
-                updateUser(fullName, user.email, userImage, user.contacts)
+                updateUser(
+                    fullName,
+                    user.email,
+                    userImage,
+                    user.contacts,
+                    user.chatrooms,
+                )
             }
         } catch (err) {
             console.error("Error updating profile picture.", err)

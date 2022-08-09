@@ -1,19 +1,24 @@
 import Icon from "react-native-vector-icons/Entypo"
 import { TouchableOpacity, View } from "react-native"
+import { useContext } from "react"
+import { AuthContext } from "../../context/AuthContext"
 
 export const DeleteBtn = ({
-    navigation,
     selectedContacts,
-    user,
     instance,
     setUser,
+    user,
+    selectedChats,
 }) => {
-    const handleDelete = async (selectedContacts) => {
+    const handleDelete = async (selectedContacts, selectedChats) => {
         try {
             user.contacts = user.contacts.filter((contact) => {
                 return !selectedContacts.includes(contact.email)
             })
-            console.log(user.contacts)
+            user.chatrooms = user.chatrooms.filter((chatroom) => {
+                return !selectedChats.includes(chatroom)
+            })
+
             setUser(user)
             await instance.post("updateUser", {
                 headers: {
@@ -27,6 +32,7 @@ export const DeleteBtn = ({
                     email: user.email,
                     userImage: user.userImage,
                     contacts: user.contacts,
+                    chatrooms: user.chatrooms,
                 },
             })
         } catch (err) {
@@ -36,7 +42,7 @@ export const DeleteBtn = ({
     return (
         <TouchableOpacity
             onPress={() => {
-                handleDelete(selectedContacts)
+                handleDelete(selectedContacts, selectedChats)
             }}
             style={{
                 position: "absolute",

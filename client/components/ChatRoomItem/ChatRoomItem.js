@@ -1,15 +1,28 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { Text, View, Image, TouchableOpacity } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 import styles from "./styles/ChatRoomStyle"
 import LoginSVG from "../../assets/images/user.png"
 import GroupJPG from "../../assets/images/group.jpg"
 import { AuthContext } from "../../context/AuthContext"
-export default function ChatRoomItem({ chatRoom }) {
+export default function ChatRoomItem({
+    chatRoom,
+    selected,
+    selectedChats,
+    setSelected,
+    setDeleteMode,
+}) {
     const navigation = useNavigation()
     const { user } = useContext(AuthContext)
     const onPress = () => {
+        if (selectedChats.length) return onLongPress(chatRoom)
         navigation.navigate("ChatRoom", { id: chatRoom.uid })
+    }
+    const onLongPress = (chatRoom) => {
+        if (selectedChats.includes(chatRoom)) {
+            setSelected(selectedChats.filter((chat) => chat != chatRoom))
+        } else setSelected([...selectedChats, chatRoom])
+        setDeleteMode(true)
     }
     chatRoom.userEmails = chatRoom.userEmails.filter((email) => {
         return email != user.email
@@ -18,8 +31,16 @@ export default function ChatRoomItem({ chatRoom }) {
         return user.userImage != image
     })
 
+    useEffect(() => {
+        if (!selectedChats.length) setDeleteMode(false)
+    }, [selectedChats.length])
+
     return (
-        <TouchableOpacity style={styles.container} onPress={onPress}>
+        <TouchableOpacity
+            style={styles.container}
+            onLongPress={() => onLongPress(chatRoom)}
+            onPress={onPress}
+        >
             {chatRoom.userImages.length == 0 ? (
                 chatRoom.userEmails.length > 1 ? (
                     <Image source={GroupJPG} style={styles.image} />
@@ -83,6 +104,7 @@ export default function ChatRoomItem({ chatRoom }) {
                     )}
                 </View>
             )}
+            {selected && <View style={styles.overlay}></View>}
         </TouchableOpacity>
     )
 }
