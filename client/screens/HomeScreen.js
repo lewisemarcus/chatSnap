@@ -11,7 +11,12 @@ export default function Home({ navigation }) {
     const [selectedChats, setSelected] = useState([])
     const [deleteMode, setDeleteMode] = useState(false)
     const getSelected = (chatroom) => selectedChats.includes(chatroom)
-
+    useEffect(() => {
+        return () => {
+            setSelected([])
+            setDeleteMode(false)
+        }
+    }, [])
     useEffect(() => {}, [user.chatrooms.length])
     return (
         <View style={styles.container}>
