@@ -37,21 +37,29 @@ export default function RecipientInput({ navigation }) {
     }
 
     useEffect(() => {
-        if (receivers.length == 0) setChatroom(null)
+        let count = 0
+        if (receivers.length == 0) return setChatroom(null)
         for (let chatroom of user.chatrooms) {
-            if (chatroom.users.length - 1 !== receivers.length) break
             const tempChatters = chatroom.userEmails.filter((chatter) => {
                 return chatter != user.email
             })
-
-            for (let chatter of tempChatters) {
-                if (!receivers.includes(chatter)) {
-                    setChatroom(null)
-                    break
+            if (tempChatters.length === receivers.length) {
+                for (let receiver of receivers) {
+                    console.log(count, tempChatters.includes(receiver))
+                    if (tempChatters.includes(receiver) === false) {
+                        setChatroom(null)
+                        break
+                    } else {
+                        setChatroom(chatroom)
+                    }
                 }
-                setChatroom(chatroom)
+                break
+            } else {
+                setChatroom(null)
+                break
             }
         }
+        count++
     }, [receivers])
 
     const addReceiver = (contact) => {
@@ -71,10 +79,11 @@ export default function RecipientInput({ navigation }) {
     return (
         <KeyboardAvoidingView
             style={styles.root}
+            horizontal={false}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-            <View style={styles.container}>
-                <View horizontal={true}>
+            <View style={styles.container} horizontal={false}>
+                <View horizontal={false}>
                     {receivers.length > 0 && (
                         <FlatList
                             contentContainerStyle={{

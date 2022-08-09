@@ -3,6 +3,7 @@ import { Text, View, Image, Pressable, FlatList } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 import styles from "./styles/ChatRoomStyle"
 import LoginSVG from "../../assets/images/user.png"
+import GroupJPG from "../../assets/images/group.jpg"
 import { AuthContext } from "../../context/AuthContext"
 export default function ChatRoomItem({ chatRoom }) {
     const navigation = useNavigation()
@@ -20,30 +21,22 @@ export default function ChatRoomItem({ chatRoom }) {
     return (
         <Pressable style={styles.container} onPress={onPress}>
             {chatRoom.userImages.length == 0 ? (
-                <FlatList
-                    data={chatRoom.userEmails}
-                    renderItem={({ item: userImage }) => (
-                        <Image source={LoginSVG} style={styles.image} />
-                    )}
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                />
+                chatRoom.userEmails.length > 1 ? (
+                    <Image source={GroupJPG} style={styles.image} />
+                ) : (
+                    <Image source={LoginSVG} style={styles.image} />
+                )
+            ) : chatRoom.userEmails.length == 1 ? (
+                chatRoom.userImages[0] !== "" ? (
+                    <Image
+                        source={chatRoom.userImages[0]}
+                        style={styles.image}
+                    />
+                ) : (
+                    <Image source={LoginSVG} style={styles.image} />
+                )
             ) : (
-                <FlatList
-                    data={chatRoom.userImages}
-                    renderItem={({ item: userImage }) => {
-                        return userImage !== "" ? (
-                            <Image
-                                source={{ uri: userImage }}
-                                style={styles.image}
-                            />
-                        ) : (
-                            <Image source={LoginSVG} style={styles.image} />
-                        )
-                    }}
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                />
+                <Image source={GroupJPG} style={styles.image} />
             )}
 
             {chatRoom.newMessages && (
@@ -55,7 +48,7 @@ export default function ChatRoomItem({ chatRoom }) {
                 <View style={styles.rightContainer}>
                     <View style={styles.row}>
                         <Text style={styles.name}>
-                            {chatRoom.userEmails[0]}
+                            {chatRoom.userEmails.toString(", ")}
                         </Text>
 
                         <Text style={styles.text}>

@@ -79,8 +79,10 @@ def socketMessage(socketio, emit):
                     receiversEmails = receiversEmails.pop(i)
                     
             emit('sent-message'+str(user.id), {'user': userList.to_json(), 'chatroomId': str(chatroomId)}, room='chatroom')
-    
-            emit('message-received'+",".join(receiversEmails), {'recipients' : recipientEmitList, 'chatroomId' : str(chatroomId)}, room='chatroom')
+            
+            for receiver in receiversEmails:
+                emit('message-received'+receiver, {'recipients' : recipientEmitList, 'chatroomId' : str(chatroomId)}, room='chatroom')
+            
            
         except Exception as e:
             print("Error: ", e)

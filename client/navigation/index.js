@@ -7,7 +7,7 @@ import {
 } from "@react-navigation/native"
 import { HeaderBackButton } from "@react-navigation/elements"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import React, { useContext, useState, useEffect } from "react"
+import React, { useContext } from "react"
 import {
     Text,
     Image,
@@ -42,6 +42,7 @@ import { useNavigation } from "@react-navigation/core"
 const Stack = createNativeStackNavigator()
 
 const RootNavigator = () => {
+    const { setReceivers } = useContext(AuthContext)
     const navigation = useNavigation()
     return (
         <Stack.Navigator>
@@ -70,7 +71,19 @@ const RootNavigator = () => {
             <Stack.Screen
                 name="New Chat"
                 component={NewChatScreen}
-                options={{ headerShown: true }}
+                options={{
+                    headerShown: true,
+                    headerBackVisible: false,
+                    headerLeft: () => (
+                        <HeaderBackButton
+                            style={{ marginRight: 40, marginLeft: 0 }}
+                            onPress={() => {
+                                setReceivers([])
+                                navigation.navigate("Home")
+                            }}
+                        />
+                    ),
+                }}
             />
             <Stack.Screen
                 name="Select Contact"

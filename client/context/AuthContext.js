@@ -3,7 +3,7 @@ import React, { createContext, useState, useEffect } from "react"
 import { Alert } from "react-native"
 import axios from "axios"
 import Constants from "expo-constants"
-import { Platform } from "react-native"
+import { Platform, LogBox } from "react-native"
 import { WEB_URL, AND_URL } from "@env"
 const { manifest } = Constants
 
@@ -44,6 +44,10 @@ export const AuthProvider = ({ children }) => {
         setPassword("")
         setPasswordConfirm("")
     }
+
+    useEffect(() => {
+        LogBox.ignoreLogs(["VirtualizedLists should never be nested"])
+    }, [])
     const register = async () => {
         try {
             setIsLoading(true)

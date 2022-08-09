@@ -7,15 +7,28 @@ export default function Message({ message }) {
 
     const isMe = message.senderEmail === user.email
     return (
-        <View
-            style={[
-                styles.container,
-                isMe ? styles.rightContainer : styles.leftContainer,
-            ]}
-        >
-            <Text style={{ color: isMe ? "black" : "white" }}>
-                {message.message}
-            </Text>
+        <View>
+            <View
+                style={[
+                    styles.container,
+                    isMe ? styles.rightContainer : styles.leftContainer,
+                ]}
+            >
+                {isMe ? (
+                    <Text style={{ color: "black" }}>{message.message}</Text>
+                ) : (
+                    <View>
+                        <Text style={{ color: "white" }}>
+                            {message.message}
+                        </Text>
+
+                        <Text style={{ color: "white", fontSize: 10 }}>
+                            Sent by: {message.senderEmail}
+                        </Text>
+                    </View>
+                )}
+            </View>
+            <View></View>
         </View>
     )
 }
