@@ -16,11 +16,14 @@ export default function ChatRoomItem({ chatRoom }) {
 
     return (
         <Pressable style={styles.container} onPress={onPress}>
-            {chatRoom.userImages ? (
+            {chatRoom.userImages && chatRoom.userImages.length > 0 ? (
                 <FlatList
                     data={chatRoom.userImages}
                     renderItem={({ item: userImage }) => (
-                        <Image source={userImage} style={styles.image} />
+                        <Image
+                            source={{ uri: userImage }}
+                            style={styles.image}
+                        />
                     )}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}

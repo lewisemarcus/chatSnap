@@ -11,7 +11,10 @@ export default function ProfileScreen({ navigation }) {
         <View style={styles.container}>
             <View style={styles.profile}>
                 {user.userImage ? (
-                    <Image source={user.userImage} style={styles.image} />
+                    <Image
+                        source={{ uri: user.userImage }}
+                        style={styles.image}
+                    />
                 ) : (
                     <Image source={LoginSVG} style={styles.image} />
                 )}
@@ -52,6 +55,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     image: {
+        borderRadius: 75,
         margin: 5,
         width: 150,
         height: 150,
