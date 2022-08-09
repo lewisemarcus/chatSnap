@@ -1,14 +1,12 @@
 import Icon from "react-native-vector-icons/Entypo"
-import { TouchableOpacity, View } from "react-native"
-import { useContext } from "react"
-import { AuthContext } from "../../context/AuthContext"
+import { TouchableOpacity } from "react-native"
 
 export const DeleteBtn = ({
-    selectedContacts,
+    selectedContacts = [],
     instance,
     setUser,
     user,
-    selectedChats,
+    selectedChats = [],
 }) => {
     const handleDelete = async (selectedContacts, selectedChats) => {
         try {
