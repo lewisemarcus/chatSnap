@@ -16,8 +16,7 @@ export default function ChatRoomItem({ chatRoom }) {
     chatRoom.userImages = chatRoom.userImages.filter((image) => {
         return user.userImage != image
     })
-    console.log()
-    console.log(">>>here", chatRoom.userImages)
+
     return (
         <Pressable style={styles.container} onPress={onPress}>
             {chatRoom.userImages.length == 0 ? (
