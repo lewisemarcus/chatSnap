@@ -30,7 +30,14 @@ export default function EditProfileScreen({ navigation }) {
                 "Access-Control-Allow-Origin": true,
                 "Access-Control-Allow-Credentials": true,
             },
-            body: { name, email, userImage, contacts, chatrooms },
+            body: {
+                name,
+                email,
+                userImage,
+                contacts,
+                chatrooms,
+                otherUsers: [],
+            },
         })
         result.data.userImage = userImage
         setUser(result.data)

@@ -31,6 +31,7 @@ export const DeleteBtn = ({
                     userImage: user.userImage,
                     contacts: user.contacts,
                     chatrooms: user.chatrooms,
+                    otherUsers: selectedContacts,
                 },
             })
         } catch (err) {
