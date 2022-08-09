@@ -13,7 +13,7 @@ export default function ChatRoomItem({ chatRoom }) {
     chatRoom.userEmails = chatRoom.userEmails.filter((email) => {
         return email != user.email
     })
-
+    console.log("hi")
     return (
         <Pressable style={styles.container} onPress={onPress}>
             {chatRoom.userImages && chatRoom.userImages.length > 0 ? (

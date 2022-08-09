@@ -137,6 +137,7 @@ export const AuthProvider = ({ children }) => {
         AsyncStorage.removeItem("name")
         AsyncStorage.removeItem("user")
         setIsLoading(false)
+        setUser({})
     }
 
     const isLoggedIn = async () => {
@@ -147,7 +148,9 @@ export const AuthProvider = ({ children }) => {
             let userInfo = await AsyncStorage.getItem("user")
             setToken(userToken)
             setName(username)
-            setUser(JSON.parse(userInfo))
+            if (!JSON.parse(userInfo)) setUser({})
+            else setUser(JSON.parse(userInfo))
+
             setIsLoading(false)
         } catch (err) {
             console.warn(`IsLoggedIn error: ${err}`)
