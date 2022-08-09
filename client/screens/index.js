@@ -12,6 +12,7 @@ import FriendRequestScreen from "./FriendRequestScreen"
 import NewChatScreen from "./NewChatScreen"
 import SelectContactScreen from "./SelectContactScreen"
 import ProfileScreen from "./ProfileScreen"
+import EditProfileScreen from "./EditProfileScreen"
 export {
     ChatRoomScreen,
     ModalScreen,
@@ -27,4 +28,5 @@ export {
     NewChatScreen,
     SelectContactScreen,
     ProfileScreen,
+    EditProfileScreen,
 }

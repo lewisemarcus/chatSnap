@@ -1,5 +1,4 @@
 import mongoengine as mongoDB
-
 import datetime
 class Message(mongoDB.EmbeddedDocument):
     message = mongoDB.StringField()

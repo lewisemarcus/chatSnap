@@ -26,6 +26,7 @@ export const AuthContext = createContext()
 export const AuthProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false)
     const [find, setFind] = useState("Search for users.")
+
     const [receivers, setReceivers] = useState([])
     const [users, setUsers] = useState([])
     const [token, setToken] = useState(null)

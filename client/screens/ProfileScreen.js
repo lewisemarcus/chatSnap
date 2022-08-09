@@ -2,9 +2,11 @@ import { useContext } from "react"
 import { Text, View, Image, Pressable, StyleSheet } from "react-native"
 import { AuthContext } from "../context/AuthContext"
 import LoginSVG from "../assets/images/user.png"
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }) {
     const { user, logout } = useContext(AuthContext)
-
+    const editProfile = () => {
+        navigation.navigate("Edit Profile")
+    }
     return (
         <View style={styles.container}>
             <View style={styles.profile}>
@@ -25,7 +27,7 @@ export default function ProfileScreen() {
                 </View>
 
                 <View style={{ marginTop: 100 }}>
-                    <Pressable style={styles.editButton}>
+                    <Pressable style={styles.editButton} onPress={editProfile}>
                         <Text style={styles.editText}>Edit Profile</Text>
                     </Pressable>
                     <Pressable style={styles.editButton} onPress={logout}>
