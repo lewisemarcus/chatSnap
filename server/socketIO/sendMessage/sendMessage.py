@@ -3,8 +3,8 @@ from models.User import User, Message, Chatroom
 import json
 import uuid
 
-def newChatFunction(user, chatters, message, recipientList, allEmails, recipientEmitList):
-    newChatroom = Chatroom(users=chatters, userEmails=allEmails, uid=uuid.uuid4())
+def newChatFunction(user, chatters, message, recipientList, allEmails, recipientEmitList, recipientImages):
+    newChatroom = Chatroom(users=chatters, userEmails=allEmails, uid=uuid.uuid4(), userImages=recipientImages)
     newChatroom.messages.append(message)
     user.chatrooms.append(newChatroom)
     for recipient in recipientList:
@@ -13,11 +13,12 @@ def newChatFunction(user, chatters, message, recipientList, allEmails, recipient
         recipientEmitList.append(json.loads(recipient.to_json()))
     return newChatroom
 
-def updateChat(uid, message, recipientList, recipientEmitList):
+def updateChat(uid, message, recipientList, recipientEmitList, recipientImages):
     for recipient in recipientList:
-        for chatroom in recipient.chatrooms:
-            if(chatroom.uid == uid):
-                chatroom.messages.append(message)
+        for i in range(len(recipient.chatrooms)):
+            if(recipient.chatrooms[i].uid == uid):
+                recipient.chatrooms[i].messages.append(message)
+                recipient.chatrooms[i].update(userImages=recipientImages[i])
         recipient.save()
         recipientEmitList.append(json.loads(recipient.to_json()))
             
@@ -35,11 +36,13 @@ def socketMessage(socketio, emit):
             recipientList = []
             recipientEmitList = []
             chatters = []
+            recipientImages = []
             chatroomId = ''
             for receiverEmail in receiversEmails:
                 recipientData = User.objects(email=receiverEmail)
                 recipient = recipientData[0]
                 recipientList.append(recipient)
+                recipientImages.append(recipient.userImage)
                 chatters.append(recipient)
             
             chatters.append(user)
@@ -49,7 +52,7 @@ def socketMessage(socketio, emit):
             allEmails.append(userEmail)
             
             if len(user.chatrooms) == 0:
-                chatroomId = newChatFunction(user, chatters, message, recipientList, allEmails, recipientEmitList).uid
+                chatroomId = newChatFunction(user, chatters, message, recipientList, allEmails, recipientEmitList, recipientImages).uid
             else:
                 for chatroom in user.chatrooms:
                     if len(chatroom.users) != len(chatters):
@@ -64,10 +67,10 @@ def socketMessage(socketio, emit):
                     if matchingChatters == True:
                         chatroomId = chatroom.uid 
                         chatroom.messages.append(message)
-                        updateChat(chatroomId, message, recipientList, recipientEmitList)
+                        updateChat(chatroomId, message, recipientList, recipientEmitList, recipientImages)
                         break
                 if matchingChatters == False:
-                    chatroomId = newChatFunction(user, chatters, message, recipientList, allEmails, recipientEmitList).uid
+                    chatroomId = newChatFunction(user, chatters, message, recipientList, allEmails, recipientEmitList, recipientImages).uid
                         
             user.save()
             for i in range(len(receiversEmails)):
