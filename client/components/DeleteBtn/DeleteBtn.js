@@ -6,6 +6,7 @@ export const DeleteBtn = ({
     instance,
     setUser,
     user,
+    setState = "",
     selectedChats = [],
 }) => {
     const handleDelete = async (selectedContacts, selectedChats) => {
@@ -16,10 +17,12 @@ export const DeleteBtn = ({
                 })
             if (selectedChats !== undefined)
                 user.chatrooms = user.chatrooms.filter((chatroom) => {
-                    if (!selectedChats.includes(chatroom))
-                        return (chatroom.messages.length = 0)
+                    if (selectedChats.includes(chatroom)) chatroom.messages = []
+                    return chatroom
                 })
-
+            if (setState !== "") {
+                setState(false)
+            }
             setUser(user)
             await instance.post("updateUser", {
                 headers: {

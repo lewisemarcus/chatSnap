@@ -22,7 +22,7 @@ def updateUser(app):
                 otherUserList.append(User.objects(otherUser)[0])
             user = userList[0]
             for contact in contacts:
-                contactEmails.append(contact.email)
+                contactEmails.append(contact['email'])
             for updateUser in otherUserList:
                 if updateUser.email not in contactEmails:
                     updateUser.update(pull__contacts__name=user.name)
