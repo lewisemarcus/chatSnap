@@ -45,7 +45,6 @@ export default function RecipientInput({ navigation }) {
             })
             if (tempChatters.length === receivers.length) {
                 for (let receiver of receivers) {
-                    console.log(count, tempChatters.includes(receiver))
                     if (tempChatters.includes(receiver) === false) {
                         setChatroom(null)
                         break

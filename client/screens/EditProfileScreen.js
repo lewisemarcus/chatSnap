@@ -20,7 +20,7 @@ export default function EditProfileScreen({ navigation }) {
     const [photo, setPhoto] = useState(null)
     const [imageRef, setImageRef] = useState(null)
     const [storageRef, setStorage] = useState(null)
-    console.log("oh")
+
     const updateUser = async (fullName, email, userImage, contacts) => {
         const name = fullName.length > 0 ? fullName : user.name
         const result = await instance.post("updateUser", {
