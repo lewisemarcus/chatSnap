@@ -26,8 +26,11 @@ def updateUser(app):
             for updateUser in otherUserList:
                 if updateUser.email not in contactEmails:
                     updateUser.update(pull__contacts__name=user.name)
-            user.update(name=fullName, userImage=userImage, contacts=contacts, chatrooms=chatrooms)
-           
+            user.update(name=fullName, userImage=userImage, contacts=contacts)
+            for chatroomId in chatrooms:
+                for chatroom in user.chatrooms:
+                    if str(chatroom.uid) == str(chatroomId):
+                        chatroom.messages.clear()
             user.save()
             
             return jsonify(user), 201

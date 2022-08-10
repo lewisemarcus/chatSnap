@@ -15,14 +15,15 @@ export const DeleteBtn = ({
                 user.contacts = user.contacts.filter((contact) => {
                     return !selectedContacts.includes(contact.email)
                 })
-            if (selectedChats !== undefined)
-                user.chatrooms = user.chatrooms.filter((chatroom) => {
-                    if (selectedChats.includes(chatroom)) chatroom.messages = []
-                    return chatroom
+            if (selectedChats !== undefined) {
+                const chatroomIds = user.chatrooms.filter((chatroom) => {
+                    if (selectedChats.includes(chatroom)) return chatroom.uid
                 })
+            }
             if (setState !== "") {
                 setState(false)
             }
+
             setUser(user)
             await instance.post("updateUser", {
                 headers: {
@@ -36,7 +37,7 @@ export const DeleteBtn = ({
                     email: user.email,
                     userImage: user.userImage,
                     contacts: user.contacts,
-                    chatrooms: user.chatrooms,
+                    chatrooms: chatroomIds,
                     otherUsers: selectedContacts,
                 },
             })
