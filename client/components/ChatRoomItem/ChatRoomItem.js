@@ -5,6 +5,7 @@ import styles from "./styles/ChatRoomStyle"
 import LoginSVG from "../../assets/images/user.png"
 import GroupJPG from "../../assets/images/group.jpg"
 import { AuthContext } from "../../context/AuthContext"
+import { SocketContext } from "../../socket/SocketContext"
 export default function ChatRoomItem({
     chatRoom,
     selected,
@@ -14,10 +15,28 @@ export default function ChatRoomItem({
     setState,
 }) {
     const navigation = useNavigation()
-    const { user, setChatroomId, setReceivers } = useContext(AuthContext)
+    const { user, setChatroomId, setReceivers, setUser } =
+        useContext(AuthContext)
+
+    const { socket } = useContext(SocketContext)
     const onPress = () => {
         if (selectedChats.length) return onLongPress(chatRoom)
         navigation.navigate("ChatRoom", { id: chatRoom.uid })
+
+        for (let i in user.chatrooms) {
+            if (user.chatrooms[i].uid == chatRoom.uid) {
+                user.chatrooms[i].newMessages = 0
+                setUser(user)
+                socket.emit(
+                    "chat-opened",
+                    JSON.stringify({
+                        chatroomId: chatRoom.uid,
+                        userId: user._id.$oid,
+                    }),
+                )
+                break
+            }
+        }
     }
     const onLongPress = (chatRoom) => {
         if (selectedChats.includes(chatRoom)) {
