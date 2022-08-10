@@ -29,19 +29,7 @@ export const SocketProvider = ({ children }) => {
             if (count == 0)
                 socket.on("request-received" + user._id.$oid, (userData) => {
                     let currentUser = JSON.parse(userData)
-                    console.log(1, user.email)
-                    setUser(currentUser[0])
-                    count = 1
-                })
-        }
-    })
-    useEffect(() => {
-        let count = 0
-        if (Object.keys(user).length > 0) {
-            if (count == 0)
-                socket.on("request-sent" + user._id.$oid, (userData) => {
-                    let currentUser = JSON.parse(userData)
-                    console.log(2, user.email)
+
                     setUser(currentUser[0])
                     count = 1
                 })
@@ -49,14 +37,20 @@ export const SocketProvider = ({ children }) => {
     })
     useEffect(() => {
         if (Object.keys(user).length > 0) {
-            let count = 0
-            if (count == 0)
-                socket.on("accepted-request" + user._id.$oid, (userData) => {
-                    let currentUser = JSON.parse(userData)
-                    console.log(3, user.email)
-                    setUser(currentUser[0])
-                    count = 1
-                })
+            socket.on("request-sent" + user._id.$oid, (userData) => {
+                let currentUser = JSON.parse(userData)
+
+                setUser(currentUser[0])
+            })
+        }
+    })
+    useEffect(() => {
+        if (Object.keys(user).length > 0) {
+            socket.on("accepted-request" + user._id.$oid, (userData) => {
+                let currentUser = JSON.parse(userData)
+
+                setUser(currentUser[0])
+            })
         }
     })
 
@@ -64,28 +58,23 @@ export const SocketProvider = ({ children }) => {
         if (Object.keys(user).length > 0) {
             socket.on("request-accepted" + user._id.$oid, (userData) => {
                 let currentUser = JSON.parse(userData)
-                console.log(4, user.email)
                 setUser(currentUser[0])
             })
         }
     })
     useEffect(() => {
-        let count = 0
-
         if (Object.keys(user).length > 0) {
             socket.on("message-received" + user.email, (data) => {
-                if (count == 0)
-                    try {
-                        for (let recipient of data.recipients) {
-                            if (user._id.$oid === recipient._id.$oid) {
-                                console.log(5, user.email)
-                                setUser(recipient)
-                            }
+                try {
+                    for (let recipient of data.recipients) {
+                        if (user._id.$oid === recipient._id.$oid) {
+                            console.log(5, user.email)
+                            setUser(recipient)
                         }
-                        count = 1
-                    } catch (err) {
-                        console.log("MESSAGE EVENT ERROR: ", err)
                     }
+                } catch (err) {
+                    console.log("MESSAGE EVENT ERROR: ", err)
+                }
             })
         }
     })

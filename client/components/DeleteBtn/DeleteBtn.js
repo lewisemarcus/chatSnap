@@ -15,15 +15,18 @@ export const DeleteBtn = ({
                 user.contacts = user.contacts.filter((contact) => {
                     return !selectedContacts.includes(contact.email)
                 })
+            const chatroomIds = []
             if (selectedChats !== undefined) {
-                const chatroomIds = user.chatrooms.filter((chatroom) => {
-                    if (selectedChats.includes(chatroom)) return chatroom.uid
-                })
+                for (let i = 0; i < user.chatrooms.length; i++) {
+                    console.log("user", user.chatrooms[i])
+                    if (selectedChats.includes(user.chatrooms[i]))
+                        chatroomIds.push(user.chatrooms[i].uid)
+                }
             }
             if (setState !== "") {
                 setState(false)
             }
-
+            console.log(chatroomIds)
             setUser(user)
             await instance.post("updateUser", {
                 headers: {

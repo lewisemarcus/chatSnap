@@ -22,7 +22,9 @@ export default function ChatRoomItem({
     const onLongPress = (chatRoom) => {
         if (selectedChats.includes(chatRoom)) {
             setSelected(selectedChats.filter((chat) => chat != chatRoom))
-        } else setSelected([...selectedChats, chatRoom])
+        } else {
+            setSelected([...selectedChats, chatRoom])
+        }
         setDeleteMode(true)
         setState(true)
     }
@@ -38,8 +40,8 @@ export default function ChatRoomItem({
         return () => setChatroomId("")
     }, [])
     useEffect(() => {
-        if (!selectedChats.length) setDeleteMode(false)
-    }, [selectedChats.length])
+        if (selectedChats.length == 0) setDeleteMode(false)
+    }, [selectedChats])
 
     return (
         chatRoom.messages.length > 0 && (
