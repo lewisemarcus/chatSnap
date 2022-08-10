@@ -5,9 +5,8 @@ import json
 import uuid
 
 def newChatFunction(user, chatters, message, recipientList, allEmails, recipientEmitList, recipientImages):
-    newChatroom = Chatroom(users=chatters, userEmails=allEmails, uid=uuid.uuid4(), userImages=recipientImages)
     messages = Messages(messages=[message], uid=uuid.uuid4())
-    newChatroom.messages.append(messages)
+    newChatroom = Chatroom(users=chatters, userEmails=allEmails, uid=uuid.uuid4(), userImages=recipientImages, messages=messages)
     user.chatrooms.append(newChatroom)
     chatroomExists = False
     for recipient in recipientList:
@@ -80,7 +79,7 @@ def socketMessage(socketio, emit):
                                 matchingChatters = True
                     if matchingChatters == True:
                         chatroomId = chatroom.uid 
-                        chatroom.messages.append(message)
+                        chatroom.messages.messages.append(message)
                         chatroom.userImages = recipientImages
                         updateChat(chatroomId, message, recipientList, recipientEmitList, recipientImages, chatters, allEmails)
                         break
