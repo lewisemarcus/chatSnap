@@ -28,17 +28,18 @@ export default function MessageInput() {
     const onPress = () => {
         if (message) {
             sendMessage({ user, receivers, message })
-            setSentMessage(true)
+            setSentMessage(!sentMessage)
         }
         setMessage("")
     }
+    console.log(">>>", chatroomId.length > 0)
     useEffect(() => {
+        console.log("hi")
         if (sentMessage && route.name === "New Chat") {
+            console.log("hoe")
             navigation.navigate("ChatRoom", { id: chatroomId })
         }
-        setSentMessage(false)
-        setChatroomId("")
-    }, [chatroomId.length > 0])
+    }, [sentMessage])
     return (
         <KeyboardAvoidingView
             style={styles.root}

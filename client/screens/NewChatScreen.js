@@ -16,7 +16,7 @@ export default function NewChatScreen({ navigation }) {
             </ScrollView>
             {chatroom && (
                 <FlatList
-                    data={chatroom.messages}
+                    data={chatroom.messages.messages}
                     // rename's the item from props to eachChatRoom
                     renderItem={({ item: message }) => (
                         <Message message={message} />
