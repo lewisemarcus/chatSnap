@@ -1,16 +1,19 @@
 import mongoengine as mongoDB
 import datetime
 class Message(mongoDB.EmbeddedDocument):
-    uid = mongoDB.UUIDField(binary=False, required=True)
     message = mongoDB.StringField()
     senderEmail = mongoDB.StringField()
     createdAt = mongoDB.DateTimeField(required=True, default=datetime.datetime.now)
+    
+class Messages(mongoDB.EmbeddedDocument):
+    uid = mongoDB.UUIDField(binary=False)
+    messages = mongoDB.EmbeddedDocumentListField(Message)
 class Chatroom(mongoDB.EmbeddedDocument):
     uid = mongoDB.UUIDField(binary=False, required=True)
     users = mongoDB.ListField(mongoDB.ReferenceField('User'))
     userEmails = mongoDB.ListField(mongoDB.StringField())
     userImages = mongoDB.ListField(mongoDB.StringField(allow_blank=True,allow_null=True))
-    messages = mongoDB.EmbeddedDocumentListField(Message)
+    messages = mongoDB.EmbeddedDocumentField(Messages)
     newMessages = mongoDB.IntField()
 class Contact(mongoDB.EmbeddedDocument):
     name = mongoDB.StringField()

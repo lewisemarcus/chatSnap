@@ -1,17 +1,19 @@
+
 from flask import jsonify
-from models.User import User, Message, Chatroom
+from models.User import User, Message, Chatroom, Messages
 import json
 import uuid
 
 def newChatFunction(user, chatters, message, recipientList, allEmails, recipientEmitList, recipientImages):
     newChatroom = Chatroom(users=chatters, userEmails=allEmails, uid=uuid.uuid4(), userImages=recipientImages)
-    newChatroom.messages.append(message)
+    messages = Messages(messages=[message], uid=uuid.uuid4())
+    newChatroom.messages.append(messages)
     user.chatrooms.append(newChatroom)
     chatroomExists = False
     for recipient in recipientList:
         for chatroom in recipient.chatrooms:
             if chatroom.userEmails == allEmails:
-                chatroom.messages.append(message)
+                chatroom.messages.messages.append(message)
                 chatroomExists = True
             else:
                 chatroomExists = False
@@ -27,7 +29,7 @@ def updateChat(uid, message, recipientList, recipientEmitList, recipientImages, 
         for i in range(len(recipient.chatrooms)):
             chatroomIds.append(recipient.chatrooms[i].uid)
             if(recipient.chatrooms[i].uid == uid):
-                recipient.chatrooms[i].messages.append(message)
+                recipient.chatrooms[i].messages.messages.append(message)
 
         if uid not in chatroomIds:
             newChatFunction(recipient, chatters, message, recipientList, allEmails, recipientEmitList, recipientImages)
@@ -58,7 +60,7 @@ def socketMessage(socketio, emit):
             
             chatters.append(user)
             
-            message = Message(message=messageText, senderEmail=user.email, uid=uuid.uuid4())
+            message = Message(message=messageText, senderEmail=user.email)
             matchingChatters = False
             allEmails = parsedContent['receivers'].copy()
             allEmails.append(userEmail)
