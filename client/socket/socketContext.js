@@ -10,7 +10,7 @@ const socket = io(uri, {
 })
 
 export const SocketProvider = ({ children }) => {
-    const { setUser, user, setChatroomId } = useContext(AuthContext)
+    const { setUser, user } = useContext(AuthContext)
     const [sentMessage, setSentMessage] = useState(false)
     useEffect(() => {
         socket.on("connect", () => {
@@ -55,6 +55,7 @@ export const SocketProvider = ({ children }) => {
                 })
         }
     })
+
     useEffect(() => {
         if (Object.keys(user).length > 0) {
             socket.on("request-accepted" + user._id.$oid, (userData) => {
@@ -68,7 +69,6 @@ export const SocketProvider = ({ children }) => {
         if (Object.keys(user).length > 0) {
             socket.on("sent-message" + user._id.$oid, (data) => {
                 try {
-                    setChatroomId(data.chatroomId)
                     setUser(JSON.parse(data.user)[0])
                 } catch (err) {
                     console.log("MESSAGE EVENT ERROR: ", err)
@@ -77,16 +77,17 @@ export const SocketProvider = ({ children }) => {
         }
     }, [sentMessage])
     useEffect(() => {
+        console.log("here", user.chatrooms)
         let count = 0
         if (Object.keys(user).length > 0) {
             socket.on("message-received" + user.email, (data) => {
                 if (count == 0)
                     try {
-                        setChatroomId(data.chatroomId)
                         for (let recipient of data.recipients) {
-                            console.log(recipient, user)
-                            if (user._id.$oid === recipient._id.$oid)
+                            console.log(recipient.email, user.email)
+                            if (user._id.$oid === recipient._id.$oid) {
                                 setUser(recipient)
+                            }
                         }
                         count = 1
                     } catch (err) {

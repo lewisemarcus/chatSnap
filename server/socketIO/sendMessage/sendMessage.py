@@ -7,18 +7,30 @@ def newChatFunction(user, chatters, message, recipientList, allEmails, recipient
     newChatroom = Chatroom(users=chatters, userEmails=allEmails, uid=uuid.uuid4(), userImages=recipientImages)
     newChatroom.messages.append(message)
     user.chatrooms.append(newChatroom)
+    chatroomExists = False
     for recipient in recipientList:
-        recipient.chatrooms.append(newChatroom)
+        for chatroom in recipient.chatrooms:
+            if chatroom.userEmails == allEmails:
+                chatroom.messages.append(message)
+                chatroomExists = True
+            else:
+                chatroomExists = False
+        if chatroomExists == False:
+            recipient.chatrooms.append(newChatroom)
         recipient.save()
         recipientEmitList.append(json.loads(recipient.to_json()))
     return newChatroom
 
-def updateChat(uid, message, recipientList, recipientEmitList, recipientImages):
+def updateChat(uid, message, recipientList, recipientEmitList, recipientImages, chatters, allEmails):
     for recipient in recipientList:
+        chatroomIds = []
         for i in range(len(recipient.chatrooms)):
+            chatroomIds.append(recipient.chatrooms[i].uid)
             if(recipient.chatrooms[i].uid == uid):
                 recipient.chatrooms[i].messages.append(message)
 
+        if uid not in chatroomIds:
+            newChatFunction(recipient, chatters, message, recipientList, allEmails, recipientEmitList, recipientImages)
         recipient.save()
         recipientEmitList.append(json.loads(recipient.to_json()))
             
@@ -68,7 +80,7 @@ def socketMessage(socketio, emit):
                         chatroomId = chatroom.uid 
                         chatroom.messages.append(message)
                         chatroom.userImages = recipientImages
-                        updateChat(chatroomId, message, recipientList, recipientEmitList, recipientImages)
+                        updateChat(chatroomId, message, recipientList, recipientEmitList, recipientImages, chatters, allEmails)
                         break
                 if matchingChatters == False:
                     chatroomId = newChatFunction(user, chatters, message, recipientList, allEmails, recipientEmitList, recipientImages).uid
@@ -80,7 +92,7 @@ def socketMessage(socketio, emit):
                     
             emit('sent-message'+str(user.id), {'user': userList.to_json(), 'chatroomId': str(chatroomId)}, room='chatroom')
             
-            for receiver in receiversEmails:
+            for receiver in parsedContent['receivers']:
                 emit('message-received'+receiver, {'recipients' : recipientEmitList, 'chatroomId' : str(chatroomId)}, room='chatroom')
             
            

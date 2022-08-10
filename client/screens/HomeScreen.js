@@ -17,7 +17,9 @@ export default function Home({ navigation }) {
             setDeleteMode(false)
         }
     }, [])
-    useEffect(() => {}, [user.chatrooms.length])
+    useEffect(() => {
+        console.log("updated")
+    }, [user.chatrooms.length])
     return (
         <View style={styles.container}>
             {/* FlatList enables scrollability */}

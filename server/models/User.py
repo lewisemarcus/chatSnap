@@ -3,7 +3,7 @@ import datetime
 class Message(mongoDB.EmbeddedDocument):
     message = mongoDB.StringField()
     senderEmail = mongoDB.StringField()
-    createdAt = mongoDB.DateTimeField(required=True, default=datetime.datetime.now)
+    createdAt = mongoDB.StringField(required=True, default=datetime.datetime.now.strftime("%Y-%m-%d %H:%M:%S"))
 class Chatroom(mongoDB.EmbeddedDocument):
     uid = mongoDB.UUIDField(binary=False, required=True)
     users = mongoDB.ListField(mongoDB.ReferenceField('User'))

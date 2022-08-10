@@ -10,12 +10,15 @@ export const DeleteBtn = ({
 }) => {
     const handleDelete = async (selectedContacts, selectedChats) => {
         try {
-            user.contacts = user.contacts.filter((contact) => {
-                return !selectedContacts.includes(contact.email)
-            })
-            user.chatrooms = user.chatrooms.filter((chatroom) => {
-                return !selectedChats.includes(chatroom)
-            })
+            if (selectedContacts !== undefined)
+                user.contacts = user.contacts.filter((contact) => {
+                    return !selectedContacts.includes(contact.email)
+                })
+            if (selectedChats !== undefined)
+                user.chatrooms = user.chatrooms.filter((chatroom) => {
+                    if (!selectedChats.includes(chatroom))
+                        return (chatroom.messages.length = 0)
+                })
 
             setUser(user)
             await instance.post("updateUser", {
@@ -59,4 +62,9 @@ export const DeleteBtn = ({
             <Icon name="trash" size={30} color="#fefefe" />
         </TouchableOpacity>
     )
+}
+
+DeleteBtn.defaultProps = {
+    selectedChats: [],
+    selectedContacts: [],
 }
