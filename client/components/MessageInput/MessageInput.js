@@ -7,6 +7,7 @@ import {
     Pressable,
     KeyboardAvoidingView,
     Platform,
+    Alert,
 } from "react-native"
 import { SocketContext } from "../../socket/SocketContext"
 import {
@@ -27,16 +28,20 @@ export default function MessageInput() {
     const navigation = useNavigation()
     const onPress = () => {
         if (message) {
-            sendMessage({ user, receivers, message })
-            setSentMessage(!sentMessage)
+            for (let contact of user.contacts) {
+                if (receivers.includes(contact.email)) {
+                    sendMessage({ user, receivers, message })
+                    setSentMessage(!sentMessage)
+                    break
+                }
+                Alert.alert("You must be contacts to message.")
+            }
         }
         setMessage("")
     }
-    console.log(">>>", chatroomId.length > 0)
+
     useEffect(() => {
-        console.log("hi")
         if (sentMessage && route.name === "New Chat") {
-            console.log("hoe")
             navigation.navigate("ChatRoom", { id: chatroomId })
         }
     }, [sentMessage])

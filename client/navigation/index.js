@@ -15,6 +15,7 @@ import {
     useWindowDimensions,
     ActivityIndicator,
     TouchableWithoutFeedback,
+    Alert,
 } from "react-native"
 import {
     ChatRoomScreen,
@@ -149,6 +150,7 @@ const HomeHeader = (props) => {
         try {
             navigation.navigate("Menu")
         } catch (err) {
+            //TODO: replace with alert
             console.log("crashed", err)
         }
     }

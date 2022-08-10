@@ -1,6 +1,6 @@
 import Icon from "react-native-vector-icons/Entypo"
 import { TouchableOpacity } from "react-native"
-
+import { Alert } from "react-native"
 export const DeleteBtn = ({
     selectedContacts = [],
     instance,
@@ -27,7 +27,6 @@ export const DeleteBtn = ({
             if (setState !== "") {
                 setState(false)
             }
-            console.log(user)
             setUser(user)
             await instance.post("updateUser", {
                 headers: {
@@ -46,7 +45,7 @@ export const DeleteBtn = ({
                 },
             })
         } catch (err) {
-            console.log(err)
+            Alert.alert(`Error with request: ${err}`)
         }
     }
     return (
