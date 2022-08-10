@@ -69,6 +69,7 @@ export const AuthProvider = ({ children }) => {
                 if (registerUser.data) {
                     const token = registerUser.data[0]
                     const userInfo = registerUser.data[1]
+
                     setUser(userInfo)
                     setToken(token)
                     AsyncStorage.setItem("token", token)
@@ -106,6 +107,7 @@ export const AuthProvider = ({ children }) => {
                 if (loginUser.data) {
                     const token = loginUser.data[0]
                     const userInfo = loginUser.data[1]
+
                     setUser(userInfo)
                     setToken(token)
                     AsyncStorage.setItem("token", token)
@@ -152,6 +154,7 @@ export const AuthProvider = ({ children }) => {
             let userInfo = await AsyncStorage.getItem("user")
             setToken(userToken)
             setName(username)
+
             if (!JSON.parse(userInfo)) setUser({})
             else setUser(JSON.parse(userInfo))
 
