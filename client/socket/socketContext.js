@@ -1,16 +1,16 @@
 import { io } from "socket.io-client"
 import { createContext, useContext, useEffect, useState } from "react"
 import { AuthContext, uri } from "../context/AuthContext"
-
+import { Alert } from "react-native"
 export const SocketContext = createContext()
 
 const socket = io(uri, {
     path: "/socket.io",
     multiplex: false,
 })
-console.log(Object.keys(socket))
+
 export const SocketProvider = ({ children }) => {
-    const { setUser, user, setChatroom } = useContext(AuthContext)
+    const { setUser, user } = useContext(AuthContext)
     const [sentMessage, setSentMessage] = useState(false)
 
     useEffect(() => {
@@ -18,7 +18,7 @@ export const SocketProvider = ({ children }) => {
             try {
                 socket.send("connected")
             } catch (err) {
-                console.log("CONNECTION ERROR: ", err)
+                Alert.alert(`Connection Error: ${err}`)
             }
         })
         return () => socket.off("connect")
@@ -73,12 +73,11 @@ export const SocketProvider = ({ children }) => {
                 try {
                     for (let recipient of data.recipients) {
                         if (user._id.$oid === recipient._id.$oid) {
-                            console.log(5, user.email)
                             setUser(recipient)
                         }
                     }
                 } catch (err) {
-                    console.log("MESSAGE EVENT ERROR: ", err)
+                    Alert.alert(`Error receiving messages: ${err}`)
                 }
             })
             return () => socket.off("message-received" + user.email)
@@ -88,10 +87,9 @@ export const SocketProvider = ({ children }) => {
         if (Object.keys(user).length > 0) {
             socket.on("sent-message" + user._id.$oid, (data) => {
                 try {
-                    console.log(6, user.email)
                     setUser(JSON.parse(data.user)[0])
                 } catch (err) {
-                    console.log("MESSAGE EVENT ERROR: ", err)
+                    Alert.alert(`Error sending message: ${err}`)
                 }
             })
             return () => socket.off("sent-message" + user._id.$oid)
@@ -103,7 +101,7 @@ export const SocketProvider = ({ children }) => {
             setSentMessage(!sentMessage)
             socket.emit("message-sent", JSON.stringify(content))
         } catch (err) {
-            console.log("SEND MESSAGE ERROR: ", err)
+            Alert.alert(`Error sending message: ${err}`)
         }
     }
     return (
