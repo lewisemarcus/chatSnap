@@ -22,14 +22,13 @@ export default function MessageInput() {
     const [message, setMessage] = useState("")
     const [sentMessage, setSentMessage] = useState(false)
     const { sendMessage } = useContext(SocketContext)
-    const { user, receivers, setReceivers, chatroomId, setChatroomId } =
-        useContext(AuthContext)
+    const { user, receivers, chatroomId, token } = useContext(AuthContext)
     const route = useRoute()
     const navigation = useNavigation()
     const onPress = () => {
         if (message) {
             for (let contact of user.contacts) {
-                if (receivers.includes(contact.email)) {
+                if (receivers.includes(contact.email) && token) {
                     sendMessage({ user, receivers, message })
                     setSentMessage(!sentMessage)
                     break

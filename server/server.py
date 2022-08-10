@@ -8,6 +8,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from socketIO.sendMessage.sendMessage import socketMessage
+from socketIO.updateChat.updateChat import updateChat
 from routes.userRoutes.addFriend import addAFriend
 from routes.onboardingRoutes.register import register
 from routes.userRoutes.getFriends import getFriends
@@ -56,6 +57,7 @@ def joinRoom(content):
 
 # socket routing
 socketMessage(socketio, emit)
+updateChat(socketio)
 
 if __name__ == "__main__":
     socketio.run(app, host=HOST, port=PORT, debug=DEBUG)

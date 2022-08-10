@@ -13,11 +13,13 @@ def newChatFunction(user, chatters, message, recipientList, allEmails, recipient
         for chatroom in recipient.chatrooms:
             if chatroom.userEmails == allEmails:
                 chatroom.messages.messages.append(message)
+                chatroom.newMessages += 1
                 chatroomExists = True
             else:
                 chatroomExists = False
         if chatroomExists == False:
             recipient.chatrooms.append(newChatroom)
+            recipient.chatrooms[len(recipient.chatrooms) - 1].newMessages +=1
         recipient.save()
         recipientEmitList.append(json.loads(recipient.to_json()))
     return newChatroom
@@ -28,6 +30,7 @@ def updateChat(uid, message, recipientList, recipientEmitList, recipientImages, 
         for i in range(len(recipient.chatrooms)):
             chatroomIds.append(recipient.chatrooms[i].uid)
             if(recipient.chatrooms[i].uid == uid):
+                recipient.chatrooms[i].newMessages +=1
                 recipient.chatrooms[i].messages.messages.append(message)
 
         if uid not in chatroomIds:
