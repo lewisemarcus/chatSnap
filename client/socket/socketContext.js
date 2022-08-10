@@ -8,7 +8,7 @@ const socket = io(uri, {
     path: "/socket.io",
     multiplex: false,
 })
-
+console.log(Object.keys(socket))
 export const SocketProvider = ({ children }) => {
     const { setUser, user, setChatroom } = useContext(AuthContext)
     const [sentMessage, setSentMessage] = useState(false)
@@ -21,7 +21,8 @@ export const SocketProvider = ({ children }) => {
                 console.log("CONNECTION ERROR: ", err)
             }
         })
-    }, [])
+        return () => socket.off("connect")
+    })
 
     useEffect(() => {
         if (Object.keys(user).length > 0) {
@@ -33,6 +34,7 @@ export const SocketProvider = ({ children }) => {
                     setUser(currentUser[0])
                     count = 1
                 })
+            return () => socket.off("request-received" + user._id.$oid)
         }
     })
     useEffect(() => {
@@ -42,6 +44,7 @@ export const SocketProvider = ({ children }) => {
 
                 setUser(currentUser[0])
             })
+            return () => socket.off("request-sent" + user._id.$oid)
         }
     })
     useEffect(() => {
@@ -51,6 +54,7 @@ export const SocketProvider = ({ children }) => {
 
                 setUser(currentUser[0])
             })
+            return () => socket.off("accepted-request" + user._id.$oid)
         }
     })
 
@@ -60,6 +64,7 @@ export const SocketProvider = ({ children }) => {
                 let currentUser = JSON.parse(userData)
                 setUser(currentUser[0])
             })
+            return () => socket.off("request-accepted" + user._id.$oid)
         }
     })
     useEffect(() => {
@@ -76,6 +81,7 @@ export const SocketProvider = ({ children }) => {
                     console.log("MESSAGE EVENT ERROR: ", err)
                 }
             })
+            return () => socket.off("message-received" + user.email)
         }
     })
     useEffect(() => {
@@ -88,8 +94,9 @@ export const SocketProvider = ({ children }) => {
                     console.log("MESSAGE EVENT ERROR: ", err)
                 }
             })
+            return () => socket.off("sent-message" + user._id.$oid)
         }
-    }, [sentMessage])
+    })
 
     const sendMessage = (content) => {
         try {
