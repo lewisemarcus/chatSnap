@@ -13,7 +13,7 @@ export default function ChatRoomScreen({ navigation }) {
     useEffect(() => {
         for (let chatroom of user.chatrooms) {
             if (chatroom.uid === chatroomId) {
-                setMessages(chatroom.messages)
+                setMessages(chatroom.messages.messages)
                 break
             }
         }

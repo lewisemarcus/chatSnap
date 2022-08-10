@@ -29,8 +29,8 @@ def updateUser(app):
             user.update(name=fullName, userImage=userImage, contacts=contacts)
             for chatroom in user.chatrooms:
                 if str(chatroom.uid) in chatrooms:
-                    user.update(pull__chatrooms__messages__uid=chatroom.messages.uid)
-                    user.reload() 
+                    chatroom.messages.messages = None
+                    user.update(pull__chatrooms__messages=None) 
             user.save()
             
             return jsonify(user), 201

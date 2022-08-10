@@ -44,7 +44,7 @@ export default function ChatRoomItem({
     }, [selectedChats])
 
     return (
-        chatRoom.messages.length > 0 && (
+        chatRoom.messages.messages.length > 0 && (
             <TouchableOpacity
                 style={styles.container}
                 onLongPress={() => onLongPress(chatRoom)}
@@ -78,7 +78,7 @@ export default function ChatRoomItem({
                 )}
                 {chatRoom &&
                     chatRoom.userEmails &&
-                    chatRoom.messages.length > 0 && (
+                    chatRoom.messages.messages.length > 0 && (
                         <View style={styles.rightContainer}>
                             <View style={styles.row}>
                                 <Text style={styles.name}>
@@ -87,34 +87,39 @@ export default function ChatRoomItem({
 
                                 <Text style={styles.text}>
                                     {
-                                        chatRoom.messages[
-                                            chatRoom.messages.length - 1
+                                        chatRoom.messages.messages[
+                                            chatRoom.messages.messages.length -
+                                                1
                                         ].createdAt.$date
                                     }
                                 </Text>
                             </View>
                             {user.email ==
-                            chatRoom.messages[chatRoom.messages.length - 1]
-                                .senderEmail ? (
+                            chatRoom.messages.messages[
+                                chatRoom.messages.messages.length - 1
+                            ].senderEmail ? (
                                 <Text numberOfLines={1} style={styles.text}>
                                     You:{" "}
                                     {
-                                        chatRoom.messages[
-                                            chatRoom.messages.length - 1
+                                        chatRoom.messages.messages[
+                                            chatRoom.messages.messages.length -
+                                                1
                                         ].message
                                     }
                                 </Text>
                             ) : (
                                 <Text numberOfLines={1} style={styles.text}>
                                     {
-                                        chatRoom.messages[
-                                            chatRoom.messages.length - 1
+                                        chatRoom.messages.messages[
+                                            chatRoom.messages.messages.length -
+                                                1
                                         ].senderEmail
                                     }
                                     :{" "}
                                     {
-                                        chatRoom.messages[
-                                            chatRoom.messages.length - 1
+                                        chatRoom.messages.messages[
+                                            chatRoom.messages.messages.length -
+                                                1
                                         ].message
                                     }
                                 </Text>
