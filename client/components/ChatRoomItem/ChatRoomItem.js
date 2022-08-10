@@ -13,7 +13,7 @@ export default function ChatRoomItem({
     setDeleteMode,
 }) {
     const navigation = useNavigation()
-    const { user } = useContext(AuthContext)
+    const { user, setChatroomId, setReceivers } = useContext(AuthContext)
     const onPress = () => {
         if (selectedChats.length) return onLongPress(chatRoom)
         navigation.navigate("ChatRoom", { id: chatRoom.uid })
@@ -30,7 +30,11 @@ export default function ChatRoomItem({
     chatRoom.userImages = chatRoom.userImages.filter((image) => {
         return user.userImage != image
     })
-
+    useEffect(() => {
+        setChatroomId(chatRoom.uid)
+        setReceivers([])
+        return () => setChatroomId("")
+    }, [])
     useEffect(() => {
         if (!selectedChats.length) setDeleteMode(false)
     }, [selectedChats.length])

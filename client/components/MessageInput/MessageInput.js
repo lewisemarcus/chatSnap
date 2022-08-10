@@ -31,7 +31,6 @@ export default function MessageInput() {
             setSentMessage(true)
         }
         setMessage("")
-        setReceivers([])
     }
     useEffect(() => {
         if (sentMessage && route.name === "New Chat") {
