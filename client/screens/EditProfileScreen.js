@@ -40,7 +40,7 @@ export default function EditProfileScreen({ navigation }) {
             },
         })
         result.data.userImage = userImage
-        console.log("ohh")
+
         setUser(result.data)
         navigation.navigate("My Profile")
     }
