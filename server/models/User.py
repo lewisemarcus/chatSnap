@@ -1,6 +1,7 @@
 import mongoengine as mongoDB
 import datetime
 class Message(mongoDB.EmbeddedDocument):
+    uid = mongoDB.UUIDField(binary=False, required=True)
     message = mongoDB.StringField()
     senderEmail = mongoDB.StringField()
     createdAt = mongoDB.DateTimeField(required=True, default=datetime.datetime.now)
