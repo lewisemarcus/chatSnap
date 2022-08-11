@@ -28,16 +28,18 @@ export const SocketProvider = ({ children }) => {
         if (Object.keys(user).length > 0 && user._id !== undefined) {
             let count = 0
             if (count == 0)
-                socket.on("request-received" + user._id.$oid, (userData) => {
-                    let currentUser = JSON.parse(userData)
-                    sendPushNotification(user.expoToken, {
-                        title: `New Friend Request`,
-                        message: `You've received a request from: ${
-                            currentUser.requests[
-                                currentUser.requests.length - 1
-                            ]
-                        }`,
-                    })
+                socket.on("request-received" + user._id.$oid, (data) => {
+                    let currentUser = JSON.parse(data.userData)
+                    if (user.email !== data.sender) {
+                        sendPushNotification(user.expoToken, {
+                            title: `New Friend Request`,
+                            message: `You've received a request from: ${
+                                currentUser[0].requests[
+                                    currentUser[0].requests.length - 1
+                                ]
+                            }`,
+                        })
+                    }
                     currentUser[0].totalNot = (user.totalNot || 0) + 1
                     setUser(currentUser[0])
                     count = 1
@@ -82,7 +84,7 @@ export const SocketProvider = ({ children }) => {
                     for (let recipient of data.recipients) {
                         if (user._id.$oid === recipient._id.$oid) {
                             setUser(recipient)
-                            if (user.email !== sender.email) {
+                            if (user.email !== data.sender) {
                                 sendPushNotification(user.expoToken, {
                                     title: data.sender,
                                     message: data.message,
