@@ -16,6 +16,8 @@ import {
     ActivityIndicator,
     TouchableWithoutFeedback,
     Alert,
+    TouchableOpacity,
+    Pressable,
 } from "react-native"
 import {
     ChatRoomScreen,
@@ -121,7 +123,17 @@ const RootNavigator = () => {
             <Stack.Screen
                 name="Menu"
                 component={MenuScreen}
-                options={{ headerShown: true }}
+                options={{
+                    headerShown: true,
+                    headerLeft: () => (
+                        <HeaderBackButton
+                            style={{ marginRight: 40, marginLeft: 0 }}
+                            onPress={() => {
+                                navigation.goBack()
+                            }}
+                        />
+                    ),
+                }}
             />
             <Stack.Screen
                 name="Friend Requests"
@@ -238,6 +250,13 @@ const HomeHeader = (props) => {
 const ChatRoomHeader = (props) => {
     const { user } = useContext(AuthContext)
     const { width } = useWindowDimensions()
+    const navigation = useNavigation()
+    const onPress = () => {
+        navigation.navigate("My Profile")
+    }
+    const menuPress = () => {
+        navigation.navigate("Menu")
+    }
     return (
         <View
             style={{
@@ -250,27 +269,31 @@ const ChatRoomHeader = (props) => {
             }}
         >
             {user.userImage === "" ? (
-                <Image
-                    source={LoginSVG}
-                    style={{
-                        width: 30,
-                        height: 30,
-                        borderRadius: 30,
-                        marginLeft: -20,
-                    }}
-                />
+                <TouchableOpacity onPress={onPress}>
+                    <Image
+                        source={LoginSVG}
+                        style={{
+                            width: 30,
+                            height: 30,
+                            borderRadius: 30,
+                            marginLeft: -20,
+                        }}
+                    />
+                </TouchableOpacity>
             ) : (
-                <Image
-                    source={{
-                        uri: user.userImage,
-                    }}
-                    style={{
-                        width: 30,
-                        height: 30,
-                        borderRadius: 30,
-                        marginLeft: -20,
-                    }}
-                />
+                <TouchableOpacity onPress={onPress}>
+                    <Image
+                        source={{
+                            uri: user.userImage,
+                        }}
+                        style={{
+                            width: 30,
+                            height: 30,
+                            borderRadius: 30,
+                            marginLeft: -20,
+                        }}
+                    />
+                </TouchableOpacity>
             )}
             <Text
                 style={{
@@ -282,12 +305,14 @@ const ChatRoomHeader = (props) => {
             >
                 Chats
             </Text>
-            <Feather
-                name="menu"
-                size={30}
-                color="black"
-                style={{ marginRight: 50 }}
-            />
+            <Pressable onPress={menuPress}>
+                <Feather
+                    name="menu"
+                    size={30}
+                    color="black"
+                    style={{ marginRight: 50 }}
+                />
+            </Pressable>
         </View>
     )
 }
