@@ -121,6 +121,7 @@ export const SocketProvider = ({ children }) => {
     const sendMessage = (content) => {
         try {
             setSentMessage(!sentMessage)
+            console.log(content.timezone)
             socket.emit("message-sent", JSON.stringify(content))
         } catch (err) {
             Alert.alert(`Error sending message: ${err}`)
