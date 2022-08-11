@@ -1,14 +1,12 @@
-TODO: Create a contact page for button presses and menu
-TODO: Update recipient input to not allow same user added
-TODO: Create a single contact view page to edit contacts
-TODO: Update friend request to search by username
-TODO: Add username for each user in models
+* = maybe
+
+TODO: Update friend request to search by username*
+TODO: Add username for each user in models*
 TODO: Fix DOB input on registration (or remove)
-TODO: Allow upload of photos to firebase for profile photos and messages
-TODO: Update chat room screen to account for group chats
-TODO: Implement push notifications
+TODO: ALlow photo messages
 TODO: Add notifications setting page
 TODO: Add about app to settings page
 TODO: For accepting multiple friends, adding multiple contacts 
       from contact page for group chat, allow long press to multi select
 TODO: Implement filter system with P5.js
+TODO: Update login and register pages
