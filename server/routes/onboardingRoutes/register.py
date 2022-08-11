@@ -24,11 +24,11 @@ def register(app):
             name = values['name']
             email = values['email']
             password = values['password']
-        
+            expoToken = values['userExpoToken']
             checkEmail = User.objects(email=email)
         
             if len(checkEmail) == 0:
-                user = User(name=name, email=email, password=password).save()
+                user = User(name=name, email=email, password=password, expoToken=expoToken).save()
                 print(user, flush=True)
                 token = create_access_token(identity=email)
                 return jsonify(token, user), 201

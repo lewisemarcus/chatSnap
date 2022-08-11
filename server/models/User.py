@@ -27,5 +27,6 @@ class User(mongoDB.Document):
     sentRequests = mongoDB.ListField(mongoDB.StringField())
     contacts = mongoDB.EmbeddedDocumentListField(Contact)
     chatrooms = mongoDB.EmbeddedDocumentListField(Chatroom)
+    expoToken = mongoDB.StringField()
     meta = {'collection': 'users'}
 

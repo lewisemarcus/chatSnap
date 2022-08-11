@@ -1,13 +1,24 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import React, { createContext, useState, useEffect } from "react"
+import React, { createContext, useState, useEffect, useRef } from "react"
 import { Alert } from "react-native"
 import axios from "axios"
 import Constants from "expo-constants"
-import { Platform, LogBox } from "react-native"
+import { Platform, LogBox, AppState } from "react-native"
 import { WEB_URL, AND_URL } from "@env"
 const { manifest } = Constants
-
+import * as Device from "expo-device"
+import * as Notifications from "expo-notifications"
 import { Logs } from "expo"
+
+import ShortcutBadge from "react-native-app-badge"
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+    }),
+})
 
 Logs.enableExpoCliLogging()
 
@@ -38,6 +49,9 @@ export const AuthProvider = ({ children }) => {
     const [passwordConfirm, setPasswordConfirm] = useState("")
     const [user, setUser] = useState({})
 
+    const notificationListener = useRef()
+    const responseListener = useRef()
+
     const noHandler = () => {
         setName("")
         setEmail("")
@@ -45,9 +59,75 @@ export const AuthProvider = ({ children }) => {
         setPasswordConfirm("")
     }
 
+    async function sendPushNotification(expoPushToken, content) {
+        const message = {
+          to: expoPushToken,
+          sound: 'default',
+          title: content.title,
+          body: content.message,
+          data: { someData: 'goes here' },
+        };
+      
+        await fetch('https://exp.host/--/api/v2/push/send', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Accept-encoding': 'gzip, deflate',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(message),
+        });
+      }
+
     useEffect(() => {
         LogBox.ignoreLogs(["VirtualizedLists should never be nested"])
     }, [])
+
+    useEffect(() => {
+        // This listener is fired whenever a notification is received while the app is foregrounded
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+        setNotification(notification);
+      });
+  
+      // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+        console.log(response);
+      });
+  
+      return () => {
+        Notifications.removeNotificationSubscription(notificationListener.current);
+        Notifications.removeNotificationSubscription(responseListener.current);
+      };
+    }, [])
+
+    useEffect(() => { 
+        if(user.totalNot) {
+            ShortcutBadge.getCount(() => {
+                ShortcutBadge.setCount(user.totalNot);
+            })}
+    }, [user.totalNot])
+
+    const appState = useRef(AppState.currentState);
+
+    useEffect(() => {
+        const subscription = AppState.addEventListener("change", _handleAppStateChange);
+        return () => {
+          subscription.remove();
+        };
+      }, []);
+
+      const _handleAppStateChange = nextAppState => {
+        if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+            user.totalNot = 0
+            setUser(user)
+            ShortcutBadge.getCount(() => {
+                ShortcutBadge.setCount(0);
+             })
+        }
+    
+        appState.current = nextAppState;
+      };
+
     const register = async () => {
         try {
             setIsLoading(true)
@@ -57,6 +137,11 @@ export const AuthProvider = ({ children }) => {
                 password.length > 0 &&
                 password === passwordConfirm
             ) {
+                let userExpoToken
+                registerForPushNotificationsAsync().then((expoToken) => {
+                    return userExpoToken = expoToken
+                    
+                })
                 const registerUser = await instance.post("Register", {
                     headers: {
                         Accept: "application/json",
@@ -64,7 +149,7 @@ export const AuthProvider = ({ children }) => {
                         "Access-Control-Allow-Origin": true,
                         "Access-Control-Allow-Credentials": true,
                     },
-                    body: { name, email, password },
+                    body: { name, email, password, userExpoToken },
                 })
                 if (registerUser.data) {
                     const token = registerUser.data[0]
@@ -203,9 +288,41 @@ export const AuthProvider = ({ children }) => {
                 setChatroomId,
                 chatroom,
                 setChatroom,
+                sendPushNotification,
+                expoPushToken
             }}
         >
             {children}
         </AuthContext.Provider>
     )
+}
+
+const registerForPushNotificationsAsync = () => {
+    let token
+    if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync()
+      let finalStatus = existingStatus
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync()
+        finalStatus = status
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!')
+        return
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data
+      console.log(token)
+    } else {
+      alert('Must use physical device for Push Notifications')
+    }
+  
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      })
+    }  
+    return token
 }

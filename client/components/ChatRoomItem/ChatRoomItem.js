@@ -25,6 +25,9 @@ export default function ChatRoomItem({
 
         for (let i in user.chatrooms) {
             if (user.chatrooms[i].uid == chatRoom.uid) {
+                user.totalNot = user.totalNot
+                    ? user.totalNot - user.chatrooms[i].newMessages
+                    : 0
                 user.chatrooms[i].newMessages = 0
                 setUser(user)
                 socket.emit(

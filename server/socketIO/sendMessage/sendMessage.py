@@ -97,7 +97,7 @@ def socketMessage(socketio, emit):
             
             
             for receiver in parsedContent['receivers']:
-                emit('message-received'+receiver, {'recipients' : recipientEmitList, 'chatroomId' : str(chatroomId)}, room='chatroom')
+                emit('message-received'+receiver, {'recipients' : recipientEmitList, 'chatroomId' : str(chatroomId), 'sender': userEmail, 'message': messageText}, room='chatroom')
                 
             emit('sent-message'+str(user.id), {'user': userList.to_json(), 'chatroomId': str(chatroomId)}, room='chatroom')
            
