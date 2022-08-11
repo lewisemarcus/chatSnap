@@ -10,7 +10,8 @@ const socket = io(uri, {
 })
 
 export const SocketProvider = ({ children }) => {
-    const { setUser, user, sendPushNotification } = useContext(AuthContext)
+    const { setUser, user, sendPushNotification, setChatroomId, chatroomId } =
+        useContext(AuthContext)
     const [sentMessage, setSentMessage] = useState(false)
 
     useEffect(() => {
@@ -103,7 +104,12 @@ export const SocketProvider = ({ children }) => {
         if (Object.keys(user).length > 0 && user._id !== undefined) {
             socket.on("sent-message" + user._id.$oid, (data) => {
                 try {
-                    setUser(JSON.parse(data.user)[0])
+                    const currentUser = JSON.parse(data.user)[0]
+                    setChatroomId(
+                        currentUser.chatrooms[currentUser.chatrooms.length - 1]
+                            .uid,
+                    )
+                    setUser(currentUser)
                 } catch (err) {
                     Alert.alert(`Error sending message: ${err}`)
                 }
