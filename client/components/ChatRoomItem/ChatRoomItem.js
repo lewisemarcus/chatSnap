@@ -20,6 +20,7 @@ export default function ChatRoomItem({
 
     const { socket } = useContext(SocketContext)
     const onPress = () => {
+        setChatroomId(chatRoom.uid)
         if (selectedChats.length) return onLongPress(chatRoom)
         navigation.navigate("ChatRoom", { id: chatRoom.uid })
 
@@ -34,7 +35,7 @@ export default function ChatRoomItem({
                     "chat-opened",
                     JSON.stringify({
                         chatroomId: chatRoom.uid,
-                        userId: user._id.$oid,
+                        userEmail: user.email,
                     }),
                 )
                 break
@@ -57,7 +58,7 @@ export default function ChatRoomItem({
         return user.userImage != image
     })
     useEffect(() => {
-        setChatroomId(chatRoom.uid)
+        setChatroomId("")
         setReceivers([])
         return () => setChatroomId("")
     }, [])
@@ -65,91 +66,83 @@ export default function ChatRoomItem({
         if (selectedChats.length == 0) setDeleteMode(false)
     }, [selectedChats])
 
-    return (
-        chatRoom.messages.messages.length > 0 && (
-            <TouchableOpacity
-                style={styles.container}
-                onLongPress={() => onLongPress(chatRoom)}
-                onPress={onPress}
-            >
-                {chatRoom.userImages.length == 0 ? (
-                    chatRoom.userEmails.length > 1 ? (
-                        <Image source={GroupJPG} style={styles.image} />
-                    ) : (
-                        <Image source={LoginSVG} style={styles.image} />
-                    )
-                ) : chatRoom.userEmails.length == 1 ? (
-                    chatRoom.userImages[0] !== "" ? (
-                        <Image
-                            source={chatRoom.userImages[0]}
-                            style={styles.image}
-                        />
-                    ) : (
-                        <Image source={LoginSVG} style={styles.image} />
-                    )
-                ) : (
+    return chatRoom.messages.messages.length > 0 ? (
+        <TouchableOpacity
+            style={styles.container}
+            onLongPress={() => onLongPress(chatRoom)}
+            onPress={onPress}
+        >
+            {chatRoom.userImages.length == 0 ? (
+                chatRoom.userEmails.length > 1 ? (
                     <Image source={GroupJPG} style={styles.image} />
-                )}
+                ) : (
+                    <Image source={LoginSVG} style={styles.image} />
+                )
+            ) : chatRoom.userEmails.length == 1 ? (
+                chatRoom.userImages[0] !== "" ? (
+                    <Image
+                        source={chatRoom.userImages[0]}
+                        style={styles.image}
+                    />
+                ) : (
+                    <Image source={LoginSVG} style={styles.image} />
+                )
+            ) : (
+                <Image source={GroupJPG} style={styles.image} />
+            )}
 
-                {chatRoom.newMessages && (
-                    <View style={styles.badgeContainer}>
-                        <Text style={styles.badgeText}>
-                            {chatRoom.newMessages}
+            {chatRoom.newMessages ? (
+                <View style={styles.badgeContainer}>
+                    <Text style={styles.badgeText}>{chatRoom.newMessages}</Text>
+                </View>
+            ) : null}
+            {chatRoom &&
+            chatRoom.userEmails &&
+            chatRoom.messages.messages.length > 0 ? (
+                <View style={styles.rightContainer}>
+                    <View style={styles.row}>
+                        <Text style={styles.name}>
+                            {chatRoom.userEmails.toString(", ")}
+                        </Text>
+
+                        <Text style={styles.text}>
+                            {
+                                chatRoom.messages.messages[
+                                    chatRoom.messages.messages.length - 1
+                                ].createdAt.$date
+                            }
                         </Text>
                     </View>
-                )}
-                {chatRoom &&
-                    chatRoom.userEmails &&
-                    chatRoom.messages.messages.length > 0 && (
-                        <View style={styles.rightContainer}>
-                            <View style={styles.row}>
-                                <Text style={styles.name}>
-                                    {chatRoom.userEmails.toString(", ")}
-                                </Text>
-
-                                <Text style={styles.text}>
-                                    {
-                                        chatRoom.messages.messages[
-                                            chatRoom.messages.messages.length -
-                                                1
-                                        ].createdAt.$date
-                                    }
-                                </Text>
-                            </View>
-                            {user.email ==
-                            chatRoom.messages.messages[
-                                chatRoom.messages.messages.length - 1
-                            ].senderEmail ? (
-                                <Text numberOfLines={1} style={styles.text}>
-                                    You:{" "}
-                                    {
-                                        chatRoom.messages.messages[
-                                            chatRoom.messages.messages.length -
-                                                1
-                                        ].message
-                                    }
-                                </Text>
-                            ) : (
-                                <Text numberOfLines={1} style={styles.text}>
-                                    {
-                                        chatRoom.messages.messages[
-                                            chatRoom.messages.messages.length -
-                                                1
-                                        ].senderEmail
-                                    }
-                                    :{" "}
-                                    {
-                                        chatRoom.messages.messages[
-                                            chatRoom.messages.messages.length -
-                                                1
-                                        ].message
-                                    }
-                                </Text>
-                            )}
-                        </View>
+                    {user.email ==
+                    chatRoom.messages.messages[
+                        chatRoom.messages.messages.length - 1
+                    ].senderEmail ? (
+                        <Text numberOfLines={1} style={styles.text}>
+                            You:{" "}
+                            {
+                                chatRoom.messages.messages[
+                                    chatRoom.messages.messages.length - 1
+                                ].message
+                            }
+                        </Text>
+                    ) : (
+                        <Text numberOfLines={1} style={styles.text}>
+                            {
+                                chatRoom.messages.messages[
+                                    chatRoom.messages.messages.length - 1
+                                ].senderEmail
+                            }
+                            :{" "}
+                            {
+                                chatRoom.messages.messages[
+                                    chatRoom.messages.messages.length - 1
+                                ].message
+                            }
+                        </Text>
                     )}
-                {selected && <View style={styles.overlay}></View>}
-            </TouchableOpacity>
-        )
-    )
+                </View>
+            ) : null}
+            {selected ? <View style={styles.overlay}></View> : null}
+        </TouchableOpacity>
+    ) : null
 }

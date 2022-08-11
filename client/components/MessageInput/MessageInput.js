@@ -27,14 +27,18 @@ export default function MessageInput() {
     const navigation = useNavigation()
     const onPress = () => {
         if (message) {
+            let alert = false
             for (let contact of user.contacts) {
                 if (receivers.includes(contact.email) && token) {
                     sendMessage({ user, receivers, message })
                     setSentMessage(!sentMessage)
+                    alert = false
                     break
+                } else {
+                    alert = true
                 }
-                Alert.alert("You must be contacts to message.")
             }
+            if (alert) Alert.alert("You must be contacts to message.")
         }
         setMessage("")
     }

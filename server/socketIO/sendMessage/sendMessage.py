@@ -62,7 +62,7 @@ def socketMessage(socketio, emit):
             
             chatters.append(user)
             
-            message = Message(message=messageText, senderEmail=user.email)
+            message = Message(message=messageText, senderEmail=user.email, uid=uuid.uuid4())
             matchingChatters = False
             allEmails = parsedContent['receivers'].copy()
             allEmails.append(userEmail)
