@@ -70,8 +70,9 @@ const LoginScreen = ({ navigation }) => {
                         />
                     }
                     inputType="password"
-                    fieldButtonLabel={"Forgot?"}
-                    fieldButtonFunction={() => {}}
+                    //TODO: update fieldBUttonLabel hanlder
+                    //fieldButtonLabel={"Forgot?"}
+                    //fieldButtonFunction={() => {}}
                 />
 
                 <CustomButton
@@ -81,7 +82,8 @@ const LoginScreen = ({ navigation }) => {
                     }}
                 />
 
-                <Text
+                {/* Add alt login methods
+                 <Text
                     style={{
                         textAlign: "center",
                         color: "#666",
@@ -153,7 +155,7 @@ const LoginScreen = ({ navigation }) => {
                             />
                         </View>
                     </TouchableOpacity>
-                </View>
+                </View> */}
 
                 <View
                     style={{

@@ -3,7 +3,7 @@ from flask import jsonify
 from models.User import User, Message, Chatroom, Messages
 import json
 import uuid
-
+import datetime
 def newChatFunction(user, chatters, message, recipientList, allEmails, recipientEmitList, recipientImages):
     messages = Messages(messages=[message], uid=uuid.uuid4())
     newChatroom = Chatroom(users=chatters, userEmails=allEmails, uid=uuid.uuid4(), userImages=recipientImages, messages=messages)
@@ -61,8 +61,9 @@ def socketMessage(socketio, emit):
                 chatters.append(recipient)
             
             chatters.append(user)
-            
-            message = Message(message=messageText, senderEmail=user.email, uid=uuid.uuid4())
+            now = datetime.datetime.now()
+            formatTime = '{d.month}/{d.day}/{d.year} {d:%I}:{d.minute:02}:{d.second:02}{d:%p}'.format(d=now)
+            message = Message(message=messageText, senderEmail=user.email, uid=uuid.uuid4(), createdAt=formatTime)
             matchingChatters = False
             allEmails = parsedContent['receivers'].copy()
             allEmails.append(userEmail)

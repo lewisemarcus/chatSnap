@@ -54,6 +54,8 @@ const RegisterScreen = ({ navigation }) => {
                     Register
                 </Text>
 
+                {/* 
+                TODO: add alt register methods
                 <View
                     style={{
                         flexDirection: "row",
@@ -106,9 +108,9 @@ const RegisterScreen = ({ navigation }) => {
                             style={{ width: 24, height: 24 }}
                         />
                     </TouchableOpacity>
-                </View>
+                </View> */}
 
-                <Text
+                {/* <Text
                     style={{
                         textAlign: "center",
                         color: "#666",
@@ -116,7 +118,7 @@ const RegisterScreen = ({ navigation }) => {
                     }}
                 >
                     Or, register with email ...
-                </Text>
+                </Text> */}
 
                 <InputField
                     label={"Full Name"}
@@ -169,7 +171,7 @@ const RegisterScreen = ({ navigation }) => {
                     inputType="passwordConfirm"
                 />
 
-                <View
+                {/* <View
                     style={{
                         flexDirection: "row",
                         borderBottomColor: "#ccc",
@@ -197,7 +199,7 @@ const RegisterScreen = ({ navigation }) => {
                             </Text>
                         </View>
                     </TouchableOpacity>
-                </View>
+                </View> */}
                 {/* TODO: make working date picker if we want DOB. */}
                 {/* <DatePicker
                     modal
