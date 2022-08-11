@@ -62,7 +62,7 @@ def socketMessage(socketio, emit):
             
             chatters.append(user)
             now = datetime.datetime.now()
-            formatTime = '{d.month}/{d.day}/{d.year} {d:%I}:{d.minute:02}:{d.second:02}{d:%p}'.format(d=now)
+            formatTime = '{d.month}/{d.day}/{d.year} {d:%I}:{d.minute:02}{d:%p}'.format(d=now)
             message = Message(message=messageText, senderEmail=user.email, uid=uuid.uuid4(), createdAt=formatTime)
             matchingChatters = False
             allEmails = parsedContent['receivers'].copy()
