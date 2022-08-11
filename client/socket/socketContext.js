@@ -39,6 +39,7 @@ export const SocketProvider = ({ children }) => {
                                     currentUser[0].requests.length - 1
                                 ]
                             }`,
+                            data: data.chatroomId,
                         })
                     }
                     currentUser[0].totalNot = (user.totalNot || 0) + 1
@@ -84,11 +85,13 @@ export const SocketProvider = ({ children }) => {
                 try {
                     for (let recipient of data.recipients) {
                         if (user._id.$oid === recipient._id.$oid) {
+                            setChatroomId(data.chatroomId)
                             setUser(recipient)
                             if (user.email !== data.sender) {
                                 sendPushNotification(user.expoToken, {
                                     title: data.sender,
                                     message: data.message,
+                                    data: data.chatroomId,
                                 })
                             }
                         }
@@ -105,10 +108,7 @@ export const SocketProvider = ({ children }) => {
             socket.on("sent-message" + user._id.$oid, (data) => {
                 try {
                     const currentUser = JSON.parse(data.user)[0]
-                    setChatroomId(
-                        currentUser.chatrooms[currentUser.chatrooms.length - 1]
-                            .uid,
-                    )
+                    setChatroomId(data.chatroomId)
                     setUser(currentUser)
                 } catch (err) {
                     Alert.alert(`Error sending message: ${err}`)

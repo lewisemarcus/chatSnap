@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
             sound: "default",
             title: content.title,
             body: content.message,
-            data: { someData: "goes here" },
+            data: { chatroomId: content.data },
         }
 
         await fetch("https://exp.host/--/api/v2/push/send", {
