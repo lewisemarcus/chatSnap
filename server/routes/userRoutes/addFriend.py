@@ -22,7 +22,7 @@ def addAFriend(app, socketio):
                 user.sentRequests.append(values['contact']['email'])
                 newContact.save()
                 user.save()
-                socketio.emit('request-received'+str(newContact.id), contactList.to_json())
+                socketio.emit('request-received'+str(newContact.id), {'userData':contactList.to_json(), 'sender': user.email})
                 socketio.emit('request-sent'+str(user.id), userList.to_json())
                 return jsonify(friendAdded=user), 201
         except Exception as e:
