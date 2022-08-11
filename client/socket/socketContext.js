@@ -10,7 +10,7 @@ const socket = io(uri, {
 })
 
 export const SocketProvider = ({ children }) => {
-    const { setUser, user } = useContext(AuthContext)
+    const { setUser, user, sendPushNotification } = useContext(AuthContext)
     const [sentMessage, setSentMessage] = useState(false)
 
     useEffect(() => {
@@ -24,13 +24,23 @@ export const SocketProvider = ({ children }) => {
         return () => socket.off("connect")
     })
 
+    const sendNotification = async (user) => {
+        await sendPushNotification(user.expoToken, {
+            title: `New Friend Request`,
+            message: `You've received a request from: ${
+                user.requests[user.request.length - 1]
+            }`,
+        })
+    }
+
     useEffect(() => {
         if (Object.keys(user).length > 0) {
             let count = 0
             if (count == 0)
                 socket.on("request-received" + user._id.$oid, (userData) => {
                     let currentUser = JSON.parse(userData)
-
+                    sendNotification()
+                    currentUser[0].totalNot = (user.totalNot || 0) + 1
                     setUser(currentUser[0])
                     count = 1
                 })
@@ -51,7 +61,7 @@ export const SocketProvider = ({ children }) => {
         if (Object.keys(user).length > 0) {
             socket.on("accepted-request" + user._id.$oid, (userData) => {
                 let currentUser = JSON.parse(userData)
-
+                currentUser[0].totalNot = (user.totalNot || 0) - 1
                 setUser(currentUser[0])
             })
             return () => socket.off("accepted-request" + user._id.$oid)
@@ -74,6 +84,10 @@ export const SocketProvider = ({ children }) => {
                     for (let recipient of data.recipients) {
                         if (user._id.$oid === recipient._id.$oid) {
                             setUser(recipient)
+                            sendPushNotification(user.expoToken, {
+                                title: data.sender,
+                                message: data.message,
+                            })
                         }
                     }
                 } catch (err) {
