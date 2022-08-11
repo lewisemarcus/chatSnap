@@ -7,15 +7,14 @@ def updateChat(socketio):
     def update(content):
         try:
             parsedContent = json.loads(content)
-            userId = parsedContent['userId']
+            userEmail = parsedContent['userEmail']
             chatroomId = parsedContent['chatroomId']
             
-            userList = User.objects(_id=userId)
+            userList = User.objects(email=userEmail)
             user = userList[0]
             for i in range(len(user.chatrooms)) :
                 if str(user.chatrooms[i].uid) == str(chatroomId):
                     user.chatrooms[i].newMessages = 0
-                    user.reload()
                     user.save()
                     break
                 

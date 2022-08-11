@@ -24,22 +24,20 @@ export const SocketProvider = ({ children }) => {
         return () => socket.off("connect")
     })
 
-    const sendNotification = async (user) => {
-        await sendPushNotification(user.expoToken, {
-            title: `New Friend Request`,
-            message: `You've received a request from: ${
-                user.requests[user.request.length - 1]
-            }`,
-        })
-    }
-
     useEffect(() => {
-        if (Object.keys(user).length > 0) {
+        if (Object.keys(user).length > 0 && user._id !== undefined) {
             let count = 0
             if (count == 0)
                 socket.on("request-received" + user._id.$oid, (userData) => {
                     let currentUser = JSON.parse(userData)
-                    sendNotification()
+                    sendPushNotification(user.expoToken, {
+                        title: `New Friend Request`,
+                        message: `You've received a request from: ${
+                            currentUser.requests[
+                                currentUser.requests.length - 1
+                            ]
+                        }`,
+                    })
                     currentUser[0].totalNot = (user.totalNot || 0) + 1
                     setUser(currentUser[0])
                     count = 1
@@ -48,7 +46,7 @@ export const SocketProvider = ({ children }) => {
         }
     })
     useEffect(() => {
-        if (Object.keys(user).length > 0) {
+        if (Object.keys(user).length > 0 && user._id !== undefined) {
             socket.on("request-sent" + user._id.$oid, (userData) => {
                 let currentUser = JSON.parse(userData)
 
@@ -58,7 +56,7 @@ export const SocketProvider = ({ children }) => {
         }
     })
     useEffect(() => {
-        if (Object.keys(user).length > 0) {
+        if (Object.keys(user).length > 0 && user._id !== undefined) {
             socket.on("accepted-request" + user._id.$oid, (userData) => {
                 let currentUser = JSON.parse(userData)
                 currentUser[0].totalNot = (user.totalNot || 0) - 1
@@ -69,7 +67,7 @@ export const SocketProvider = ({ children }) => {
     })
 
     useEffect(() => {
-        if (Object.keys(user).length > 0) {
+        if (Object.keys(user).length > 0 && user._id !== undefined) {
             socket.on("request-accepted" + user._id.$oid, (userData) => {
                 let currentUser = JSON.parse(userData)
                 setUser(currentUser[0])
@@ -78,16 +76,18 @@ export const SocketProvider = ({ children }) => {
         }
     })
     useEffect(() => {
-        if (Object.keys(user).length > 0) {
+        if (Object.keys(user).length > 0 && user._id !== undefined) {
             socket.on("message-received" + user.email, (data) => {
                 try {
                     for (let recipient of data.recipients) {
                         if (user._id.$oid === recipient._id.$oid) {
                             setUser(recipient)
-                            sendPushNotification(user.expoToken, {
-                                title: data.sender,
-                                message: data.message,
-                            })
+                            if (user.email !== sender.email) {
+                                sendPushNotification(user.expoToken, {
+                                    title: data.sender,
+                                    message: data.message,
+                                })
+                            }
                         }
                     }
                 } catch (err) {
@@ -98,7 +98,7 @@ export const SocketProvider = ({ children }) => {
         }
     })
     useEffect(() => {
-        if (Object.keys(user).length > 0) {
+        if (Object.keys(user).length > 0 && user._id !== undefined) {
             socket.on("sent-message" + user._id.$oid, (data) => {
                 try {
                     setUser(JSON.parse(data.user)[0])

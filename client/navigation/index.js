@@ -37,6 +37,7 @@ import {
 import LoginSVG from "../assets/images/user.png"
 
 import { useNavigation } from "@react-navigation/core"
+
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
@@ -44,7 +45,7 @@ import { useNavigation } from "@react-navigation/core"
 const Stack = createNativeStackNavigator()
 
 const RootNavigator = () => {
-    const { setReceivers } = useContext(AuthContext)
+    const { setReceivers, chatroomId, user, setUser } = useContext(AuthContext)
     const navigation = useNavigation()
     return (
         <Stack.Navigator>
@@ -81,6 +82,16 @@ const RootNavigator = () => {
                             style={{ marginRight: 40, marginLeft: 0 }}
                             onPress={() => {
                                 setReceivers([])
+                                for (
+                                    let i = 0;
+                                    i < user.chatrooms.length;
+                                    i++
+                                ) {
+                                    if (user.chatrooms[i].uid == chatroomId) {
+                                        user.chatrooms[i].newMessages = 0
+                                        setUser(user)
+                                    }
+                                }
                                 navigation.navigate("Home")
                             }}
                         />
@@ -117,11 +128,12 @@ const RootNavigator = () => {
                 component={FriendRequestScreen}
                 options={{ headerShown: true }}
             />
+            {/* TODO: create settings page for customization on future deployment
             <Stack.Screen
                 name="Settings"
                 component={MenuScreen}
                 options={{ headerShown: true }}
-            />
+            /> */}
             <Stack.Screen
                 name="Contacts"
                 component={ContactsScreen}
