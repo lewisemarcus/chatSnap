@@ -15,7 +15,7 @@ import {
     Feather,
     MaterialCommunityIcons,
 } from "@expo/vector-icons"
-
+import * as Localization from "expo-localization"
 import { AuthContext } from "../../context/AuthContext"
 import { useRoute, useNavigation } from "@react-navigation/native"
 export default function MessageInput() {
@@ -25,12 +25,13 @@ export default function MessageInput() {
     const { user, receivers, chatroomId, token } = useContext(AuthContext)
     const route = useRoute()
     const navigation = useNavigation()
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
     const onPress = () => {
         if (message) {
             let alert = false
             for (let contact of user.contacts) {
                 if (receivers.includes(contact.email) && token) {
+                    const timezone = Localization.timezone
                     sendMessage({ user, receivers, message, timezone })
                     setSentMessage(true)
                     alert = false

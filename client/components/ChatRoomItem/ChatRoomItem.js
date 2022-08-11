@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useRef } from "react"
 import { Text, View, Image, TouchableOpacity } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 import styles from "./styles/ChatRoomStyle"
@@ -17,8 +17,6 @@ export default function ChatRoomItem({
     const navigation = useNavigation()
     const { user, setChatroomId, setReceivers, setUser } =
         useContext(AuthContext)
-    const date = new Date()
-    const today = date.getDate()
     const { socket } = useContext(SocketContext)
     const onPress = () => {
         setChatroomId(chatRoom.uid)
@@ -59,6 +57,7 @@ export default function ChatRoomItem({
         return user.userImage != image
     })
     useEffect(() => {
+        console.log(new Date().toLocaleDateString())
         setChatroomId("")
         setReceivers([])
         return () => setChatroomId("")
@@ -107,7 +106,7 @@ export default function ChatRoomItem({
                         </Text>
 
                         <Text style={styles.text}>
-                            {today.toLocaleDateString() ==
+                            {new Date().toLocaleDateString() ==
                             chatRoom.messages.messages[
                                 chatRoom.messages.messages.length - 1
                             ].createdAt.split(" ")[0]
