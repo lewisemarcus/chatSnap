@@ -4,6 +4,7 @@ from models.User import User, Message, Chatroom, Messages
 import json
 import uuid
 import datetime
+import pytz
 def newChatFunction(user, chatters, message, recipientList, allEmails, recipientEmitList, recipientImages):
     messages = Messages(messages=[message], uid=uuid.uuid4())
     newChatroom = Chatroom(users=chatters, userEmails=allEmails, uid=uuid.uuid4(), userImages=recipientImages, messages=messages)
@@ -44,6 +45,8 @@ def socketMessage(socketio, emit):
         try:
             parsedContent = json.loads(content)
             userEmail = parsedContent['user']['email']
+            timezoneString = parsedContent['timezone']
+            timezone = pytz.timezone(timezoneString)
             receiversEmails = parsedContent['receivers'].copy()
             messageText = parsedContent['message']
             userList = User.objects(email=userEmail)
@@ -61,7 +64,7 @@ def socketMessage(socketio, emit):
                 chatters.append(recipient)
             
             chatters.append(user)
-            now = datetime.datetime.now()
+            now = datetime.datetime.now(timezone)
             formatTime = '{d.month}/{d.day}/{d.year} {d:%I}:{d.minute:02}{d:%p}'.format(d=now)
             message = Message(message=messageText, senderEmail=user.email, uid=uuid.uuid4(), createdAt=formatTime)
             matchingChatters = False
