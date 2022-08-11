@@ -17,7 +17,8 @@ export default function ChatRoomItem({
     const navigation = useNavigation()
     const { user, setChatroomId, setReceivers, setUser } =
         useContext(AuthContext)
-
+    const date = new Date()
+    const today = date.getDate()
     const { socket } = useContext(SocketContext)
     const onPress = () => {
         setChatroomId(chatRoom.uid)
@@ -106,11 +107,16 @@ export default function ChatRoomItem({
                         </Text>
 
                         <Text style={styles.text}>
-                            {
-                                chatRoom.messages.messages[
-                                    chatRoom.messages.messages.length - 1
-                                ].createdAt
-                            }
+                            {today.toLocaleDateString() ==
+                            chatRoom.messages.messages[
+                                chatRoom.messages.messages.length - 1
+                            ].createdAt.split(" ")[0]
+                                ? chatRoom.messages.messages[
+                                      chatRoom.messages.messages.length - 1
+                                  ].createdAt.split(" ")[1]
+                                : chatRoom.messages.messages[
+                                      chatRoom.messages.messages.length - 1
+                                  ].createdAt.split(" ")[0]}
                         </Text>
                     </View>
                     {user.email ==

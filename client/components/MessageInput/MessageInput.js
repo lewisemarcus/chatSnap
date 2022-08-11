@@ -25,12 +25,13 @@ export default function MessageInput() {
     const { user, receivers, chatroomId, token } = useContext(AuthContext)
     const route = useRoute()
     const navigation = useNavigation()
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
     const onPress = () => {
         if (message) {
             let alert = false
             for (let contact of user.contacts) {
                 if (receivers.includes(contact.email) && token) {
-                    sendMessage({ user, receivers, message })
+                    sendMessage({ user, receivers, message, timezone })
                     setSentMessage(true)
                     alert = false
                     break
