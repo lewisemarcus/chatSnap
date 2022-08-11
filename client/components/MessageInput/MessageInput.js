@@ -31,7 +31,7 @@ export default function MessageInput() {
             for (let contact of user.contacts) {
                 if (receivers.includes(contact.email) && token) {
                     sendMessage({ user, receivers, message })
-                    setSentMessage(!sentMessage)
+                    setSentMessage(true)
                     alert = false
                     break
                 } else {
@@ -44,11 +44,14 @@ export default function MessageInput() {
     }
 
     useEffect(() => {
-        if (route.name === "New Chat") {
-            console.log(chatroomId)
+        return () => setSentMessage(false)
+    }, [])
+
+    useEffect(() => {
+        if (sentMessage && route.name === "New Chat") {
             navigation.navigate("ChatRoom", { id: chatroomId })
         }
-    }, [sentMessage])
+    }, [chatroomId])
     return (
         <KeyboardAvoidingView
             style={styles.root}
