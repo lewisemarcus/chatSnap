@@ -109,7 +109,7 @@ export default function ChatRoomItem({
                             {
                                 chatRoom.messages.messages[
                                     chatRoom.messages.messages.length - 1
-                                ].createdAt.$date
+                                ].createdAt
                             }
                         </Text>
                     </View>

@@ -4,7 +4,7 @@ class Message(mongoDB.EmbeddedDocument):
     uid = mongoDB.UUIDField(binary=False)
     message = mongoDB.StringField()
     senderEmail = mongoDB.StringField()
-    createdAt = mongoDB.DateTimeField(required=True, default=datetime.datetime.now)
+    createdAt = mongoDB.StringField(required=True, default=str(datetime.datetime.now))
     
 class Messages(mongoDB.EmbeddedDocument):
     uid = mongoDB.UUIDField(binary=False)
