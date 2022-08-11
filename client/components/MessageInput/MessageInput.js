@@ -44,7 +44,8 @@ export default function MessageInput() {
     }
 
     useEffect(() => {
-        if (sentMessage && route.name === "New Chat") {
+        if (route.name === "New Chat") {
+            console.log(chatroomId)
             navigation.navigate("ChatRoom", { id: chatroomId })
         }
     }, [sentMessage])
