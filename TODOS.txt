@@ -1,0 +1,12 @@
+* = maybe
+
+TODO: Update friend request to search by username*
+TODO: Add username for each user in models*
+TODO: Fix DOB input on registration (or remove)
+TODO: ALlow photo messages
+TODO: Add notifications setting page
+TODO: Add about app to settings page
+TODO: For accepting multiple friends, adding multiple contacts 
+      from contact page for group chat, allow long press to multi select
+TODO: Implement filter system with P5.js
+TODO: Update login and register pages

@@ -2,48 +2,36 @@ import { StyleSheet } from "react-native"
 
 const styles = StyleSheet.create({
     text: {
-        color: "white",
+        textAlign: "center",
+        color: "black",
+        fontSize: 30,
     },
     container: {
+        border: "1px solid black",
         flexDirection: "row",
         padding: 10,
-    },
-    image: {
-        height: 50,
-        width: 50,
         borderRadius: 25,
-        marginRight: 10,
-        borderWidth: 0.5,
-        borderColor: "white",
-    },
-    name: {
-        color: "white",
-        fontWeight: "bold",
-        fontSize: 17,
-    },
-    row: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-    },
-    rightContainer: {
-        flex: 1,
+        width: 200,
+        alignItems: "center",
         justifyContent: "center",
+        backgroundColor: "white",
     },
     badgeText: {
-        color: "white",
+        color: "black",
         textAlign: "center",
         fontSize: 12,
+        fontWeight: "700",
     },
     badgeContainer: {
-        backgroundColor: "#1E87F0",
+        backgroundColor: "white",
         justifyContent: "center",
         width: 20,
         height: 20,
         borderRadius: 10,
         borderWidth: 0.5,
-        borderColor: "white",
+        borderColor: "black",
         position: "absolute",
-        left: 40,
+        right: 10,
     },
 })
 

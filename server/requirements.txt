@@ -1,4 +1,11 @@
-Flask
+flask==2.0.0
+flask-socketio
+python-engineio
+python-socketio
+gevent-websocket
+Flask-JWT-Extended
 python-dotenv
 flask-mongoengine
 flask-cors
+eventlet
+pytz
