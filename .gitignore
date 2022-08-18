@@ -5,3 +5,10 @@
 **/__pycache__/
 
 **/node_modules
+**googleplayapi.json
+
+**.aab
+
+**/.expo-shared
+**/android
+**/and
