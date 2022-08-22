@@ -5,10 +5,9 @@
 **/__pycache__/
 
 **/node_modules
-**googleplayapi.json
+**pc-api-6823045596467964902-131.json
 
 **.aab
 
-**/.expo-shared
-**/android
-**/and
+**and/
+**eas.json
