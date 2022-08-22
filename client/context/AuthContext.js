@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [passwordConfirm, setPasswordConfirm] = useState("")
-    const [user, setUser] = useState({})
+    const [user, setUser] = useState({ totalNot: 0 })
     const [notification, setNotification] = useState(null)
     const notificationListener = useRef()
     const responseListener = useRef()
@@ -241,7 +241,7 @@ export const AuthProvider = ({ children }) => {
         AsyncStorage.removeItem("name")
         AsyncStorage.removeItem("user")
         setIsLoading(false)
-        setUser({})
+        setUser({ totalNot: 0 })
     }
 
     const isLoggedIn = async () => {
@@ -253,7 +253,7 @@ export const AuthProvider = ({ children }) => {
             setToken(userToken)
             setName(username)
 
-            if (!JSON.parse(userInfo)) setUser({})
+            if (!JSON.parse(userInfo)) setUser({ totalNot: 0 })
             else setUser(JSON.parse(userInfo))
 
             setIsLoading(false)

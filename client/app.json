@@ -2,12 +2,12 @@
     "expo": {
         "name": "Chat Snap",
         "slug": "chatSnap",
-        "version": "1.0.0",
+        "version": "1.0.3",
         "orientation": "portrait",
         "icon": "./assets/images/icon.png",
         "userInterfaceStyle": "light",
         "splash": {
-            "image": "./assets/images/splash.png",
+            "image": "./assets/images/phone.png",
             "resizeMode": "contain",
             "backgroundColor": "#ffffff"
         },
@@ -19,8 +19,14 @@
             "supportsTablet": true
         },
         "android": {
+            "icon": "./assets/images/icon.png",
+            "splash": {
+                "image": "./assets/images/phone.png",
+                "resizeMode": "contain",
+                "backgroundColor": "#ffffff"
+            },
             "package": "com.chatSnap",
-            "versionCode": 1,
+            "versionCode": 4,
             "adaptiveIcon": {
                 "foregroundImage": "./assets/images/icon.png",
                 "backgroundColor": "#FFFFFF"
